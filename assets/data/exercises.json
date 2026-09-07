@@ -1,0 +1,2187 @@
+[
+  {
+    "id": "chest_pushup",
+    "name": "Push-Up",
+    "muscleGroups": [
+      "chest"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 80,
+    "formCues": [
+      "Set up a rigid plank: hands under shoulders, legs long, glutes lightly squeezed.",
+      "Brace your core as if someone will poke your stomach \u2014 ribs down, neck long.",
+      "Bend elbows about 45\u00b0 from your torso and lower until your chest nearly touches the floor.",
+      "Drive through your palms to straighten arms without letting hips sag or pike."
+    ],
+    "commonMistakes": [
+      "Hips sagging",
+      "Flared elbows"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pushups/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "chest_db_press",
+    "name": "Dumbbell Bench Press",
+    "muscleGroups": [
+      "chest"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 100,
+    "formCues": [
+      "Retract scapula",
+      "Control the eccentric"
+    ],
+    "commonMistakes": [
+      "Bouncing bar path",
+      "Partial ROM"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bench_Press/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "chest_bb_press",
+    "name": "Barbell Bench Press",
+    "muscleGroups": [
+      "chest"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 120,
+    "formCues": [
+      "Feet planted",
+      "Bar to mid-chest"
+    ],
+    "commonMistakes": [
+      "Butt off bench",
+      "Uneven lockout"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Bench_Press_-_Medium_Grip/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "chest_incline_db",
+    "name": "Incline Dumbbell Press",
+    "muscleGroups": [
+      "chest"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 95,
+    "formCues": [
+      "30\u201345\u00b0 bench",
+      "Wrists stacked"
+    ],
+    "commonMistakes": [
+      "Too steep incline"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Press/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Press/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Press/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "chest_fly",
+    "name": "Dumbbell Fly",
+    "muscleGroups": [
+      "chest"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 70,
+    "formCues": [
+      "Soft elbows",
+      "Squeeze at top"
+    ],
+    "commonMistakes": [
+      "Heavy elbows lock"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Flyes/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Flyes/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Flyes/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "chest_cable_fly",
+    "name": "Cable Fly",
+    "muscleGroups": [
+      "chest"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 75,
+    "formCues": [
+      "Slight forward lean",
+      "Hands meet center"
+    ],
+    "commonMistakes": [
+      "Using momentum"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Cable_Crossover/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "chest_band_press",
+    "name": "Band Chest Press",
+    "muscleGroups": [
+      "chest"
+    ],
+    "equipment": [
+      "resistanceBand"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 65,
+    "formCues": [
+      "Anchor at chest height",
+      "Exhale on press"
+    ],
+    "commonMistakes": [
+      "Band slipping"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Push-Up/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "chest_diamond_pushup",
+    "name": "Diamond Push-Up",
+    "muscleGroups": [
+      "chest",
+      "arms"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 85,
+    "formCues": [
+      "Hands under chest",
+      "Elbows tuck"
+    ],
+    "commonMistakes": [
+      "Shoulders shrug"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Close-Grip_Push-Up_off_of_a_Dumbbell/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Close-Grip_Push-Up_off_of_a_Dumbbell/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Close-Grip_Push-Up_off_of_a_Dumbbell/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "back_row_db",
+    "name": "One-Arm Dumbbell Row",
+    "muscleGroups": [
+      "back"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 90,
+    "formCues": [
+      "Neutral spine",
+      "Elbow to hip"
+    ],
+    "commonMistakes": [
+      "Twisting torso"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/One-Arm_Dumbbell_Row/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "back_pullup",
+    "name": "Pull-Up",
+    "muscleGroups": [
+      "back"
+    ],
+    "equipment": [
+      "gym",
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 110,
+    "formCues": [
+      "Full hang start",
+      "Chest to bar"
+    ],
+    "commonMistakes": [
+      "Kipping if unintended"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Pullups/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "back_lat_pulldown",
+    "name": "Lat Pulldown",
+    "muscleGroups": [
+      "back"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 95,
+    "formCues": [
+      "Sit tall, thighs locked under the pad, chest slightly up.",
+      "Grab the bar wider than shoulders with a firm overhand grip.",
+      "Pull elbows down toward your ribs until the bar reaches upper chest.",
+      "Pause briefly, then let the bar rise with control without shrugging."
+    ],
+    "commonMistakes": [
+      "Leaning too far back"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Wide-Grip_Lat_Pulldown/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "back_bb_row",
+    "name": "Barbell Bent-Over Row",
+    "muscleGroups": [
+      "back"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 115,
+    "formCues": [
+      "Hinge at hips",
+      "Bar to lower chest"
+    ],
+    "commonMistakes": [
+      "Rounding lower back"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Barbell_Row/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "back_band_row",
+    "name": "Band Seated Row",
+    "muscleGroups": [
+      "back"
+    ],
+    "equipment": [
+      "resistanceBand"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 70,
+    "formCues": [
+      "Sit tall",
+      "Squeeze shoulder blades"
+    ],
+    "commonMistakes": [
+      "Shrugging shoulders"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Cable_Rows/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "back_superman",
+    "name": "Superman Hold",
+    "muscleGroups": [
+      "back",
+      "core"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 50,
+    "formCues": [
+      "Lift chest and legs",
+      "Hold briefly"
+    ],
+    "commonMistakes": [
+      "Neck craning"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Superman/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "back_face_pull",
+    "name": "Face Pull",
+    "muscleGroups": [
+      "back",
+      "shoulders"
+    ],
+    "equipment": [
+      "gym",
+      "resistanceBand"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 60,
+    "formCues": [
+      "Pull to face",
+      "External rotate"
+    ],
+    "commonMistakes": [
+      "Elbows dropping"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "back_deadlift",
+    "name": "Conventional Deadlift",
+    "muscleGroups": [
+      "back",
+      "legs"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "advanced",
+    "estimatedCalories": 150,
+    "formCues": [
+      "Bar over mid-foot",
+      "Brace hard"
+    ],
+    "commonMistakes": [
+      "Rounding back"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Deadlift/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "legs_squat_bw",
+    "name": "Bodyweight Squat",
+    "muscleGroups": [
+      "legs"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 70,
+    "formCues": [
+      "Knees track toes",
+      "Depth to parallel"
+    ],
+    "commonMistakes": [
+      "Heels lifting"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "legs_goblet",
+    "name": "Goblet Squat",
+    "muscleGroups": [
+      "legs"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 95,
+    "formCues": [
+      "Elbows inside knees",
+      "Chest up"
+    ],
+    "commonMistakes": [
+      "Collapsing knees"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Goblet_Squat/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "legs_bb_squat",
+    "name": "Barbell Back Squat",
+    "muscleGroups": [
+      "legs"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 140,
+    "formCues": [
+      "Brace before descent",
+      "Drive through mid-foot"
+    ],
+    "commonMistakes": [
+      "Butt wink"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Squat/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Squat/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Squat/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "legs_rdl",
+    "name": "Romanian Deadlift",
+    "muscleGroups": [
+      "legs",
+      "back"
+    ],
+    "equipment": [
+      "dumbbell",
+      "gym"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 110,
+    "formCues": [
+      "Soft knees",
+      "Hips back"
+    ],
+    "commonMistakes": [
+      "Rounding spine"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Romanian_Deadlift/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "legs_lunge",
+    "name": "Walking Lunge",
+    "muscleGroups": [
+      "legs"
+    ],
+    "equipment": [
+      "bodyweight",
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 85,
+    "formCues": [
+      "Upright torso",
+      "Front shin vertical"
+    ],
+    "commonMistakes": [
+      "Knee cave"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Walking_Lunge/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "legs_leg_press",
+    "name": "Leg Press",
+    "muscleGroups": [
+      "legs"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 100,
+    "formCues": [
+      "Full ROM without hip tuck"
+    ],
+    "commonMistakes": [
+      "Locking knees hard"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leg_Press/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "legs_calf",
+    "name": "Standing Calf Raise",
+    "muscleGroups": [
+      "legs"
+    ],
+    "equipment": [
+      "bodyweight",
+      "gym"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 40,
+    "formCues": [
+      "Full stretch at bottom",
+      "Pause at top"
+    ],
+    "commonMistakes": [
+      "Bouncing"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "legs_glute_bridge",
+    "name": "Glute Bridge",
+    "muscleGroups": [
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 55,
+    "formCues": [
+      "Squeeze glutes",
+      "Ribs down"
+    ],
+    "commonMistakes": [
+      "Overarching lumbar"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Glute_Bridge/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "legs_band_squat",
+    "name": "Band Squat",
+    "muscleGroups": [
+      "legs"
+    ],
+    "equipment": [
+      "resistanceBand"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 65,
+    "formCues": [
+      "Band above knees",
+      "Push out against band"
+    ],
+    "commonMistakes": [
+      "Knees cave"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "shoulders_ohp_db",
+    "name": "Dumbbell Overhead Press",
+    "muscleGroups": [
+      "shoulders"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 85,
+    "formCues": [
+      "Glutes tight",
+      "Press slightly back"
+    ],
+    "commonMistakes": [
+      "Excessive lumbar arch"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "shoulders_ohp_bb",
+    "name": "Barbell Overhead Press",
+    "muscleGroups": [
+      "shoulders"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 100,
+    "formCues": [
+      "Bar path near face",
+      "Lockout overhead"
+    ],
+    "commonMistakes": [
+      "Pressing forward"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shoulder_Press/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shoulder_Press/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Shoulder_Press/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "shoulders_lateral",
+    "name": "Dumbbell Lateral Raise",
+    "muscleGroups": [
+      "shoulders"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 50,
+    "formCues": [
+      "Lead with elbows",
+      "Slight lean"
+    ],
+    "commonMistakes": [
+      "Swinging torso"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "shoulders_front",
+    "name": "Front Raise",
+    "muscleGroups": [
+      "shoulders"
+    ],
+    "equipment": [
+      "dumbbell",
+      "resistanceBand"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 45,
+    "formCues": [
+      "Raise to eye level",
+      "Control descent"
+    ],
+    "commonMistakes": [
+      "Using momentum"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Front_Dumbbell_Raise/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Front_Dumbbell_Raise/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Front_Dumbbell_Raise/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "shoulders_rear_delt",
+    "name": "Rear Delt Fly",
+    "muscleGroups": [
+      "shoulders",
+      "back"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 45,
+    "formCues": [
+      "Soft elbows",
+      "Squeeze rear delts"
+    ],
+    "commonMistakes": [
+      "Shrugging up"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "shoulders_pike_pushup",
+    "name": "Pike Push-Up",
+    "muscleGroups": [
+      "shoulders"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 75,
+    "formCues": [
+      "Hips high",
+      "Elbows track back"
+    ],
+    "commonMistakes": [
+      "Head dumping forward"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Handstand_Push-Ups/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Handstand_Push-Ups/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Handstand_Push-Ups/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "shoulders_band_press",
+    "name": "Band Overhead Press",
+    "muscleGroups": [
+      "shoulders"
+    ],
+    "equipment": [
+      "resistanceBand"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 55,
+    "formCues": [
+      "Stand on band",
+      "Press overhead"
+    ],
+    "commonMistakes": [
+      "Band uneven"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Shoulder_Press/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "arms_curl_db",
+    "name": "Dumbbell Bicep Curl",
+    "muscleGroups": [
+      "arms"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 40,
+    "formCues": [
+      "Elbows pinned",
+      "Full squeeze"
+    ],
+    "commonMistakes": [
+      "Swinging hips"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "arms_hammer",
+    "name": "Hammer Curl",
+    "muscleGroups": [
+      "arms"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 40,
+    "formCues": [
+      "Neutral grip",
+      "Slow eccentric"
+    ],
+    "commonMistakes": [
+      "Elbows drifting"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hammer_Curls/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "arms_triceps_pushdown",
+    "name": "Triceps Pushdown",
+    "muscleGroups": [
+      "arms"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 45,
+    "formCues": [
+      "Elbows fixed",
+      "Full extension"
+    ],
+    "commonMistakes": [
+      "Shoulders rolling forward"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Triceps_Pushdown/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "arms_skullcrush",
+    "name": "Skull Crusher",
+    "muscleGroups": [
+      "arms"
+    ],
+    "equipment": [
+      "dumbbell",
+      "gym"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 50,
+    "formCues": [
+      "Upper arms still",
+      "Lower behind head slightly"
+    ],
+    "commonMistakes": [
+      "Flaring elbows wide"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Triceps_Press/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Triceps_Press/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Lying_Triceps_Press/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "arms_dip",
+    "name": "Bench Dip",
+    "muscleGroups": [
+      "arms",
+      "chest"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 60,
+    "formCues": [
+      "Place hands on the bench behind you, fingers forward, feet out.",
+      "Keep shoulders down and chest proud \u2014 do not shrug into your ears.",
+      "Bend elbows to lower until upper arms are about parallel to the floor.",
+      "Press through palms to straighten arms without locking hard."
+    ],
+    "commonMistakes": [
+      "Shrugging into ears"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bench_Dips/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "arms_band_curl",
+    "name": "Band Curl",
+    "muscleGroups": [
+      "arms"
+    ],
+    "equipment": [
+      "resistanceBand"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 35,
+    "formCues": [
+      "Tension throughout",
+      "No wrist bend"
+    ],
+    "commonMistakes": [
+      "Band snap back"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dumbbell_Bicep_Curl/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "arms_close_grip",
+    "name": "Close-Grip Push-Up",
+    "muscleGroups": [
+      "arms",
+      "chest"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 70,
+    "formCues": [
+      "Hands under shoulders",
+      "Elbows tuck"
+    ],
+    "commonMistakes": [
+      "Hips piked"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Close-Grip_Push-Up_off_of_a_Dumbbell/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Close-Grip_Push-Up_off_of_a_Dumbbell/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Close-Grip_Push-Up_off_of_a_Dumbbell/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "core_plank",
+    "name": "Front Plank",
+    "muscleGroups": [
+      "core"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 35,
+    "formCues": [
+      "Ribs down",
+      "Glutes on"
+    ],
+    "commonMistakes": [
+      "Hips sagging"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Plank/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "core_dead_bug",
+    "name": "Dead Bug",
+    "muscleGroups": [
+      "core"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 30,
+    "formCues": [
+      "Lower back pressed down",
+      "Exhale on extension"
+    ],
+    "commonMistakes": [
+      "Arching lumbar"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Dead_Bug/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "core_bicycle",
+    "name": "Bicycle Crunch",
+    "muscleGroups": [
+      "core"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 40,
+    "formCues": [
+      "Slow controlled tempo",
+      "Elbow to opposite knee"
+    ],
+    "commonMistakes": [
+      "Pulling on neck"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Air_Bike/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Air_Bike/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Air_Bike/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "core_hanging_knee",
+    "name": "Hanging Knee Raise",
+    "muscleGroups": [
+      "core"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 50,
+    "formCues": [
+      "Posterior pelvic tilt",
+      "Controlled lower"
+    ],
+    "commonMistakes": [
+      "Swinging"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hanging_Leg_Raise/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "core_pallof",
+    "name": "Pallof Press",
+    "muscleGroups": [
+      "core"
+    ],
+    "equipment": [
+      "gym",
+      "resistanceBand"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 40,
+    "formCues": [
+      "Anti-rotate",
+      "Arms press out"
+    ],
+    "commonMistakes": [
+      "Hips twisting"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Cable_Wood_Chop/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Cable_Wood_Chop/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Cable_Wood_Chop/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "core_russian",
+    "name": "Russian Twist",
+    "muscleGroups": [
+      "core"
+    ],
+    "equipment": [
+      "bodyweight",
+      "dumbbell"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 40,
+    "formCues": [
+      "Lean slightly back",
+      "Rotate through torso"
+    ],
+    "commonMistakes": [
+      "Only moving arms"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Russian_Twist/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "core_ab_wheel",
+    "name": "Ab Wheel Rollout",
+    "muscleGroups": [
+      "core"
+    ],
+    "equipment": [
+      "gym"
+    ],
+    "difficulty": "advanced",
+    "estimatedCalories": 55,
+    "formCues": [
+      "Brace hard",
+      "Short ROM first"
+    ],
+    "commonMistakes": [
+      "Lumbar dumping"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Ab_Rollout_-_On_Knees/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Ab_Rollout_-_On_Knees/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Ab_Rollout_-_On_Knees/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "core_side_plank",
+    "name": "Side Plank",
+    "muscleGroups": [
+      "core"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 35,
+    "formCues": [
+      "Stack hips",
+      "Long neck"
+    ],
+    "commonMistakes": [
+      "Hips dropping"
+    ],
+    "isCompound": false,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Bridge/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Bridge/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Bridge/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "full_burpee",
+    "name": "Burpee",
+    "muscleGroups": [
+      "chest",
+      "legs",
+      "core"
+    ],
+    "equipment": [
+      "bodyweight"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 120,
+    "formCues": [
+      "Soft landing",
+      "Chest to floor option"
+    ],
+    "commonMistakes": [
+      "Slamming joints"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Mountain_Climbers/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "full_thruster",
+    "name": "Dumbbell Thruster",
+    "muscleGroups": [
+      "legs",
+      "shoulders"
+    ],
+    "equipment": [
+      "dumbbell"
+    ],
+    "difficulty": "intermediate",
+    "estimatedCalories": 110,
+    "formCues": [
+      "Squat then press",
+      "Drive with legs"
+    ],
+    "commonMistakes": [
+      "Pressing before stand"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Thruster/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Thruster/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Kettlebell_Thruster/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  },
+  {
+    "id": "full_farmers",
+    "name": "Farmer's Carry",
+    "muscleGroups": [
+      "core",
+      "arms",
+      "shoulders"
+    ],
+    "equipment": [
+      "dumbbell",
+      "gym"
+    ],
+    "difficulty": "beginner",
+    "estimatedCalories": 80,
+    "formCues": [
+      "Deadlift the weights to standing: tall spine, shoulders packed, core braced.",
+      "Grip handles hard and keep knuckles facing forward \u2014 no shrugging.",
+      "Walk with even, short steps; look ahead and keep hips level.",
+      "Breathe steadily; stop and set weights down if you start leaning or twisting.",
+      "Place weights down with control by hinging at the hips, not rounding your back."
+    ],
+    "commonMistakes": [
+      "Leaning to one side"
+    ],
+    "isCompound": true,
+    "demoUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/0.jpg",
+    "variants": {
+      "beginner": {
+        "sets": 3,
+        "reps": 10,
+        "restSeconds": 75
+      },
+      "intermediate": {
+        "sets": 3,
+        "reps": 12,
+        "restSeconds": 60
+      },
+      "advanced": {
+        "sets": 4,
+        "reps": 10,
+        "restSeconds": 45
+      }
+    },
+    "demoImages": [
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/0.jpg",
+      "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Farmers_Walk/1.jpg"
+    ],
+    "demoSource": "free-exercise-db (Unlicense)"
+  }
+]

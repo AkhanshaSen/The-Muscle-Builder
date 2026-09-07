@@ -1,0 +1,2332 @@
+[
+  {
+    "id": "pre_banana_almonds",
+    "name": "Banana + Soaked Almonds",
+    "description": "Light carb + healthy fats for steady energy.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "nuts"
+    ],
+    "timingGuidance": "30–45 min before workout",
+    "calories": 185,
+    "proteinG": 4.5,
+    "carbsG": 29.0,
+    "fatG": 7.5,
+    "portion": "1 medium banana + 8–10 soaked almonds",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "1 medium ripe banana",
+        "8–10 almonds (soaked overnight or 2–3 hrs)",
+        "Pinch of cinnamon (optional)"
+      ],
+      "steps": [
+        "Drain soaked almonds; peel if preferred.",
+        "Slice banana into a bowl.",
+        "Add almonds and a pinch of cinnamon.",
+        "Eat 30–45 minutes before training with water."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "fruit"
+    ],
+    "nutritionNotes": [
+      "Medium banana (~118g): ~105 kcal, 1.3g protein, 27g carbs (USDA).",
+      "8–10 almonds (~12g): ~70 kcal, ~2.5g protein, ~6g fat.",
+      "Combined estimate ~185 kcal · ~4–5g protein."
+    ]
+  },
+  {
+    "id": "pre_poha",
+    "name": "Poha with Peanuts",
+    "description": "Classic light Indian breakfast with carbs and crunch.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [
+      "nuts"
+    ],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 315,
+    "proteinG": 8.0,
+    "carbsG": 48.0,
+    "fatG": 9.0,
+    "portion": "1 medium bowl (~200g) poha with 1 tbsp peanuts",
+    "recipe": {
+      "prepMinutes": 15,
+      "ingredients": [
+        "1 cup thick poha (flattened rice), rinsed",
+        "1 tbsp peanuts",
+        "1/2 onion, finely chopped",
+        "1/4 tsp mustard seeds, curry leaves",
+        "1/4 tsp turmeric, salt to taste",
+        "1 tsp oil, lemon juice, coriander"
+      ],
+      "steps": [
+        "Rinse poha and drain; it should soften but not turn mushy.",
+        "Heat oil; temper mustard, curry leaves, peanuts.",
+        "Sauté onion till translucent; add turmeric and salt.",
+        "Fold in poha, cover 1–2 minutes, finish with lemon and coriander.",
+        "Serve one medium bowl 45–60 min before workout."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [],
+    "nutritionNotes": [
+      "Portion ~200g cooked poha + 1 tbsp (~10g) peanuts.",
+      "Cooked poha ~136 kcal & ~2.7g protein / 100g (common Indian nutrition tables); peanuts ~57 kcal & ~2.6g protein / 10g.",
+      "Estimate ~315 kcal · 8g protein for this bowl (oil/veg vary ±10%)."
+    ]
+  },
+  {
+    "id": "pre_chilla",
+    "name": "Moong Dal Chilla",
+    "description": "Protein-rich savory pancake, easy to digest.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "60 min before workout",
+    "calories": 250,
+    "proteinG": 14,
+    "carbsG": 30,
+    "fatG": 7,
+    "portion": "2 chillas (medium size) with mint chutney",
+    "recipe": {
+      "prepMinutes": 20,
+      "ingredients": [
+        "1 cup moong dal (soaked 2–3 hrs) or 3/4 cup moong flour",
+        "1 green chilli, ginger, salt",
+        "1/4 cup finely chopped onion/tomato (optional)",
+        "1 tsp oil for cooking",
+        "Mint chutney to serve"
+      ],
+      "steps": [
+        "Blend soaked dal with chilli, ginger, salt to a pourable batter (or mix flour with water).",
+        "Stir in chopped veggies if using.",
+        "Spread thin pancakes on a hot non-stick pan; cook both sides with light oil.",
+        "Make 2 medium chillas; serve with chutney about 60 min before training."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "legumes"
+    ]
+  },
+  {
+    "id": "pre_idli",
+    "name": "Idli with Sambar",
+    "description": "Light fermented carbs with lentil protein.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "southIndian",
+      "panIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 240,
+    "proteinG": 10,
+    "carbsG": 40,
+    "fatG": 4,
+    "portion": "3 idlis + 1 small bowl sambar",
+    "recipe": {
+      "prepMinutes": 10,
+      "ingredients": [
+        "3 steamed idlis (store-bought or homemade)",
+        "1 cup ready sambar",
+        "Optional: coconut chutney (2 tbsp)"
+      ],
+      "steps": [
+        "Warm idlis by steaming or microwave briefly with a damp cloth.",
+        "Heat sambar until simmering; adjust salt and tempering if needed.",
+        "Serve 3 idlis with a small bowl of sambar.",
+        "Eat 45–60 minutes before your session."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "legumes"
+    ]
+  },
+  {
+    "id": "pre_upma",
+    "name": "Rava Upma",
+    "description": "Warm semolina bowl with veggies.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "southIndian",
+      "panIndian"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 260,
+    "proteinG": 7,
+    "carbsG": 38,
+    "fatG": 8,
+    "portion": "1 medium bowl (~220g) upma",
+    "recipe": {
+      "prepMinutes": 15,
+      "ingredients": [
+        "1/2 cup rava (semolina)",
+        "1.25 cups water",
+        "1/2 onion, green chilli, curry leaves",
+        "1/4 cup mixed veggies (carrot/peas)",
+        "1 tsp oil/ghee, mustard seeds, salt"
+      ],
+      "steps": [
+        "Dry-roast rava until aromatic; set aside.",
+        "Temper mustard, chilli, curry leaves; sauté onion and veggies.",
+        "Add water and salt; bring to a boil.",
+        "Lower heat, stir in rava, cover 2–3 minutes until fluffy.",
+        "Serve one medium bowl 45–60 min pre-workout."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": []
+  },
+  {
+    "id": "pre_toast_pb",
+    "name": "Whole Wheat Toast + Peanut Butter",
+    "description": "Quick carb-protein combo.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "nuts",
+      "gluten"
+    ],
+    "timingGuidance": "30–45 min before workout",
+    "calories": 300,
+    "proteinG": 12,
+    "carbsG": 28,
+    "fatG": 16,
+    "portion": "2 slices toast + 1 tbsp peanut butter",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": []
+  },
+  {
+    "id": "pre_curd_rice",
+    "name": "Curd Rice (light bowl)",
+    "description": "Cooling carbs with probiotics.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "southIndian",
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "60–75 min before workout",
+    "calories": 270,
+    "proteinG": 9,
+    "carbsG": 40,
+    "fatG": 8,
+    "portion": "1 small bowl (~180g) curd rice",
+    "recipe": {
+      "prepMinutes": 15,
+      "ingredients": [
+        "1 cup cooked cooled rice",
+        "¾ cup thick curd (dahi)",
+        "½ tsp mustard seeds",
+        "4–5 curry leaves",
+        "1 green chilli (optional)",
+        "Pinch of salt + grated ginger"
+      ],
+      "steps": [
+        "Mash rice lightly and mix with whisked curd and salt until creamy.",
+        "Temper mustard seeds, curry leaves, chilli, and ginger in ½ tsp oil.",
+        "Pour tempering over curd rice and stir.",
+        "Eat a small bowl 60–75 min before training; keep it light."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "curd"
+    ]
+  },
+  {
+    "id": "pre_fruit_curd",
+    "name": "Fruit Bowl + Curd",
+    "description": "Hydrating carbs with dairy protein.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "30–45 min before workout",
+    "calories": 230,
+    "proteinG": 10,
+    "carbsG": 35,
+    "fatG": 5,
+    "portion": "1 cup mixed fruit + 100g curd",
+    "recipe": {
+      "prepMinutes": 8,
+      "ingredients": [
+        "1 cup chopped seasonal fruit (banana, papaya, or apple)",
+        "100g plain curd",
+        "1 tsp honey or jaggery (optional)",
+        "Pinch of cardamom (optional)"
+      ],
+      "steps": [
+        "Whisk curd until smooth.",
+        "Fold in chopped fruit and optional honey.",
+        "Add cardamom if you like.",
+        "Eat 30–45 min before training with a glass of water."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "curd",
+      "fruit"
+    ]
+  },
+  {
+    "id": "pre_oats",
+    "name": "Masala Oats",
+    "description": "Savory oats with veggies for sustained energy.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "timingGuidance": "60 min before workout",
+    "calories": 265,
+    "proteinG": 9.5,
+    "carbsG": 42.0,
+    "fatG": 6.0,
+    "portion": "1 bowl masala oats (~50g dry oats)",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "oats"
+    ],
+    "nutritionNotes": [
+      "~50g dry rolled oats: ~190 kcal, ~6.5g protein, ~34g carbs (USDA oats).",
+      "Masala prep with ~1 tsp oil + veg: +~70–80 kcal; protein ~9–10g bowl."
+    ]
+  },
+  {
+    "id": "pre_egg_toast",
+    "name": "Egg Bhurji on Toast",
+    "description": "Fast protein with carbs for morning sessions.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 320,
+    "proteinG": 18,
+    "carbsG": 24,
+    "fatG": 16,
+    "portion": "2 eggs bhurji + 1–2 toast slices",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "eggs"
+    ]
+  },
+  {
+    "id": "pre_smoothie_plant",
+    "name": "Banana + Plant Protein Smoothie",
+    "description": "Easy liquid calories if solid food feels heavy.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "soy"
+    ],
+    "timingGuidance": "30 min before workout",
+    "calories": 280,
+    "proteinG": 20,
+    "carbsG": 35,
+    "fatG": 5,
+    "portion": "1 tall glass (~300ml) smoothie",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "fruit",
+      "plantProtein"
+    ]
+  },
+  {
+    "id": "pre_dosa",
+    "name": "Plain Dosa + Chutney",
+    "description": "Light fermented rice-lentil crepe.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "southIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 250,
+    "proteinG": 7,
+    "carbsG": 40,
+    "fatG": 7,
+    "portion": "1 plain dosa + 2 tbsp chutney",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": []
+  },
+  {
+    "id": "post_paneer_roti",
+    "name": "Paneer Bhurji + Roti",
+    "description": "High-protein North Indian recovery meal.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "northIndian",
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose",
+      "gluten"
+    ],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 420,
+    "proteinG": 28,
+    "carbsG": 35,
+    "fatG": 18,
+    "portion": "150g paneer bhurji + 2 rotis",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "paneer"
+    ]
+  },
+  {
+    "id": "post_sprouts",
+    "name": "Sprouts Chaat + Curd",
+    "description": "Protein-packed chaat with cooling curd.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "Within 45 min after workout",
+    "calories": 320,
+    "proteinG": 20,
+    "carbsG": 38,
+    "fatG": 8,
+    "portion": "1 bowl sprouts chaat (~150g) + 100g curd",
+    "recipe": {
+      "prepMinutes": 12,
+      "ingredients": [
+        "1½ cups mixed sprouts (moong/chana)",
+        "½ onion, tomato finely chopped",
+        "Coriander, lemon, chaat masala",
+        "100g plain curd",
+        "Salt to taste"
+      ],
+      "steps": [
+        "Steam or lightly sauté sprouts 3–4 min if raw digestion bothers you.",
+        "Toss with onion, tomato, lemon, chaat masala, and salt.",
+        "Serve with a side of thick curd.",
+        "Eat within 45 minutes after training for protein + carbs."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "curd",
+      "legumes"
+    ]
+  },
+  {
+    "id": "post_whey_banana",
+    "name": "Whey/Plant Protein + Banana Smoothie",
+    "description": "Fast recovery shake for supplement users.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose",
+      "soy"
+    ],
+    "timingGuidance": "Immediately after workout",
+    "calories": 280,
+    "proteinG": 26.0,
+    "carbsG": 30.0,
+    "fatG": 3.0,
+    "portion": "1 scoop protein + 1 banana in 250–300ml water/milk",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "fruit",
+      "wheyProtein"
+    ],
+    "nutritionNotes": [
+      "Typical whey scoop (~30g powder): ~110–120 kcal, ~24g protein (label average).",
+      "Medium banana: ~105 kcal, 1.3g protein (USDA). Water mix keeps fat low."
+    ]
+  },
+  {
+    "id": "post_rajma",
+    "name": "Rajma Chawal",
+    "description": "Hearty post leg-day meal with complete carbs + protein.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "northIndian",
+      "panIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "60–90 min after heavy leg day",
+    "calories": 455,
+    "proteinG": 17.5,
+    "carbsG": 72.0,
+    "fatG": 8.0,
+    "portion": "1 katori rajma (~150g) + 1 bowl rice (~180g)",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "legumes"
+    ],
+    "nutritionNotes": [
+      "Portion: ~150g cooked rajma (with light gravy) + ~180g cooked rice.",
+      "Cooked kidney beans ~127 kcal & ~8.7g protein / 100g; cooked rice ~130 kcal & ~2.7g protein / 100g (USDA-style).",
+      "With modest oil in gravy: ~455 kcal · ~17–18g protein (home recipes often 420–480 kcal)."
+    ]
+  },
+  {
+    "id": "post_egg_curry",
+    "name": "Egg Curry + Rice",
+    "description": "Eggetarian classic with solid protein.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "southIndian",
+      "northIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 450,
+    "proteinG": 24,
+    "carbsG": 50,
+    "fatG": 16,
+    "portion": "2 eggs curry + 1 bowl rice",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "eggs"
+    ]
+  },
+  {
+    "id": "post_chicken",
+    "name": "Chicken Breast + Jeera Rice",
+    "description": "Lean non-veg recovery plate.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 460,
+    "proteinG": 40,
+    "carbsG": 45,
+    "fatG": 10,
+    "portion": "150–180g chicken breast + 1 bowl jeera rice",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "chicken"
+    ]
+  },
+  {
+    "id": "post_dal_roti",
+    "name": "Dal Tadka + Roti + Salad",
+    "description": "Everyday vegetarian recovery combo.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "northIndian",
+      "panIndian"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "timingGuidance": "Within 60–90 min after workout",
+    "calories": 400,
+    "proteinG": 18,
+    "carbsG": 55,
+    "fatG": 10,
+    "portion": "1 katori dal + 2 rotis + side salad",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "legumes"
+    ]
+  },
+  {
+    "id": "post_tofu",
+    "name": "Tofu Bhurji + Millet Roti",
+    "description": "Vegan high-protein alternative to paneer.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "soy",
+      "gluten"
+    ],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 380,
+    "proteinG": 26,
+    "carbsG": 32,
+    "fatG": 14,
+    "portion": "150g tofu bhurji + 2 millet rotis",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "plantProtein"
+    ]
+  },
+  {
+    "id": "post_fish",
+    "name": "Grilled Fish + Lemon Rice",
+    "description": "Omega-rich South-leaning recovery meal.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "nonVegetarian"
+    ],
+    "regions": [
+      "southIndian",
+      "panIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 430,
+    "proteinG": 35,
+    "carbsG": 40,
+    "fatG": 12,
+    "portion": "150g grilled fish + 1 bowl lemon rice",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": []
+  },
+  {
+    "id": "post_chana",
+    "name": "Chana Masala + Brown Rice",
+    "description": "Fiber-rich plant protein bowl.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "60–90 min after workout",
+    "calories": 420,
+    "proteinG": 16,
+    "carbsG": 60,
+    "fatG": 10,
+    "portion": "1 katori chana masala + 1 bowl brown rice",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "legumes",
+      "plantProtein"
+    ]
+  },
+  {
+    "id": "post_dahi_paratha",
+    "name": "Stuffed Paneer Paratha + Dahi",
+    "description": "Heartier North Indian recovery option.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "northIndian"
+    ],
+    "allergens": [
+      "lactose",
+      "gluten"
+    ],
+    "timingGuidance": "90 min after workout (heavier meal)",
+    "calories": 520,
+    "proteinG": 22,
+    "carbsG": 55,
+    "fatG": 22,
+    "portion": "1 paneer paratha + 100g dahi",
+    "recipe": {
+      "prepMinutes": 25,
+      "ingredients": [
+        "1 whole-wheat dough ball",
+        "80–100g crumbled paneer",
+        "Spices: chilli, garam masala, salt",
+        "100g plain dahi",
+        "1 tsp ghee or oil for roasting"
+      ],
+      "steps": [
+        "Stuff dough with spiced paneer and seal edges.",
+        "Roll gently and roast on a tawa with light ghee until golden.",
+        "Serve hot with a bowl of dahi.",
+        "Best as a fuller meal ~90 min after a hard session."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "curd",
+      "paneer"
+    ]
+  },
+  {
+    "id": "post_sambar_rice",
+    "name": "Sambar Rice + Beans Poriyal",
+    "description": "South Indian balanced recovery plate.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "southIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "Within 60–90 min after workout",
+    "calories": 410,
+    "proteinG": 15,
+    "carbsG": 65,
+    "fatG": 8,
+    "portion": "1 plate sambar rice + 1 cup beans poriyal",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "legumes"
+    ]
+  },
+  {
+    "id": "post_greek_curd",
+    "name": "Hung Curd Bowl + Fruits + Seeds",
+    "description": "High-protein snackable recovery bowl.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose",
+      "nuts"
+    ],
+    "timingGuidance": "Within 30–45 min after workout",
+    "calories": 340,
+    "proteinG": 24,
+    "carbsG": 30,
+    "fatG": 12,
+    "portion": "200g hung curd + 1 cup fruit + 1 tsp seeds",
+    "recipe": {
+      "prepMinutes": 10,
+      "ingredients": [
+        "200g hung curd or thick Greek-style yogurt",
+        "1 cup chopped fruit",
+        "1 tsp mixed seeds (flax/chia/pumpkin)",
+        "Optional: few chopped almonds"
+      ],
+      "steps": [
+        "Hang curd in a muslin for 20–30 min if starting from regular dahi (or use thick yogurt).",
+        "Spoon into a bowl and top with fruit.",
+        "Sprinkle seeds (and nuts if no allergy).",
+        "Eat within 30–45 min post-workout as a high-protein snack."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "curd",
+      "fruit"
+    ]
+  },
+  {
+    "id": "post_soya_chunks",
+    "name": "Soya Chunk Curry + Roti",
+    "description": "Budget-friendly high-protein veg meal.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [
+      "soy",
+      "gluten"
+    ],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 430,
+    "proteinG": 32,
+    "carbsG": 40,
+    "fatG": 12,
+    "portion": "1 katori soya curry (~80g dry soya cooked) + 2 rotis",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "plantProtein"
+    ]
+  },
+  {
+    "id": "post_omelette",
+    "name": "Masala Omelette + Multigrain Bread",
+    "description": "Quick eggetarian recovery.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "timingGuidance": "Within 45 min after workout",
+    "calories": 360,
+    "proteinG": 22,
+    "carbsG": 28,
+    "fatG": 16,
+    "portion": "2-egg omelette + 2 slices multigrain bread",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "eggs"
+    ]
+  },
+  {
+    "id": "post_khichdi",
+    "name": "Moong Dal Khichdi + Ghee",
+    "description": "Gentle on stomach after tough sessions.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "60–90 min after workout",
+    "calories": 380,
+    "proteinG": 14,
+    "carbsG": 55,
+    "fatG": 10,
+    "portion": "1 large bowl moong khichdi (~250g) + 1 tsp ghee",
+    "recipe": null,
+    "recipeAvailable": false,
+    "ingredientTags": [
+      "legumes"
+    ]
+  },
+  {
+    "id": "pre_chaas",
+    "name": "Spiced Chaas (Buttermilk)",
+    "description": "Light yogurt drink that hydrates without heaviness.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "20–40 min before workout",
+    "calories": 90,
+    "proteinG": 5,
+    "carbsG": 8,
+    "fatG": 3,
+    "portion": "1 tall glass (~250ml) chaas",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "¾ cup thin curd",
+        "1 cup cold water",
+        "Pinch of roasted cumin powder + salt",
+        "Mint or coriander (optional)"
+      ],
+      "steps": [
+        "Whisk curd until lump-free.",
+        "Add water, cumin, salt; froth well.",
+        "Add chopped mint if using.",
+        "Sip cool — ideal when a full meal feels too heavy."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "curd"
+    ]
+  },
+  {
+    "id": "pre_yogurt_parfait",
+    "name": "Curd Parfait with Seeds",
+    "description": "Layered yogurt snack with carbs and crunch.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose",
+      "nuts"
+    ],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 280,
+    "proteinG": 14,
+    "carbsG": 32,
+    "fatG": 10,
+    "portion": "1 jar (~200g curd + fruit + seeds)",
+    "recipe": {
+      "prepMinutes": 8,
+      "ingredients": [
+        "150–180g plain curd or Greek yogurt",
+        "½ cup chopped fruit",
+        "1 tbsp roasted seeds or granola",
+        "1 tsp honey (optional)"
+      ],
+      "steps": [
+        "Layer curd and fruit in a glass.",
+        "Top with seeds or a spoon of granola.",
+        "Drizzle honey only if you need extra carbs.",
+        "Eat calmly 45–60 min before lifting."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "curd",
+      "fruit"
+    ]
+  },
+  {
+    "id": "post_mishti_doi_bowl",
+    "name": "Mishti-Style Curd Recovery Bowl",
+    "description": "Slightly sweet set curd with fruit for glycogen refill.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "Within 45 min after workout",
+    "calories": 310,
+    "proteinG": 12,
+    "carbsG": 42,
+    "fatG": 9,
+    "portion": "1 small bowl sweet curd (~150g) + fruit",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "150g thick sweet curd (or plain curd + 1 tsp jaggery)",
+        "½ banana or berries",
+        "Pinch of cardamom"
+      ],
+      "steps": [
+        "If using plain curd, stir in grated jaggery until dissolved.",
+        "Top with sliced fruit and cardamom.",
+        "Keep portions modest — treat as recovery dessert, not a feast.",
+        "Pair with water; add a protein scoop only if your coach plan allows."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "curd",
+      "fruit"
+    ]
+  },
+  {
+    "id": "post_raita_millet",
+    "name": "Vegetable Raita + Millet Khichu Bite",
+    "description": "Cooling yogurt raita with a small millet carb side.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 360,
+    "proteinG": 14,
+    "carbsG": 45,
+    "fatG": 12,
+    "portion": "1 bowl veg raita + 1 small millet pancake/khichu",
+    "recipe": {
+      "prepMinutes": 15,
+      "ingredients": [
+        "1 cup whisked curd",
+        "Cucumber + carrot grated",
+        "Roasted cumin, salt, coriander",
+        "1 small millet flatbread or leftover bajra roti"
+      ],
+      "steps": [
+        "Mix veggies into curd with cumin and salt.",
+        "Warm millet side lightly if cold.",
+        "Eat raita with the millet bite for carbs + probiotics.",
+        "Great after sweaty sessions when appetite is low."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "curd",
+      "millet"
+    ]
+  },
+  {
+    "id": "pre_whey_water",
+    "name": "Whey Protein Water Shake",
+    "description": "Light pre-lift shake — fast protein without a heavy meal.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "20–40 min before workout",
+    "calories": 120,
+    "proteinG": 24,
+    "carbsG": 2,
+    "fatG": 1,
+    "portion": "1 scoop whey in 250–300ml water",
+    "recipe": {
+      "prepMinutes": 2,
+      "ingredients": [
+        "1 scoop whey protein (unflavoured or low sugar)",
+        "250–300ml cold water"
+      ],
+      "steps": [
+        "Add whey to a shaker with water.",
+        "Shake hard 15–20 seconds until smooth.",
+        "Sip 20–40 min before training if a solid meal feels heavy."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "wheyProtein"
+    ]
+  },
+  {
+    "id": "pre_plant_shake",
+    "name": "Plant Protein + Banana Shake",
+    "description": "Dairy-free shake with a little fruit carb for energy.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "soy"
+    ],
+    "timingGuidance": "30–45 min before workout",
+    "calories": 220,
+    "proteinG": 22,
+    "carbsG": 28,
+    "fatG": 3,
+    "portion": "1 scoop plant protein + ½ banana in water",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "1 scoop plant protein powder",
+        "½ ripe banana",
+        "250ml cold water (or unsweetened plant milk)"
+      ],
+      "steps": [
+        "Blend or shake powder with water.",
+        "Add banana and blend until smooth.",
+        "Drink 30–45 min pre-session."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "plantProtein",
+      "fruit"
+    ]
+  },
+  {
+    "id": "post_whey_oats_shake",
+    "name": "Whey + Oats Recovery Shake",
+    "description": "Protein plus slow carbs for post-lift glycogen refill.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose",
+      "gluten"
+    ],
+    "timingGuidance": "Within 30 min after workout",
+    "calories": 320,
+    "proteinG": 30,
+    "carbsG": 35,
+    "fatG": 5,
+    "portion": "1 scoop whey + 30g oats blended in water/milk",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "1 scoop whey protein",
+        "30g rolled oats",
+        "250–300ml water or low-fat milk",
+        "Ice optional"
+      ],
+      "steps": [
+        "Blend oats briefly with liquid.",
+        "Add whey and blend until smooth (don’t over-foam).",
+        "Drink within 30 minutes post-workout."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "wheyProtein",
+      "oats"
+    ]
+  },
+  {
+    "id": "post_protein_mug_cake",
+    "name": "Zero-Sugar Protein Mug Cake (No Maida)",
+    "description": "Microwave cake using protein powder + oat/almond flour — no maida, no added sugar.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose",
+      "nuts",
+      "gluten"
+    ],
+    "timingGuidance": "Within 45–60 min after workout",
+    "calories": 280,
+    "proteinG": 28,
+    "carbsG": 18,
+    "fatG": 10,
+    "portion": "1 mug cake (~1 scoop protein)",
+    "recipe": {
+      "prepMinutes": 8,
+      "ingredients": [
+        "1 scoop whey or plant protein",
+        "2 tbsp oat flour or almond flour (no maida)",
+        "½ tsp baking powder",
+        "1 egg or 60ml egg white / plant yogurt for vegan swap",
+        "Stevia or erythritol to taste (zero sugar)",
+        "Splash of water or unsweetened milk to batter"
+      ],
+      "steps": [
+        "Mix dry ingredients in a microwave-safe mug.",
+        "Stir in egg (or yogurt) and liquid to a thick batter — no refined flour, no sugar.",
+        "Microwave 60–90 seconds until just set (don’t overcook).",
+        "Cool a minute; eat as a post-workout treat."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "wheyProtein",
+      "proteinBake",
+      "oats",
+      "eggs"
+    ]
+  },
+  {
+    "id": "post_protein_skillet_cake",
+    "name": "Protein Skillet Pancake Cake (No Maida)",
+    "description": "Pan “cake” stack from protein powder and oats — zero added sugar, no maida.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian"
+    ],
+    "allergens": [
+      "lactose",
+      "gluten"
+    ],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 340,
+    "proteinG": 32,
+    "carbsG": 28,
+    "fatG": 9,
+    "portion": "2 small protein pancakes",
+    "recipe": {
+      "prepMinutes": 12,
+      "ingredients": [
+        "1 scoop whey or casein",
+        "3 tbsp finely ground oats (no maida)",
+        "1 egg",
+        "Splash of water",
+        "Stevia/erythritol optional",
+        "Non-stick spray or ½ tsp oil"
+      ],
+      "steps": [
+        "Whisk protein, oat flour, egg, and water into a pourable batter.",
+        "Cook on a non-stick pan over medium heat like mini pancakes.",
+        "Stack two; no sugar syrup — cinnamon or berries if needed.",
+        "Eat warm after training."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "wheyProtein",
+      "proteinBake",
+      "oats",
+      "eggs"
+    ]
+  },
+  {
+    "id": "pre_dates_almonds",
+    "name": "Dates + Soaked Almonds",
+    "description": "Quick natural carbs from khajoor with a little fat for steady pre-gym energy.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "nuts"
+    ],
+    "timingGuidance": "20–40 min before workout",
+    "calories": 230,
+    "proteinG": 4.5,
+    "carbsG": 38.0,
+    "fatG": 8.0,
+    "portion": "3–4 soft dates + 6–8 soaked almonds",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "3–4 Medjool or soft Indian dates (khajoor), pitted",
+        "6–8 almonds (soaked)",
+        "Pinch of cinnamon (optional)"
+      ],
+      "steps": [
+        "Pit the dates if needed.",
+        "Pair with drained soaked almonds.",
+        "Eat with water 20–40 minutes before training."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "dates",
+      "fruit"
+    ],
+    "nutritionNotes": [
+      "3 Medjool-class dates (~24g edible): ~66 kcal, ~0.5g protein, ~18g carbs each → ~200 kcal carbs-heavy.",
+      "Adjusted for 3–4 smaller Indian dates + 6–8 almonds (~12g): ~230 kcal · ~4–5g protein."
+    ]
+  },
+  {
+    "id": "pre_dates_banana",
+    "name": "Dates + Banana",
+    "description": "Double fruit carbs for longer or higher-intensity sessions.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "30–45 min before workout",
+    "calories": 200,
+    "proteinG": 2.0,
+    "carbsG": 50.0,
+    "fatG": 0.5,
+    "portion": "2–3 dates + ½–1 banana",
+    "recipe": {
+      "prepMinutes": 3,
+      "ingredients": [
+        "2–3 soft dates, pitted",
+        "½–1 ripe banana"
+      ],
+      "steps": [
+        "Slice banana and chop dates.",
+        "Eat together; sip water.",
+        "Best when you need fast fuel without dairy."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "dates",
+      "fruit"
+    ],
+    "nutritionNotes": [
+      "2–3 dates + ½–1 banana: stacked fruit carbs for training fuel (USDA banana + date estimates)."
+    ]
+  },
+  {
+    "id": "pre_dates_pb",
+    "name": "Peanut Butter Stuffed Dates",
+    "description": "Sticky-sweet dates with a spoon of clean peanut butter for satiety.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "nuts"
+    ],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 245,
+    "proteinG": 6.5,
+    "carbsG": 30.0,
+    "fatG": 12.0,
+    "portion": "3 dates stuffed with 1 tsp peanut butter each",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "3 soft dates, pitted",
+        "1 tbsp natural peanut butter (no sugar / no hydrogenated oil)"
+      ],
+      "steps": [
+        "Split dates and fill with peanut butter.",
+        "Eat slowly with water.",
+        "Allow ~45–60 min if your stomach is sensitive to fat pre-lift."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "dates",
+      "fruit",
+      "legumes"
+    ],
+    "nutritionNotes": [
+      "3 dates + 1 tbsp natural peanut butter (~16g): PB ~94 kcal, ~4g protein, ~8g fat (USDA)."
+    ]
+  },
+  {
+    "id": "post_dates_curd",
+    "name": "Dates + Thick Curd",
+    "description": "Natural sugar from khajoor plus probiotic protein from dahi.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "Within 45 min after workout",
+    "calories": 255,
+    "proteinG": 13.0,
+    "carbsG": 38.0,
+    "fatG": 5.0,
+    "portion": "150–200g thick curd + 3–4 chopped dates",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "150–200g plain thick curd / Greek-style dahi",
+        "3–4 soft dates, chopped",
+        "Pinch of cardamom (optional)"
+      ],
+      "steps": [
+        "Chop dates and fold into cold curd.",
+        "Add cardamom if you like.",
+        "Eat soon after training for carbs + protein."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "dates",
+      "fruit",
+      "curd"
+    ],
+    "nutritionNotes": [
+      "150–200g plain curd (~60–70 kcal/100g, ~3.5–4g protein/100g Indian dahi) + 3–4 dates."
+    ]
+  },
+  {
+    "id": "post_dates_milk",
+    "name": "Warm Milk with Dates",
+    "description": "Classic recovery glass — milk protein with date carbs.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 240,
+    "proteinG": 9.0,
+    "carbsG": 36.0,
+    "fatG": 6.5,
+    "portion": "250ml milk + 3–4 soaked dates blended or mashed",
+    "recipe": {
+      "prepMinutes": 8,
+      "ingredients": [
+        "250ml milk (dairy or fortified soy)",
+        "3–4 soft dates, pitted",
+        "Pinch of cinnamon (optional)"
+      ],
+      "steps": [
+        "Soak dates 5 minutes in warm milk if hard.",
+        "Mash or blend until smooth.",
+        "Drink warm; add cinnamon if desired."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "dates",
+      "fruit"
+    ],
+    "nutritionNotes": [
+      "250ml toned milk ~130–140 kcal, ~8g protein + 3–4 dates."
+    ]
+  },
+  {
+    "id": "post_whey_dates_shake",
+    "name": "Whey + Dates Shake",
+    "description": "Protein shake sweetened only with dates — no added sugar.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "Within 30–45 min after workout",
+    "calories": 270,
+    "proteinG": 25.0,
+    "carbsG": 30.0,
+    "fatG": 2.5,
+    "portion": "1 scoop whey + 2–3 dates in water/milk",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "1 scoop whey protein",
+        "2–3 soft dates, pitted",
+        "250–300ml water or milk"
+      ],
+      "steps": [
+        "Blend dates with liquid until smooth.",
+        "Add whey and blend briefly.",
+        "Drink immediately after training."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "dates",
+      "fruit",
+      "wheyProtein"
+    ],
+    "nutritionNotes": [
+      "1 scoop whey (~24g protein) + 2–3 dates for carbs instead of sugar."
+    ]
+  },
+  {
+    "id": "pre_ragi_porridge",
+    "name": "Ragi Malt / Ambali",
+    "description": "Finger-millet porridge for steady pre-gym carbs and mineral support.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 155,
+    "proteinG": 3.0,
+    "carbsG": 32.0,
+    "fatG": 1.0,
+    "portion": "1 bowl (≈40g dry ragi flour cooked)",
+    "recipe": {
+      "prepMinutes": 12,
+      "ingredients": [
+        "40g ragi (finger millet) flour",
+        "250–300ml water (or thin plant milk)",
+        "Pinch of salt",
+        "Optional: ½ tsp jaggery or 1 date, mashed"
+      ],
+      "steps": [
+        "Whisk ragi flour into cold water to avoid lumps.",
+        "Cook on low heat 6–8 min until thick and smooth.",
+        "Cool slightly; eat 45–60 min pre-session with water."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "millet"
+    ],
+    "nutritionNotes": [
+      "Dry ragi (ICMR–NIN/IIMR): ~336 kcal, 7.3g protein / 100g.",
+      "40g flour cooked as porridge ≈ 134 kcal + water; with optional date ~155 kcal · ~3g protein."
+    ]
+  },
+  {
+    "id": "pre_ragi_dosa",
+    "name": "Ragi Dosa + Chutney",
+    "description": "Crisp south-Indian ragi dosa for portable pre-workout carbs.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "southIndian",
+      "panIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "60–90 min before workout",
+    "calories": 290,
+    "proteinG": 7.5,
+    "carbsG": 50.0,
+    "fatG": 6.5,
+    "portion": "2 thin ragi dosas + 2 tbsp coconut/tomato chutney",
+    "recipe": {
+      "prepMinutes": 20,
+      "ingredients": [
+        "60g ragi flour",
+        "2 tbsp rice flour (optional for crispness)",
+        "Water to thin batter",
+        "Pinch of salt + cumin",
+        "1 tsp oil for tawa",
+        "2 tbsp chutney"
+      ],
+      "steps": [
+        "Mix flours with water into pourable batter; rest 10 min.",
+        "Spread thin on hot tawa; cook both sides.",
+        "Serve with light chutney; allow ~1 hr before heavy lifts if oily."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "millet"
+    ],
+    "nutritionNotes": [
+      "~60g ragi flour (~200 kcal, ~4.4g protein) + little rice flour/oil + chutney."
+    ]
+  },
+  {
+    "id": "post_ragi_mudde_sambar",
+    "name": "Ragi Mudde + Sambar",
+    "description": "Karnataka classic — millet ball with lentil sambar for recovery carbs + amino acids.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "southIndian",
+      "panIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "Within 60–90 min after workout",
+    "calories": 410,
+    "proteinG": 16.0,
+    "carbsG": 66.0,
+    "fatG": 7.0,
+    "portion": "1 medium ragi mudde + 1 bowl vegetable sambar",
+    "recipe": {
+      "prepMinutes": 30,
+      "ingredients": [
+        "60–70g ragi flour for mudde",
+        "1 bowl thin sambar (toor dal + veg)",
+        "Pinch of salt"
+      ],
+      "steps": [
+        "Cook ragi flour into a stiff ball (mudde) with salted water.",
+        "Serve hot with protein-rich sambar.",
+        "Eat soon after training for glycogen + plant protein."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "millet",
+      "legumes"
+    ],
+    "nutritionNotes": [
+      "Ragi mudde from ~65g flour + bowl sambar (dal protein). Ragi dry: 7.3g protein/100g (IIMR).",
+      "Dal pairing improves lysine (IIMR millet guidance)."
+    ]
+  },
+  {
+    "id": "post_ragi_curd_bowl",
+    "name": "Ragi Porridge + Curd",
+    "description": "Warm ragi carbs with probiotic curd protein for easier post-lift digestion.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "Within 45 min after workout",
+    "calories": 300,
+    "proteinG": 14.0,
+    "carbsG": 46.0,
+    "fatG": 5.5,
+    "portion": "1 bowl ragi porridge + 100–120g plain curd",
+    "recipe": {
+      "prepMinutes": 15,
+      "ingredients": [
+        "35g ragi flour cooked as soft porridge",
+        "100–120g plain thick curd",
+        "Pinch of salt or cinnamon"
+      ],
+      "steps": [
+        "Cook smooth ragi porridge; cool to warm.",
+        "Swirl in curd or serve on the side.",
+        "Eat within 45 minutes post-session."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "millet",
+      "curd"
+    ],
+    "nutritionNotes": [
+      "35g ragi flour porridge + 100–120g curd for recovery protein."
+    ]
+  },
+  {
+    "id": "pre_spinach_paneer_wrap",
+    "name": "Palak + Paneer Mini Wrap",
+    "description": "Light spinach and paneer for iron/folate plus pre-lift protein.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "60–90 min before workout",
+    "calories": 305,
+    "proteinG": 19.0,
+    "carbsG": 26.0,
+    "fatG": 13.0,
+    "portion": "1 small wrap: 80g sautéed spinach + 60g paneer",
+    "recipe": {
+      "prepMinutes": 15,
+      "ingredients": [
+        "100g fresh spinach (wilts to ~80g cooked)",
+        "60g paneer cubes",
+        "1 small whole-wheat roti or millet roti",
+        "Garlic, cumin, lemon squeeze"
+      ],
+      "steps": [
+        "Quick-sauté spinach with garlic; squeeze lemon (vitamin C aids non-heme iron).",
+        "Warm paneer cubes; wrap with roti.",
+        "Eat ~1 hr before training."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "spinach",
+      "paneer"
+    ],
+    "nutritionNotes": [
+      "Cooked spinach (USDA): ~23 kcal, 3g protein, 3.6mg iron / 100g.",
+      "Paneer ~18–20g protein / 60g; roti adds carbs."
+    ]
+  },
+  {
+    "id": "pre_spinach_omelette",
+    "name": "Spinach Egg Omelette",
+    "description": "Fast protein omelette loaded with wilted spinach.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "45–75 min before workout",
+    "calories": 240,
+    "proteinG": 18.0,
+    "carbsG": 3.0,
+    "fatG": 17.0,
+    "portion": "2-egg omelette + 1 cup wilted spinach",
+    "recipe": {
+      "prepMinutes": 10,
+      "ingredients": [
+        "2 eggs",
+        "1 large handful spinach (~60–80g raw)",
+        "1 tsp oil or non-stick spray",
+        "Salt, pepper, chilli flakes"
+      ],
+      "steps": [
+        "Wilt spinach in pan; pour beaten eggs over.",
+        "Cook through; fold and plate.",
+        "Great when carbs are coming from a separate fruit side."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "spinach",
+      "eggs"
+    ],
+    "nutritionNotes": [
+      "2 large eggs ~140 kcal, 12g protein (USDA) + wilted spinach cup + 1 tsp oil."
+    ]
+  },
+  {
+    "id": "post_palak_dal",
+    "name": "Palak Dal",
+    "description": "Spinach simmered with dal — iron + plant protein recovery bowl.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "Within 90 min after workout",
+    "calories": 340,
+    "proteinG": 17.0,
+    "carbsG": 46.0,
+    "fatG": 7.0,
+    "portion": "1 generous bowl palak dal + optional 1 small roti/rice scoop",
+    "recipe": {
+      "prepMinutes": 25,
+      "ingredients": [
+        "½ cup cooked toor/moong dal",
+        "1–1½ cups chopped spinach",
+        "Tomato, garlic, cumin, turmeric",
+        "1 tsp ghee or oil"
+      ],
+      "steps": [
+        "Temper spices; add tomato and spinach until wilted.",
+        "Stir into cooked dal; simmer 5 min.",
+        "Finish with lemon for iron absorption support."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "spinach",
+      "legumes"
+    ],
+    "nutritionNotes": [
+      "Cooked dal + spinach; spinach adds folate/iron (USDA cooked spinach)."
+    ]
+  },
+  {
+    "id": "post_spinach_tofu_stir",
+    "name": "Spinach Tofu Stir-Fry",
+    "description": "Vegan recovery plate with tofu protein and spinach micros.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "soy"
+    ],
+    "timingGuidance": "Within 60 min after workout",
+    "calories": 310,
+    "proteinG": 22.0,
+    "carbsG": 14.0,
+    "fatG": 18.0,
+    "portion": "150g tofu + 1.5 cups spinach stir-fry",
+    "recipe": {
+      "prepMinutes": 15,
+      "ingredients": [
+        "150g firm tofu",
+        "2 cups spinach",
+        "Garlic, ginger, soy/tamari splash",
+        "1 tsp oil"
+      ],
+      "steps": [
+        "Pan-sear tofu cubes.",
+        "Add spinach until just wilted; season lightly.",
+        "Serve hot; add rice/ragi if you need more carbs."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "spinach",
+      "plantProtein"
+    ],
+    "nutritionNotes": [
+      "Firm tofu ~150g ~170–190 kcal, ~18–20g protein; spinach micros from USDA."
+    ]
+  },
+  {
+    "id": "pre_papaya_bowl",
+    "name": "Fresh Papaya Bowl",
+    "description": "Light tropical carbs — vitamin C rich and easy on the stomach.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "30–45 min before workout",
+    "calories": 110,
+    "proteinG": 1.5,
+    "carbsG": 28.0,
+    "fatG": 0.4,
+    "portion": "1½–2 cups ripe papaya cubes (~250g)",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "Ripe papaya",
+        "Pinch of chaat masala or lime (optional)"
+      ],
+      "steps": [
+        "Cube papaya.",
+        "Add lime/chaat if desired.",
+        "Eat as a light pre-fuel."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "fruit"
+    ],
+    "nutritionNotes": [
+      "Papaya ~43 kcal / 100g (USDA); ~250g bowl ≈ 110 kcal, high vitamin C."
+    ]
+  },
+  {
+    "id": "pre_apple_almond_butter",
+    "name": "Apple + Almond Butter",
+    "description": "Fibre-rich apple carbs with a little nut butter for staying power.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "nuts"
+    ],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 240,
+    "proteinG": 4.5,
+    "carbsG": 28.0,
+    "fatG": 13.0,
+    "portion": "1 medium apple + 1 tbsp almond butter",
+    "recipe": {
+      "prepMinutes": 3,
+      "ingredients": [
+        "1 medium apple",
+        "1 tbsp almond butter"
+      ],
+      "steps": [
+        "Slice apple.",
+        "Dip or spread almond butter.",
+        "Hydrate with water."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "fruit"
+    ],
+    "nutritionNotes": [
+      "Medium apple ~95 kcal, 0.5g protein (USDA) + 1 tbsp almond butter ~98 kcal, ~3.4g protein."
+    ]
+  },
+  {
+    "id": "pre_pomegranate_curd",
+    "name": "Anar + Curd Cup",
+    "description": "Antioxidant-rich pomegranate arils over protein curd.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 195,
+    "proteinG": 10.0,
+    "carbsG": 26.0,
+    "fatG": 4.5,
+    "portion": "150g curd + ½ cup pomegranate arils",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "150g plain curd",
+        "½ cup anar (pomegranate) arils"
+      ],
+      "steps": [
+        "Spoon curd into a bowl.",
+        "Top with arils.",
+        "Eat chilled."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "fruit",
+      "curd"
+    ],
+    "nutritionNotes": [
+      "150g curd + ½ cup arils (~87g, ~70 kcal). Curd protein ~5–6g / 150g."
+    ]
+  },
+  {
+    "id": "post_berry_curd",
+    "name": "Berry Curd Bowl",
+    "description": "Berries for polyphenols with dairy protein for recovery.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "Within 45 min after workout",
+    "calories": 210,
+    "proteinG": 12.0,
+    "carbsG": 26.0,
+    "fatG": 4.5,
+    "portion": "150–180g curd + ¾ cup mixed berries",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "Thick curd / Greek dahi",
+        "Fresh or frozen berries"
+      ],
+      "steps": [
+        "Top curd with berries.",
+        "No added sugar needed.",
+        "Eat soon after training."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "fruit",
+      "curd"
+    ],
+    "nutritionNotes": [
+      "150–180g curd + ¾ cup berries (~50–60 kcal fruit)."
+    ]
+  },
+  {
+    "id": "post_banana_peanut_toast",
+    "name": "Banana Peanut Butter Toast",
+    "description": "Classic recovery toast — potassium carbs plus nut protein/fats.",
+    "timing": "postWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "nuts",
+      "gluten"
+    ],
+    "timingGuidance": "Within 45 min after workout",
+    "calories": 355,
+    "proteinG": 11.0,
+    "carbsG": 48.0,
+    "fatG": 13.0,
+    "portion": "1 slice bread + 1 tbsp peanut butter + 1 banana",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "1 slice whole-grain bread",
+        "1 tbsp natural peanut butter",
+        "1 medium banana"
+      ],
+      "steps": [
+        "Toast bread; spread peanut butter.",
+        "Top with banana slices.",
+        "Choose no-sugar PB when possible (Food Pharmer-style label check)."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "fruit",
+      "legumes"
+    ],
+    "nutritionNotes": [
+      "1 slice whole-grain bread ~70–80 kcal + 1 tbsp PB ~94 kcal + banana ~105 kcal (USDA components)."
+    ]
+  },
+  {
+    "id": "pre_mango_lassi_light",
+    "name": "Light Mango Lassi",
+    "description": "Diluted mango-curd drink for tasty carbs + some protein.",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [
+      "lactose"
+    ],
+    "timingGuidance": "45–60 min before workout",
+    "calories": 195,
+    "proteinG": 7.0,
+    "carbsG": 34.0,
+    "fatG": 3.0,
+    "portion": "250ml light lassi (½ cup mango + 100g curd + water)",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "½ cup ripe mango",
+        "100g curd",
+        "Water to thin",
+        "Pinch of cardamom"
+      ],
+      "steps": [
+        "Blend mango, curd, water.",
+        "Keep thinner than dessert lassi.",
+        "Sip 45–60 min pre-lift."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "fruit",
+      "curd"
+    ],
+    "nutritionNotes": [
+      "½ cup mango (~80–90 kcal) + 100g curd + water dilution."
+    ]
+  },
+  {
+    "id": "snack_orange_spinach_smoothie",
+    "name": "Orange–Spinach Smoothie",
+    "description": "Vitamin C + greens blender fuel (pre or light post).",
+    "timing": "preWorkout",
+    "dietTypes": [
+      "vegetarian",
+      "vegan",
+      "eggetarian",
+      "nonVegetarian"
+    ],
+    "regions": [
+      "panIndian",
+      "northIndian",
+      "southIndian"
+    ],
+    "allergens": [],
+    "timingGuidance": "30–45 min before workout",
+    "calories": 95,
+    "proteinG": 2.5,
+    "carbsG": 20.0,
+    "fatG": 0.4,
+    "portion": "1 orange + 1 cup spinach + water/ice blend",
+    "recipe": {
+      "prepMinutes": 5,
+      "ingredients": [
+        "1 peeled orange",
+        "1 cup spinach",
+        "Water/ice",
+        "Optional: ½ banana"
+      ],
+      "steps": [
+        "Blend until smooth.",
+        "Drink fresh.",
+        "Add banana if you need more carbs."
+      ]
+    },
+    "recipeAvailable": true,
+    "ingredientTags": [
+      "fruit",
+      "spinach"
+    ],
+    "nutritionNotes": [
+      "1 orange (~62 kcal, USDA) + 1 cup spinach (~7 kcal raw) blended in water."
+    ]
+  }
+]
