@@ -162,25 +162,16 @@ class _WaterGlassPainter extends CustomPainter {
       Paint()
         ..color = color.withValues(alpha: 0.55)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.6,
+        ..strokeWidth = 2.8,
     );
     canvas.drawRRect(
       rim,
       Paint()
         ..color = color.withValues(alpha: 0.45)
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.2,
+        ..strokeWidth = 2.2,
     );
 
-    // Side highlight
-    canvas.drawLine(
-      Offset(size.width * 0.22, size.height * 0.18),
-      Offset(size.width * 0.18, size.height * 0.85),
-      Paint()
-        ..color = Colors.white.withValues(alpha: 0.18)
-        ..strokeWidth = 2
-        ..strokeCap = StrokeCap.round,
-    );
   }
 
   Path _glassPath(Size size) {
