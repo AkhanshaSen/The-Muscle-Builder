@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../data/db/app_database.dart';
 import '../../data/repositories/cloud_sync_port.dart';
@@ -162,5 +163,9 @@ final recentBodyMetricsProvider =
     FutureProvider<List<BodyMetricLog>>((ref) async {
   ref.watch(metricsTickProvider);
   return ref.watch(metricsRepositoryProvider).recentBodyMetrics();
+});
+
+final packageInfoProvider = FutureProvider<PackageInfo>((ref) {
+  return PackageInfo.fromPlatform();
 });
 

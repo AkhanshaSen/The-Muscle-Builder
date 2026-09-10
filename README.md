@@ -92,6 +92,47 @@ Requires a recent Flutter SDK (see `pubspec.yaml` / `environment.sdk`).
 
 ---
 
+## Install a build from GitHub
+
+Every push to `main` (and every pull request) runs [`.github/workflows/mobile-builds.yml`](.github/workflows/mobile-builds.yml).
+
+| Platform | File | Ready to install? |
+| --- | --- | --- |
+| **Android** | `.apk` | Yes — download and open on the phone |
+| **Play Store** | `.aab` | Upload to Google Play Console |
+| **iOS** | `.ipa` | Not until you add Apple signing (see below) |
+
+**Download**
+
+1. Open [Actions](https://github.com/AkhanshaSen/The-Muscle-Builder/actions) → **Mobile builds** → latest run → **Artifacts**
+2. On `main` only, files are also attached to the rolling [**Latest build**](https://github.com/AkhanshaSen/The-Muscle-Builder/releases/tag/latest) release
+
+Android: enable **Install unknown apps** for your browser/Files, then open the APK.
+
+### Optional: signed Android release (Play Store)
+
+Without secrets, CI still produces an installable APK signed with debug keys. For Play Store / production, create a keystore once and keep it forever:
+
+```bash
+keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+base64 -i upload-keystore.jks | pbcopy
+```
+
+Add these repository secrets (**Settings → Secrets and variables → Actions**):
+
+| Secret | Value |
+| --- | --- |
+| `ANDROID_KEYSTORE_BASE64` | Base64 of `upload-keystore.jks` |
+| `ANDROID_KEYSTORE_PASSWORD` | Keystore password |
+| `ANDROID_KEY_PASSWORD` | Key password |
+| `ANDROID_KEY_ALIAS` | `upload` (or the alias you chose) |
+
+### iOS on a real iPhone
+
+Apple does not install unsigned IPAs. You need a paid [Apple Developer](https://developer.apple.com/programs/) account, then certificates + a provisioning profile in GitHub secrets (or TestFlight). Until that is set up, use the Android APK for testers.
+
+---
+
 ## License
 
 MIT — see [LICENSE](LICENSE).

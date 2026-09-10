@@ -1043,7 +1043,9 @@ class _SettingsTab extends StatelessWidget {
           'Local-first · JSON backup',
           style: Theme.of(context).textTheme.bodySmall,
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
+        _BuildVersionText(scheme: scheme),
+        const SizedBox(height: 8),
         Text(
           'Designed & built by ${AppConstants.developerName}',
           textAlign: TextAlign.center,
@@ -1054,6 +1056,31 @@ class _SettingsTab extends StatelessWidget {
               ),
         ),
       ],
+    );
+  }
+}
+
+class _BuildVersionText extends ConsumerWidget {
+  const _BuildVersionText({required this.scheme});
+
+  final ColorScheme scheme;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final info = ref.watch(packageInfoProvider);
+    final version = info.when(
+      data: (p) => '${p.version}+${p.buildNumber}',
+      loading: () => '…',
+      error: (_, _) => '1.0.0',
+    );
+    return Text(
+      AppConstants.buildVersionLabel(version),
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            fontWeight: FontWeight.w800,
+            color: scheme.onSurface.withValues(alpha: 0.72),
+            letterSpacing: 0.2,
+          ),
     );
   }
 }

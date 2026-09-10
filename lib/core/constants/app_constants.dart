@@ -3,6 +3,9 @@ class AppConstants {
   static const defaultAccentHex = '#FF6B35';
   static const defaultJourneyName = 'My Journey';
   static const developerName = 'Akhansha Sen';
+
+  static String buildVersionLabel(String version) =>
+      'Build version $version - development phase 🍀 - $developerName';
 }
 
 class EncouragementCopy {
