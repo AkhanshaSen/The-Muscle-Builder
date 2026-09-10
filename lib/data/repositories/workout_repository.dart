@@ -213,6 +213,7 @@ class WorkoutRepository {
                   : jsonEncode(plan.postMeal!.toJson()),
             ),
             gymMinutes: Value(plan.gymMinutes),
+            exerciseCountOverride: Value(plan.exerciseCountOverride),
           ),
         );
     return plan;
@@ -228,6 +229,57 @@ class WorkoutRepository {
         .getSingleOrNull();
     if (row == null) return null;
     return _mapPlan(row);
+  }
+
+  /// Clears today's check-in(s) and any plans that have no completed session,
+  /// so Home falls back to "Start check-in". Finished workouts (and their
+  /// plans) stay for Progress history. Day logs are untouched.
+  Future<void> resetToday() async {
+    final now = DateTime.now();
+    final start = DateTime(now.year, now.month, now.day);
+    final end = start.add(const Duration(days: 1));
+
+    final checkIns = await (_db.select(_db.dailyCheckIns)
+          ..where(
+            (t) =>
+                t.date.isBiggerOrEqualValue(start) &
+                t.date.isSmallerThanValue(end),
+          ))
+        .get();
+    if (checkIns.isEmpty) return;
+
+    final checkInIds = checkIns.map((c) => c.id).toList();
+    final plans = await (_db.select(_db.workoutPlans)
+          ..where((t) => t.checkInId.isIn(checkInIds)))
+        .get();
+
+    for (final plan in plans) {
+      final completed = await (_db.select(_db.workoutSessions)
+            ..where(
+              (t) => t.planId.equals(plan.id) & t.completed.equals(true),
+            )
+            ..limit(1))
+          .getSingleOrNull();
+      if (completed != null) continue;
+
+      final sessions = await (_db.select(_db.workoutSessions)
+            ..where((t) => t.planId.equals(plan.id)))
+          .get();
+      for (final session in sessions) {
+        await (_db.delete(_db.setLogs)
+              ..where((t) => t.sessionId.equals(session.id)))
+            .go();
+      }
+      await (_db.delete(_db.workoutSessions)
+            ..where((t) => t.planId.equals(plan.id)))
+          .go();
+      await (_db.delete(_db.workoutPlans)..where((t) => t.id.equals(plan.id)))
+          .go();
+    }
+
+    await (_db.delete(_db.dailyCheckIns)
+          ..where((t) => t.id.isIn(checkInIds)))
+        .go();
   }
 
   Future<WorkoutPlan?> getPlanById(String id) async {
@@ -251,6 +303,22 @@ class WorkoutRepository {
         gymMinutes: gymMinutes == null
             ? const Value.absent()
             : Value(gymMinutes),
+      ),
+    );
+    final plan = await getPlanById(planId);
+    return plan!;
+  }
+
+  /// Sets or clears the user override for how many exercises to run today.
+  /// Pass `null` to fall back to the gym-time baseline.
+  Future<WorkoutPlan> updatePlanExerciseCount(
+    String planId,
+    int? count,
+  ) async {
+    await (_db.update(_db.workoutPlans)..where((t) => t.id.equals(planId)))
+        .write(
+      WorkoutPlansCompanion(
+        exerciseCountOverride: Value(count),
       ),
     );
     final plan = await getPlanById(planId);
@@ -525,7 +593,8 @@ class WorkoutRepository {
     return total;
   }
 
-  Future<List<MuscleGroup>> recentlyTrainedMuscles({int days = 7}) async {
+  /// Most recent completed session per muscle group, for recovery advice.
+  Future<Map<MuscleGroup, DateTime>> lastTrainedByMuscle({int days = 21}) async {
     final since = DateTime.now().subtract(Duration(days: days));
     final rows = await (_db.select(_db.workoutSessions)
           ..where(
@@ -534,13 +603,38 @@ class WorkoutRepository {
                 t.startedAt.isBiggerOrEqualValue(since),
           ))
         .get();
-    final muscles = <MuscleGroup>{};
+    final map = <MuscleGroup, DateTime>{};
     for (final row in rows) {
-      muscles.addAll(
-        decodeStringList(row.muscleGroupsJson).map(MuscleGroup.values.byName),
-      );
+      final at = row.endedAt ?? row.startedAt;
+      for (final muscle
+          in decodeStringList(row.muscleGroupsJson).map(MuscleGroup.values.byName)) {
+        final current = map[muscle];
+        if (current == null || at.isAfter(current)) map[muscle] = at;
+      }
     }
-    return muscles.toList();
+    return map;
+  }
+
+  /// Completed sessions per muscle group since Monday.
+  Future<Map<MuscleGroup, int>> sessionsThisWeekByMuscle() async {
+    final now = DateTime.now();
+    final start = now.subtract(Duration(days: now.weekday - 1));
+    final weekStart = DateTime(start.year, start.month, start.day);
+    final rows = await (_db.select(_db.workoutSessions)
+          ..where(
+            (t) =>
+                t.completed.equals(true) &
+                t.startedAt.isBiggerOrEqualValue(weekStart),
+          ))
+        .get();
+    final counts = <MuscleGroup, int>{};
+    for (final row in rows) {
+      for (final muscle
+          in decodeStringList(row.muscleGroupsJson).map(MuscleGroup.values.byName)) {
+        counts[muscle] = (counts[muscle] ?? 0) + 1;
+      }
+    }
+    return counts;
   }
 
   WorkoutPlan _mapPlan(WorkoutPlanRow row) {
@@ -567,6 +661,7 @@ class WorkoutRepository {
       preMeal: parseMeal(row.preMealJson),
       postMeal: parseMeal(row.postMealJson),
       gymMinutes: row.gymMinutes,
+      exerciseCountOverride: row.exerciseCountOverride,
     );
   }
 

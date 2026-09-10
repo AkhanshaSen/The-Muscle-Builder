@@ -457,6 +457,7 @@ class WorkoutPlan {
     this.preMeal,
     this.postMeal,
     this.gymMinutes = 45,
+    this.exerciseCountOverride,
   });
 
   final String id;
@@ -467,6 +468,9 @@ class WorkoutPlan {
   final MealSuggestion? preMeal;
   final MealSuggestion? postMeal;
   final int gymMinutes;
+
+  /// When set, overrides the gym-time baseline exercise count.
+  final int? exerciseCountOverride;
 
   int get estimatedBurnKcal =>
       exercises.fold(0, (sum, e) => sum + e.estimatedCalories);
@@ -493,8 +497,10 @@ class WorkoutPlan {
     MealSuggestion? preMeal,
     MealSuggestion? postMeal,
     int? gymMinutes,
+    int? exerciseCountOverride,
     bool clearPreMeal = false,
     bool clearPostMeal = false,
+    bool clearExerciseCountOverride = false,
   }) {
     return WorkoutPlan(
       id: id ?? this.id,
@@ -505,6 +511,9 @@ class WorkoutPlan {
       preMeal: clearPreMeal ? null : (preMeal ?? this.preMeal),
       postMeal: clearPostMeal ? null : (postMeal ?? this.postMeal),
       gymMinutes: gymMinutes ?? this.gymMinutes,
+      exerciseCountOverride: clearExerciseCountOverride
+          ? null
+          : (exerciseCountOverride ?? this.exerciseCountOverride),
     );
   }
 }

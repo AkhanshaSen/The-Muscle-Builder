@@ -270,6 +270,7 @@ class BackupService {
         'preMeal': p.preMeal?.toJson(),
         'postMeal': p.postMeal?.toJson(),
         'gymMinutes': p.gymMinutes,
+        'exerciseCountOverride': p.exerciseCountOverride,
       };
 
   WorkoutPlan _planFromJson(Map<String, dynamic> j) => WorkoutPlan(
@@ -287,6 +288,7 @@ class BackupService {
             ? MealSuggestion.fromJson(Map<String, dynamic>.from(j['postMeal'] as Map))
             : null,
         gymMinutes: j['gymMinutes'] as int? ?? 45,
+        exerciseCountOverride: j['exerciseCountOverride'] as int?,
       );
 
   Map<String, dynamic> _sessionToJson(WorkoutSession s) => {

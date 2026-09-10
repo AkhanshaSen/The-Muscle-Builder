@@ -259,26 +259,6 @@ class RoutineEngine {
     return rules.sets.clamp(1, 6);
   }
 
-  List<MuscleGroup> surpriseMuscles({
-    required List<MuscleGroup> recentlyTrained,
-    int count = 2,
-    int? seed,
-  }) {
-    final random = Random(seed ?? DateTime.now().millisecondsSinceEpoch);
-    final all = List<MuscleGroup>.from(MuscleGroup.values);
-    all.sort((a, b) {
-      final aRecent = recentlyTrained.contains(a) ? 1 : 0;
-      final bRecent = recentlyTrained.contains(b) ? 1 : 0;
-      return aRecent.compareTo(bRecent);
-    });
-
-    final undertrained =
-        all.where((m) => !recentlyTrained.contains(m)).toList();
-    final pool = undertrained.isNotEmpty ? undertrained : all;
-    pool.shuffle(random);
-    return pool.take(count.clamp(1, pool.length)).toList();
-  }
-
   PlannedExercise? swapExercise({
     required PlannedExercise current,
     required List<Equipment> availableEquipment,

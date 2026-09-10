@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../app/providers.dart';
+import '../../core/theme/app_spacing.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 
@@ -96,7 +97,10 @@ Map<int, DayKind> _presetFourDay() => WeeklyRoutine.defaultDays();
 
 /// Google Calendar–inspired weekly routine picker (Profile).
 class WeeklyRoutineEditor extends ConsumerWidget {
-  const WeeklyRoutineEditor({super.key});
+  const WeeklyRoutineEditor({super.key, this.embedded = false});
+
+  /// When true, skips the outer Card and title (for use inside CollapsibleSection).
+  final bool embedded;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -105,82 +109,87 @@ class WeeklyRoutineEditor extends ConsumerWidget {
 
     return routineAsync.when(
       loading: () => const Padding(
-        padding: EdgeInsets.all(16),
+        padding: AppSpacing.card,
         child: Center(child: CircularProgressIndicator()),
       ),
       error: (e, _) => Text('$e'),
       data: (routine) {
         final summary = summarizeWeeklyRoutine(routine.days);
-        return Card(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Weekly routine',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  dense: true,
-                  title: const Text('Deload this week'),
-                  subtitle: Text(
-                    routine.isDeloadActive && routine.deloadUntil != null
-                        ? 'Lighter sets until ${DateFormat('EEE d').format(routine.deloadUntil!)}'
-                        : 'Cuts ideal sets ~25% for 7 days',
-                  ),
-                  value: routine.isDeloadActive,
-                  onChanged: (v) async {
-                    await ref
-                        .read(routineRepositoryProvider)
-                        .setDeload(enabled: v);
-                  },
-                ),
-                Material(
-                  color: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
-                  borderRadius: BorderRadius.circular(12),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap: () => _openPresetSheet(context, ref, routine.days),
-                    child: InputDecorator(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: scheme.outlineVariant),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: scheme.outlineVariant),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: scheme.primary, width: 2),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 10,
-                        ),
-                        suffixIcon: Icon(
-                          Icons.arrow_drop_down,
-                          color: scheme.onSurfaceVariant,
-                        ),
-                      ),
-                      child: Text(
-                        summary,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+        final body = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (!embedded)
+              Text(
+                'Weekly routine',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              dense: true,
+              title: const Text('Deload this week'),
+              subtitle: Text(
+                routine.isDeloadActive && routine.deloadUntil != null
+                    ? 'Lighter sets until ${DateFormat('EEE d').format(routine.deloadUntil!)}'
+                    : 'Cuts ideal sets ~25% for 7 days',
+              ),
+              value: routine.isDeloadActive,
+              onChanged: (v) async {
+                await ref
+                    .read(routineRepositoryProvider)
+                    .setDeload(enabled: v);
+              },
+            ),
+            Material(
+              color: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
+              borderRadius: BorderRadius.circular(12),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () => _openPresetSheet(context, ref, routine.days),
+                child: InputDecorator(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: scheme.outlineVariant),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: scheme.outlineVariant),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: scheme.primary, width: 2),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                      vertical: 10,
+                    ),
+                    suffixIcon: Icon(
+                      Icons.arrow_drop_down,
+                      color: scheme.onSurfaceVariant,
                     ),
                   ),
+                  child: Text(
+                    summary,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 ),
-                const SizedBox(height: 10),
-                _MiniWeekPreview(days: routine.days),
-              ],
+              ),
             ),
+            const SizedBox(height: AppSpacing.sm),
+            _MiniWeekPreview(days: routine.days),
+          ],
+        );
+
+        if (embedded) return body;
+
+        return Card(
+          child: Padding(
+            padding: AppSpacing.cardTight,
+            child: body,
           ),
         );
       },
@@ -828,19 +837,23 @@ class TodayRoutineCard extends ConsumerStatefulWidget {
 
 class _TodayRoutineCardState extends ConsumerState<TodayRoutineCard> {
   DayKind? _pending;
+  bool? _expandedOverride;
 
   @override
   Widget build(BuildContext context) {
     final dayAsync = ref.watch(todaysDayLogProvider);
     final scheme = Theme.of(context).colorScheme;
     final dateLabel = DateFormat('EEEE, d MMM').format(DateTime.now());
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    final duration =
+        reduceMotion ? Duration.zero : const Duration(milliseconds: 220);
 
     return dayAsync.when(
       skipLoadingOnReload: true,
       skipLoadingOnRefresh: true,
       loading: () => const Card(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: AppSpacing.card,
           child: LinearProgressIndicator(),
         ),
       ),
@@ -848,74 +861,121 @@ class _TodayRoutineCardState extends ConsumerState<TodayRoutineCard> {
       data: (log) {
         final planned = log.plannedKind;
         final selected = _pending ?? log.actualKind;
+        final expanded = _expandedOverride ?? (log.actualKind == null);
+        final summaryKind = selected ?? planned;
+
         return Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Today · $dateLabel',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(
-                      dayKindIcon(planned),
-                      color: dayKindColor(scheme, planned),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Planned: ${planned.label} — ${planned.subtitle}',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ),
-                  ],
-                ),
-                if (selected != null) ...[
-                  const SizedBox(height: 6),
-                  Text(
-                    'Logged: ${selected.label}',
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: dayKindColor(scheme, selected),
-                          fontWeight: FontWeight.w700,
+          clipBehavior: Clip.antiAlias,
+          child: AnimatedSize(
+            duration: duration,
+            curve: Curves.easeInOut,
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: AppSpacing.card,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () => setState(() => _expandedOverride = !expanded),
+                    borderRadius: BorderRadius.circular(8),
+                    child: Row(
+                      children: [
+                        Icon(
+                          dayKindIcon(summaryKind),
+                          color: dayKindColor(scheme, summaryKind),
                         ),
+                        const SizedBox(width: AppSpacing.sm),
+                        Expanded(
+                          child: Text(
+                            expanded
+                                ? 'Today · $dateLabel'
+                                : 'Today · ${summaryKind.label}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        if (!expanded) ...[
+                          TextButton(
+                            onPressed: () =>
+                                setState(() => _expandedOverride = true),
+                            child: const Text('Re-do'),
+                          ),
+                        ],
+                        AnimatedRotation(
+                          turns: expanded ? 0.5 : 0,
+                          duration: duration,
+                          child: Icon(
+                            Icons.expand_more_rounded,
+                            color: scheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-                const SizedBox(height: 12),
-                Text(
-                  'Log how the day went',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    for (final k in DayKind.logKinds)
-                      ChoiceChip(
-                        avatar: Icon(dayKindIcon(k), size: 16),
-                        label: Text(k.label),
-                        selected: selected == k,
-                        onSelected: (_) {
-                          setState(() => _pending = k);
-                          _persist(k);
-                        },
+                  if (expanded) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    Row(
+                      children: [
+                        Icon(
+                          dayKindIcon(planned),
+                          color: dayKindColor(scheme, planned),
+                        ),
+                        const SizedBox(width: AppSpacing.sm),
+                        Expanded(
+                          child: Text(
+                            'Planned: ${planned.label} — ${planned.subtitle}',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (selected != null) ...[
+                      const SizedBox(height: 6),
+                      Text(
+                        'Logged: ${selected.label}',
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              color: dayKindColor(scheme, selected),
+                              fontWeight: FontWeight.w700,
+                            ),
                       ),
+                    ],
+                    const SizedBox(height: AppSpacing.md),
+                    Text(
+                      'Log how the day went',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    Wrap(
+                      spacing: AppSpacing.sm,
+                      runSpacing: AppSpacing.sm,
+                      children: [
+                        for (final k in DayKind.logKinds)
+                          ChoiceChip(
+                            avatar: Icon(dayKindIcon(k), size: 16),
+                            label: Text(k.label),
+                            selected: selected == k,
+                            onSelected: (_) {
+                              setState(() {
+                                _pending = k;
+                                _expandedOverride = false;
+                              });
+                              _persist(k);
+                            },
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Skip = holiday or gym closed (won\'t hurt adherence).',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                    ),
                   ],
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Skip = holiday or gym closed (won\'t hurt adherence).',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: scheme.onSurfaceVariant,
-                      ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -931,9 +991,82 @@ class _TodayRoutineCardState extends ConsumerState<TodayRoutineCard> {
             note: k == DayKind.skip ? 'Holiday / gym closed' : '',
           );
       ref.read(dayLogsTickProvider.notifier).state++;
+      ref.read(trainAnywayProvider.notifier).state = false;
       if (mounted) setState(() => _pending = null);
     } catch (_) {
       if (mounted) setState(() => _pending = null);
     }
+  }
+}
+
+/// Shown on Home / Workout when today is logged as Rest, Cheat or Skip.
+class RestDayCard extends ConsumerWidget {
+  const RestDayCard({
+    super.key,
+    required this.kind,
+    this.hasPlan = false,
+  });
+
+  final DayKind kind;
+  final bool hasPlan;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scheme = Theme.of(context).colorScheme;
+    final accent = dayKindColor(scheme, kind);
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: accent.withValues(alpha: 0.16),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(dayKindIcon(kind), size: 18, color: accent),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Today is ${kind.label}',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              kind.subtitle,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+            ),
+            if (hasPlan) ...[
+              const SizedBox(height: 4),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                  ),
+                  onPressed: () =>
+                      ref.read(trainAnywayProvider.notifier).state = true,
+                  child: const Text('Train anyway'),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
   }
 }

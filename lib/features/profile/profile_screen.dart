@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/providers.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
@@ -58,6 +59,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        toolbarHeight: 44,
         bottom: TabBar(
           controller: _tabs,
           tabs: const [
@@ -90,9 +92,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                     profile: profile,
                     yogurtMeals: yogurtMeals,
                     bottomPad: bottomPad,
-                    onEditNames: () => _editNames(profile),
+                    onEdit: () => _editProfile(profile),
                     onEditStory: () => _editStory(profile),
-                    onEditBody: () => _editBody(profile),
                     onSave: _save,
                     onOpenGuides: () => context.push('/guides'),
                     onOpenNutrition: () => context.go('/nutrition'),
@@ -194,54 +195,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     return picks.take(8).toList();
   }
 
-  Future<void> _editNames(UserProfile profile) async {
+  Future<void> _editProfile(UserProfile profile) async {
     final nameCtrl = TextEditingController(text: profile.name);
     final journeyCtrl = TextEditingController(text: profile.journeyName);
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit profile'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: nameCtrl,
-              decoration: const InputDecoration(labelText: 'Name'),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: journeyCtrl,
-              decoration: const InputDecoration(labelText: 'Journey name'),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
-    if (result == true) {
-      await _save(
-        profile.copyWith(
-          name: nameCtrl.text.trim().isEmpty
-              ? profile.name
-              : nameCtrl.text.trim(),
-          journeyName: journeyCtrl.text.trim().isEmpty
-              ? profile.journeyName
-              : journeyCtrl.text.trim(),
-        ),
-      );
-    }
-  }
-
-  Future<void> _editBody(UserProfile profile) async {
     final weightCtrl =
         TextEditingController(text: profile.weightKg.toStringAsFixed(1));
     final heightCtrl =
@@ -254,11 +210,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setLocal) => AlertDialog(
-          title: const Text('Body & lifestyle'),
+          title: const Text('About you'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                TextField(
+                  controller: nameCtrl,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: journeyCtrl,
+                  decoration: const InputDecoration(labelText: 'Journey name'),
+                ),
+                const SizedBox(height: 10),
                 TextField(
                   controller: weightCtrl,
                   keyboardType:
@@ -329,6 +295,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     if (result != true) return;
     await _save(
       profile.copyWith(
+        name: nameCtrl.text.trim().isEmpty
+            ? profile.name
+            : nameCtrl.text.trim(),
+        journeyName: journeyCtrl.text.trim().isEmpty
+            ? profile.journeyName
+            : journeyCtrl.text.trim(),
         weightKg: double.tryParse(weightCtrl.text.trim()) ?? profile.weightKg,
         heightCm: double.tryParse(heightCtrl.text.trim()) ?? profile.heightCm,
         age: int.tryParse(ageCtrl.text.trim()) ?? profile.age,
@@ -447,14 +419,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   }
 }
 
-class _YouTab extends StatelessWidget {
+class _YouTab extends ConsumerWidget {
   const _YouTab({
     required this.profile,
     required this.yogurtMeals,
     required this.bottomPad,
-    required this.onEditNames,
+    required this.onEdit,
     required this.onEditStory,
-    required this.onEditBody,
     required this.onSave,
     required this.onOpenGuides,
     required this.onOpenNutrition,
@@ -463,126 +434,111 @@ class _YouTab extends StatelessWidget {
   final UserProfile profile;
   final List<MealSuggestion> yogurtMeals;
   final double bottomPad;
-  final VoidCallback onEditNames;
+  final VoidCallback onEdit;
   final VoidCallback onEditStory;
-  final VoidCallback onEditBody;
   final Future<void> Function(UserProfile) onSave;
   final VoidCallback onOpenGuides;
   final VoidCallback onOpenNutrition;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final scheme = Theme.of(context).colorScheme;
     final hasStory =
         profile.fitnessWhy.isNotEmpty || profile.aspiration.isNotEmpty;
     final delta = profile.targetWeightKg == null
         ? null
         : profile.targetWeightKg! - profile.weightKg;
+    final status = ref.watch(todayStatusProvider).asData?.value;
 
     return ListView(
-      padding: EdgeInsets.fromLTRB(14, 8, 14, 20 + bottomPad),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.sm,
+        AppSpacing.md,
+        AppSpacing.lg + bottomPad,
+      ),
       children: [
-        _JourneyHero(profile: profile, onEdit: onEditNames),
-        const SizedBox(height: 10),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 8, 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'About you',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
+        _JourneyHero(profile: profile, onEdit: onEdit),
+        if (status != null) ...[
+          const SizedBox(height: AppSpacing.sm),
+          Card(
+            child: Padding(
+              padding: AppSpacing.cardTight,
+              child: Row(
+                children: [
+                  Icon(
+                    dayKindIcon(status.loggedKind ?? status.dayLog.plannedKind),
+                    color: dayKindColor(
+                      scheme,
+                      status.loggedKind ?? status.dayLog.plannedKind,
                     ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      onPressed: onEditBody,
-                      child: const Text('Edit'),
+                    size: 20,
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: Text(
+                      status.isRestLogged
+                          ? 'Today · ${status.loggedKind!.label}'
+                          : status.plan != null
+                              ? 'Today · Gym plan ready'
+                              : 'Today · ${status.dayLog.plannedKind.label}',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
-                  ],
-                ),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 6,
-                  children: [
-                    _InfoChip(
-                      icon: Icons.cake_outlined,
-                      label: 'Age ${profile.age}',
-                    ),
-                    _InfoChip(
-                      icon: Icons.wc_outlined,
-                      label: profile.gender.label,
-                    ),
-                    _InfoChip(
-                      icon: Icons.monitor_weight_outlined,
-                      label: '${profile.weightKg.toStringAsFixed(1)} kg',
-                    ),
-                    _InfoChip(
-                      icon: Icons.height,
-                      label: '${profile.heightCm.toStringAsFixed(0)} cm',
-                    ),
-                    _InfoChip(
-                      icon: Icons.directions_walk,
-                      label: profile.activityLevel.label,
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                  Text(
+                    status.isRestLogged
+                        ? status.loggedKind!.subtitle
+                        : status.plan != null
+                            ? '${status.plan!.exercises.length} moves'
+                            : status.dayLog.plannedKind.subtitle,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 10),
+        ],
+        const SizedBox(height: AppSpacing.md),
         Card(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 8, 12),
+            padding: AppSpacing.card,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Goals & drive',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
+                CardHeader(
+                  icon: Icons.flag_outlined,
+                  title: 'Goals & drive',
+                  trailing: TextButton(
+                    style: TextButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
                     ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      onPressed: onEditStory,
-                      child: Text(hasStory ? 'Edit' : 'Add'),
-                    ),
-                  ],
+                    onPressed: onEditStory,
+                    child: Text(hasStory ? 'Edit' : 'Add'),
+                  ),
                 ),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   profile.primaryGoal.label,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         color: scheme.primary,
                       ),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   profile.primaryGoal.blurb,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: scheme.onSurfaceVariant,
                       ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: AppSpacing.md),
                 Wrap(
                   spacing: 8,
-                  runSpacing: 6,
+                  runSpacing: 8,
                   children: [
                     _InfoChip(
                       icon: Icons.event_repeat,
@@ -597,14 +553,14 @@ class _YouTab extends StatelessWidget {
                       ),
                   ],
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   'Aspiration',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   profile.aspiration.isEmpty
                       ? 'What does “fit” look like for you long-term? Tap Add.'
@@ -618,14 +574,14 @@ class _YouTab extends StatelessWidget {
                             : null,
                       ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   'Why fitness?',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   profile.fitnessWhy.isEmpty
                       ? 'Your personal why keeps hard days honest. Tap Add.'
@@ -639,21 +595,22 @@ class _YouTab extends StatelessWidget {
                             : null,
                       ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   'Primary focus',
                   style: Theme.of(context).textTheme.labelMedium,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
                 Wrap(
-                  spacing: 6,
-                  runSpacing: 4,
+                  spacing: 8,
+                  runSpacing: 6,
                   children: PrimaryGoal.values.map((g) {
                     return ChoiceChip(
                       visualDensity: VisualDensity.compact,
                       label: Text(g.label),
                       selected: profile.primaryGoal == g,
-                      onSelected: (_) => onSave(profile.copyWith(primaryGoal: g)),
+                      onSelected: (_) =>
+                          onSave(profile.copyWith(primaryGoal: g)),
                     );
                   }).toList(),
                 ),
@@ -661,17 +618,10 @@ class _YouTab extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.lg),
         Row(
           children: [
-            Expanded(
-              child: Text(
-                'Yogurt & dahi',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-            ),
+            const Expanded(child: SectionLabel('Yogurt & dahi')),
             TextButton(
               style: TextButton.styleFrom(
                 visualDensity: VisualDensity.compact,
@@ -681,11 +631,11 @@ class _YouTab extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 10),
         if (yogurtMeals.isEmpty)
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: AppSpacing.card,
               child: Text(
                 profile.allergies.contains(Allergy.lactose)
                     ? 'Lactose avoided — open Nutrition for dairy-free fuel.'
@@ -696,11 +646,11 @@ class _YouTab extends StatelessWidget {
           )
         else
           SizedBox(
-            height: 132,
+            height: 130,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: yogurtMeals.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 8),
+              separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
               itemBuilder: (context, i) {
                 final meal = yogurtMeals[i];
                 return _YogurtFuelCard(
@@ -710,15 +660,55 @@ class _YouTab extends StatelessWidget {
               },
             ),
           ),
-        const SizedBox(height: 10),
+        const SizedBox(height: AppSpacing.md),
         Card(
-          child: ListTile(
-            dense: true,
-            leading: Icon(Icons.menu_book_outlined, color: scheme.primary),
-            title: const Text('Coach-approved reading'),
-            subtitle: const Text('Food Pharmer · ACSM · EatRight…'),
-            trailing: const Icon(Icons.chevron_right),
+          child: InkWell(
             onTap: onOpenGuides,
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 10, 12),
+              child: Row(
+                children: [
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      color: scheme.primary.withValues(alpha: 0.16),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      Icons.menu_book_outlined,
+                      size: 20,
+                      color: scheme.primary,
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Coach-approved reading',
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Food Pharmer · ACSM · EatRight…',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: scheme.onSurfaceVariant,
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.chevron_right, color: scheme.onSurfaceVariant),
+                ],
+              ),
+            ),
           ),
         ),
       ],
@@ -745,315 +735,331 @@ class _SettingsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.fromLTRB(14, 8, 14, 20 + bottomPad),
-      children: [
-        Text(
-          'Settings',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w800,
-              ),
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.md,
+            AppSpacing.sm,
+            AppSpacing.md,
+            0,
+          ),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+        const SectionLabel('Settings'),
+        const SizedBox(height: AppSpacing.md),
+        CollapsibleSection(
+          icon: Icons.calendar_month_outlined,
+          title: 'Weekly routine',
+          subtitle: 'Deload, repeat pattern, week preview',
+          initiallyExpanded: true,
+          child: const WeeklyRoutineEditor(embedded: true),
         ),
-        const SizedBox(height: 8),
-        const WeeklyRoutineEditor(),
-        const SizedBox(height: 8),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Personalization',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Theme',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const SizedBox(height: 6),
-                Row(
-                  children: [
-                    for (final hex in const [
-                      '#FF6B35',
-                      '#4CAF50',
-                      '#2196F3',
-                      '#9C27B0',
-                      '#FFC107',
-                      '#E91E63',
-                    ])
-                      GestureDetector(
-                        onTap: () => onSave(profile.copyWith(themeColorHex: hex)),
-                        child: Container(
-                          width: 28,
-                          height: 28,
-                          margin: const EdgeInsets.only(right: 8),
-                          decoration: BoxDecoration(
-                            color: Color(
-                              int.parse('FF${hex.substring(1)}', radix: 16),
-                            ),
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: profile.themeColorHex.toUpperCase() == hex
-                                  ? scheme.onSurface
-                                  : Colors.transparent,
-                              width: 2.5,
-                            ),
+        const SizedBox(height: 10),
+        CollapsibleSection(
+          icon: Icons.palette_outlined,
+          title: 'Personalization',
+          subtitle: 'Theme, appearance, coach tone',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Theme',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  for (final hex in const [
+                    '#FF6B35',
+                    '#4CAF50',
+                    '#2196F3',
+                    '#9C27B0',
+                    '#FFC107',
+                    '#E91E63',
+                  ])
+                    GestureDetector(
+                      onTap: () =>
+                          onSave(profile.copyWith(themeColorHex: hex)),
+                      child: Container(
+                        width: 28,
+                        height: 28,
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse('FF${hex.substring(1)}', radix: 16),
+                          ),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: profile.themeColorHex.toUpperCase() == hex
+                                ? scheme.onSurface
+                                : Colors.transparent,
+                            width: 2.5,
                           ),
                         ),
                       ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Appearance',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const SizedBox(height: 4),
-                Wrap(
-                  spacing: 6,
-                  children: ThemePreference.values.map((t) {
-                    return ChoiceChip(
-                      visualDensity: VisualDensity.compact,
-                      label: Text(t.label),
-                      selected: profile.themePreference == t,
-                      onSelected: (_) =>
-                          onSave(profile.copyWith(themePreference: t)),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'Coach personality',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const SizedBox(height: 4),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 4,
-                  children: CoachTone.values.map((t) {
-                    return ChoiceChip(
-                      visualDensity: VisualDensity.compact,
-                      label: Text(t.shortLabel),
-                      selected: profile.coachTone == t,
-                      onSelected: (_) =>
-                          onSave(profile.copyWith(coachTone: t)),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
+                    ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                'Appearance',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: ThemePreference.values.map((t) {
+                  return ChoiceChip(
+                    visualDensity: VisualDensity.compact,
+                    label: Text(t.label),
+                    selected: profile.themePreference == t,
+                    onSelected: (_) =>
+                        onSave(profile.copyWith(themePreference: t)),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                'Coach personality',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: CoachTone.values.map((t) {
+                  return ChoiceChip(
+                    visualDensity: VisualDensity.compact,
+                    label: Text(t.shortLabel),
+                    selected: profile.coachTone == t,
+                    onSelected: (_) =>
+                        onSave(profile.copyWith(coachTone: t)),
+                  );
+                }).toList(),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 8),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Training & diet',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
+        const SizedBox(height: 10),
+        CollapsibleSection(
+          icon: Icons.fitness_center_outlined,
+          title: 'Training & diet',
+          subtitle: 'Experience, food prefs, equipment',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DropdownButtonFormField<ExperienceLevel>(
+                key: ValueKey(profile.experience),
+                initialValue: profile.experience,
+                decoration: const InputDecoration(
+                  labelText: 'Experience',
+                  border: OutlineInputBorder(),
+                  isDense: true,
+                ),
+                items: ExperienceLevel.values
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e.label),
                       ),
+                    )
+                    .toList(),
+                onChanged: (v) {
+                  if (v != null) onSave(profile.copyWith(experience: v));
+                },
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<DietType>(
+                key: ValueKey(profile.dietType),
+                initialValue: profile.dietType,
+                decoration: const InputDecoration(
+                  labelText: 'Diet type',
+                  border: OutlineInputBorder(),
+                  isDense: true,
                 ),
-                const SizedBox(height: 4),
-                ListTile(
-                  dense: true,
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Experience'),
-                  trailing: DropdownButton<ExperienceLevel>(
-                    isDense: true,
-                    underline: const SizedBox.shrink(),
-                    value: profile.experience,
-                    items: ExperienceLevel.values
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e.label),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (v) {
-                      if (v != null) onSave(profile.copyWith(experience: v));
-                    },
-                  ),
+                items: DietType.values
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e.label),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) {
+                  if (v != null) onSave(profile.copyWith(dietType: v));
+                },
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<CuisineRegion>(
+                key: ValueKey(profile.cuisineRegion),
+                initialValue: profile.cuisineRegion,
+                decoration: const InputDecoration(
+                  labelText: 'Cuisine',
+                  border: OutlineInputBorder(),
+                  isDense: true,
                 ),
-                ListTile(
-                  dense: true,
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Diet type'),
-                  trailing: DropdownButton<DietType>(
-                    isDense: true,
-                    underline: const SizedBox.shrink(),
-                    value: profile.dietType,
-                    items: DietType.values
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e.label),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (v) {
-                      if (v != null) onSave(profile.copyWith(dietType: v));
-                    },
-                  ),
-                ),
-                ListTile(
-                  dense: true,
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Cuisine'),
-                  trailing: DropdownButton<CuisineRegion>(
-                    isDense: true,
-                    underline: const SizedBox.shrink(),
-                    value: profile.cuisineRegion,
-                    items: CuisineRegion.values
-                        .map(
-                          (e) => DropdownMenuItem(
-                            value: e,
-                            child: Text(e.label),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (v) {
-                      if (v != null) {
-                        onSave(profile.copyWith(cuisineRegion: v));
+                items: CuisineRegion.values
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e.label),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) {
+                  if (v != null) {
+                    onSave(profile.copyWith(cuisineRegion: v));
+                  }
+                },
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                'Equipment',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: Equipment.values.map((e) {
+                  final on = profile.equipment.contains(e);
+                  return FilterChip(
+                    visualDensity: VisualDensity.compact,
+                    label: Text(e.label),
+                    selected: on,
+                    onSelected: (v) {
+                      final next = List<Equipment>.from(profile.equipment);
+                      if (v) {
+                        next.add(e);
+                      } else if (next.length > 1) {
+                        next.remove(e);
                       }
+                      onSave(profile.copyWith(equipment: next));
                     },
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Equipment',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const SizedBox(height: 4),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 4,
-                  children: Equipment.values.map((e) {
-                    final on = profile.equipment.contains(e);
-                    return FilterChip(
-                      visualDensity: VisualDensity.compact,
-                      label: Text(e.label),
-                      selected: on,
-                      onSelected: (v) {
-                        final next = List<Equipment>.from(profile.equipment);
-                        if (v) {
-                          next.add(e);
-                        } else if (next.length > 1) {
-                          next.remove(e);
-                        }
-                        onSave(profile.copyWith(equipment: next));
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Allergies',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const SizedBox(height: 4),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 4,
-                  children: Allergy.values.map((a) {
-                    final on = profile.allergies.contains(a);
-                    return FilterChip(
-                      visualDensity: VisualDensity.compact,
-                      label: Text(a.label),
-                      selected: on,
-                      onSelected: (v) {
-                        final next = List<Allergy>.from(profile.allergies);
-                        if (v) {
-                          next.add(a);
-                        } else {
-                          next.remove(a);
-                        }
-                        onSave(profile.copyWith(allergies: next));
-                      },
-                    );
-                  }).toList(),
-                ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  dense: true,
-                  title: const Text('Show meal macros'),
-                  value: profile.showMacros,
-                  onChanged: (v) => onSave(profile.copyWith(showMacros: v)),
-                ),
-              ],
-            ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                'Allergies',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: Allergy.values.map((a) {
+                  final on = profile.allergies.contains(a);
+                  return FilterChip(
+                    visualDensity: VisualDensity.compact,
+                    label: Text(a.label),
+                    selected: on,
+                    onSelected: (v) {
+                      final next = List<Allergy>.from(profile.allergies);
+                      if (v) {
+                        next.add(a);
+                      } else {
+                        next.remove(a);
+                      }
+                      onSave(profile.copyWith(allergies: next));
+                    },
+                  );
+                }).toList(),
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                title: const Text('Show meal macros'),
+                value: profile.showMacros,
+                onChanged: (v) => onSave(profile.copyWith(showMacros: v)),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 8),
-        Card(
+        const SizedBox(height: 10),
+        CollapsibleSection(
+          icon: Icons.backup_outlined,
+          title: 'Backup',
+          subtitle: 'Export or import JSON',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'JSON export/import for reinstall or device move. Not live sync.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                onPressed: onExport,
+                icon: const Icon(Icons.upload_file, size: 18),
+                label: const Text('Export'),
+              ),
+              const SizedBox(height: 8),
+              FilledButton.tonalIcon(
+                onPressed: onImport,
+                icon: const Icon(Icons.download, size: 18),
+                label: const Text('Import'),
+              ),
+            ],
+          ),
+        ),
+            ]),
+          ),
+        ),
+        SliverFillRemaining(
+          hasScrollBody: false,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.md,
+              AppSpacing.lg,
+              AppSpacing.md,
+              AppSpacing.lg + bottomPad,
+            ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  'Backup',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                  AppConstants.appName,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
-                const SizedBox(height: 4),
                 Text(
-                  'JSON export/import for reinstall or device move. Not live sync.',
+                  'Local-first · JSON backup',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: onExport,
-                        icon: const Icon(Icons.upload_file, size: 18),
-                        label: const Text('Export'),
-                      ),
+                const SizedBox(height: 12),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12, horizontal: 16),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: scheme.outlineVariant.withValues(alpha: 0.6),
                     ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: FilledButton.tonalIcon(
-                        onPressed: onImport,
-                        icon: const Icon(Icons.download, size: 18),
-                        label: const Text('Import'),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    children: [
+                      _BuildVersionText(scheme: scheme),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Designed & built by ${AppConstants.developerName}',
+                        textAlign: TextAlign.center,
+                        style:
+                            Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: scheme.onSurface
+                                      .withValues(alpha: 0.38),
+                                  fontStyle: FontStyle.italic,
+                                  letterSpacing: 0.3,
+                                ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-        ),
-        const SizedBox(height: 14),
-        Text(
-          AppConstants.appName,
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
-        Text(
-          'Local-first · JSON backup',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        const SizedBox(height: 12),
-        _BuildVersionText(scheme: scheme),
-        const SizedBox(height: 8),
-        Text(
-          'Designed & built by ${AppConstants.developerName}',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: scheme.onSurface.withValues(alpha: 0.38),
-                fontStyle: FontStyle.italic,
-                letterSpacing: 0.3,
-              ),
         ),
       ],
     );
@@ -1077,7 +1083,7 @@ class _BuildVersionText extends ConsumerWidget {
       AppConstants.buildVersionLabel(version),
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w600,
             color: scheme.onSurface.withValues(alpha: 0.72),
             letterSpacing: 0.2,
           ),
@@ -1097,7 +1103,7 @@ class _InfoChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withValues(alpha: 0.7),
+        color: scheme.surface.withValues(alpha: 0.55),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -1115,20 +1121,28 @@ class _InfoChip extends StatelessWidget {
   }
 }
 
-class _JourneyHero extends StatelessWidget {
+class _JourneyHero extends ConsumerWidget {
   const _JourneyHero({required this.profile, required this.onEdit});
 
   final UserProfile profile;
   final VoidCallback onEdit;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final scheme = Theme.of(context).colorScheme;
+    final status = ref.watch(todayStatusProvider).asData?.value;
+    final dayKind = status?.loggedKind ?? status?.dayLog.plannedKind;
+    final bgIcon = dayKind == null ? Icons.self_improvement_outlined : dayKindIcon(dayKind);
+    final bgColor = dayKind == null
+        ? scheme.primary
+        : dayKindColor(scheme, dayKind);
+
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(14, 12, 8, 12),
+      clipBehavior: Clip.hardEdge,
+      padding: const EdgeInsets.fromLTRB(14, 14, 12, 14),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -1145,12 +1159,12 @@ class _JourneyHero extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            right: -4,
-            top: -4,
+            right: -10,
+            top: 4,
             child: Icon(
-              Icons.icecream_outlined,
-              size: 56,
-              color: scheme.primary.withValues(alpha: 0.18),
+              bgIcon,
+              size: 72,
+              color: bgColor.withValues(alpha: 0.14),
             ),
           ),
           Column(
@@ -1163,7 +1177,7 @@ class _JourneyHero extends StatelessWidget {
                     child: Text(
                       profile.name,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                           ),
                     ),
                   ),
@@ -1179,17 +1193,35 @@ class _JourneyHero extends StatelessWidget {
                 profile.journeyName,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       color: scheme.primary,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
-              const SizedBox(height: 4),
-              Text(
-                '${profile.weightKg.toStringAsFixed(0)} kg · '
-                '${profile.heightCm.toStringAsFixed(0)} cm · '
-                'age ${profile.age}',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: scheme.onSurfaceVariant,
-                    ),
+              const SizedBox(height: AppSpacing.md),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  _InfoChip(
+                    icon: Icons.cake_outlined,
+                    label: 'Age ${profile.age}',
+                  ),
+                  _InfoChip(
+                    icon: Icons.wc_outlined,
+                    label: profile.gender.label,
+                  ),
+                  _InfoChip(
+                    icon: Icons.monitor_weight_outlined,
+                    label: '${profile.weightKg.toStringAsFixed(1)} kg',
+                  ),
+                  _InfoChip(
+                    icon: Icons.height,
+                    label: '${profile.heightCm.toStringAsFixed(0)} cm',
+                  ),
+                  _InfoChip(
+                    icon: Icons.directions_walk,
+                    label: profile.activityLevel.label,
+                  ),
+                ],
               ),
             ],
           ),

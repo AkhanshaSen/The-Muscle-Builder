@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../app/providers.dart';
+import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/models/enums.dart';
@@ -106,11 +107,11 @@ class _DayDetailScreenState extends ConsumerState<DayDetailScreen> {
           final effective = selected ?? log.plannedKind;
 
           return ListView(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            padding: AppSpacing.page,
             children: [
               Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(14),
+                  padding: AppSpacing.card,
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -121,7 +122,7 @@ class _DayDetailScreenState extends ConsumerState<DayDetailScreen> {
                           color: dayKindColor(scheme, effective),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      const SizedBox(width: AppSpacing.md),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +132,7 @@ class _DayDetailScreenState extends ConsumerState<DayDetailScreen> {
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
-                                  ?.copyWith(fontWeight: FontWeight.w800),
+                                  ?.copyWith(fontWeight: FontWeight.w600),
                             ),
                             Text(
                               selected == null
@@ -147,19 +148,19 @@ class _DayDetailScreenState extends ConsumerState<DayDetailScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: AppSpacing.sm),
               _DayHydrationRow(date: key),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               Text(
                 'Log this day',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Wrap(
-                spacing: 8,
-                runSpacing: 8,
+                spacing: AppSpacing.sm,
+                runSpacing: AppSpacing.sm,
                 children: [
                   for (final k in DayKind.logKinds)
                     ChoiceChip(
@@ -177,18 +178,18 @@ class _DayDetailScreenState extends ConsumerState<DayDetailScreen> {
                       color: scheme.onSurfaceVariant,
                     ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               Text(
                 'Fuel & plan',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
               const SizedBox(height: 6),
               if (data.plan != null)
                 Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: AppSpacing.card,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -215,7 +216,7 @@ class _DayDetailScreenState extends ConsumerState<DayDetailScreen> {
                           ),
                         ],
                         if (data.plan!.postMeal != null) ...[
-                          const SizedBox(height: 4),
+                          const SizedBox(height: AppSpacing.xs),
                           Text(
                             'Post: ${data.plan!.postMeal!.name} · '
                             '${data.plan!.postMeal!.calories} kcal · '
@@ -239,11 +240,11 @@ class _DayDetailScreenState extends ConsumerState<DayDetailScreen> {
                     subtitle: Text('Check-in generates a plan on gym days.'),
                   ),
                 ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               Text(
                 'Sessions',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
               const SizedBox(height: 6),
@@ -262,7 +263,7 @@ class _DayDetailScreenState extends ConsumerState<DayDetailScreen> {
                       ? 'Mixed'
                       : s.muscleGroups.map((m) => m.label).join(', ');
                   return Card(
-                    margin: const EdgeInsets.only(bottom: 8),
+                    margin: const EdgeInsets.only(bottom: AppSpacing.sm),
                     child: ListTile(
                       dense: true,
                       leading: Icon(
@@ -281,11 +282,11 @@ class _DayDetailScreenState extends ConsumerState<DayDetailScreen> {
                     ),
                   );
                 }),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Card(
                 color: scheme.surfaceContainerHighest.withValues(alpha: 0.4),
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding: AppSpacing.card,
                   child: Text(
                     'Summary: ${data.setsCompleted} sets · '
                     '${data.totalSessionMinutes} min · '

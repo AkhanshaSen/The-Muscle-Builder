@@ -10,7 +10,9 @@ import '../../data/repositories/routine_repository.dart';
 import '../../data/repositories/seed_repository.dart';
 import '../../data/repositories/workout_repository.dart';
 import '../../data/services/backup_service.dart';
+import '../../domain/engines/muscle_recovery.dart';
 import '../../domain/engines/routine_engine.dart';
+import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) {
@@ -91,6 +93,19 @@ final setsThisWeekProvider = FutureProvider<int>((ref) async {
   return ref.watch(workoutRepositoryProvider).setsLoggedThisWeek();
 });
 
+/// Per-muscle recovery state driving check-in suggestions.
+final muscleRecoveryProvider =
+    FutureProvider<Map<MuscleGroup, MuscleStatus>>((ref) async {
+  ref.watch(completedSessionsProvider);
+  final repo = ref.watch(workoutRepositoryProvider);
+  final lastTrained = await repo.lastTrainedByMuscle();
+  final sessionsThisWeek = await repo.sessionsThisWeekByMuscle();
+  return MuscleRecoveryAdvisor.statuses(
+    lastTrained: lastTrained,
+    sessionsThisWeek: sessionsThisWeek,
+  );
+});
+
 /// Bumped after each logged set so Progress/Home refresh mid-session.
 final sessionProgressTickProvider = StateProvider<int>((ref) => 0);
 
@@ -123,6 +138,30 @@ final todaysDayLogProvider = FutureProvider<DayLog>((ref) async {
   ref.watch(dayLogsTickProvider);
   return ref.watch(routineRepositoryProvider).ensureDayLog(DateTime.now());
 });
+
+/// Combined view of today's plan + day log so screens agree on rest/cheat/skip.
+class TodayStatus {
+  const TodayStatus({required this.plan, required this.dayLog});
+
+  final WorkoutPlan? plan;
+  final DayLog dayLog;
+
+  DayKind? get loggedKind => dayLog.actualKind;
+
+  /// Explicitly logged as a non-training day. A merely *planned* rest day
+  /// still shows the plan.
+  bool get isRestLogged =>
+      dayLog.actualKind != null && dayLog.actualKind != DayKind.gym;
+}
+
+final todayStatusProvider = FutureProvider<TodayStatus>((ref) async {
+  final plan = await ref.watch(todaysPlanProvider.future);
+  final dayLog = await ref.watch(todaysDayLogProvider.future);
+  return TodayStatus(plan: plan, dayLog: dayLog);
+});
+
+/// "Show me the plan anyway" override, without changing the logged day.
+final trainAnywayProvider = StateProvider<bool>((ref) => false);
 
 final thisWeekDayLogsProvider = FutureProvider<List<DayLog>>((ref) async {
   ref.watch(weeklyRoutineProvider);

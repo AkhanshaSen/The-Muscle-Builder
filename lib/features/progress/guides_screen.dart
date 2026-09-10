@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../data/seed/pro_nutrition_guides.dart';
 
@@ -28,13 +29,18 @@ class GuidesScreen extends StatelessWidget {
         toolbarHeight: 48,
       ),
       body: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+        padding: AppSpacing.page,
         itemCount: proNutritionGuides.length + 1,
         separatorBuilder: (_, _) => const Divider(height: 1),
         itemBuilder: (context, i) {
           if (i == 0) {
             return Padding(
-              padding: const EdgeInsets.fromLTRB(4, 4, 4, 10),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.xs,
+                AppSpacing.xs,
+                AppSpacing.xs,
+                AppSpacing.sm,
+              ),
               child: Text(
                 'Food Pharmer + pro education — opens in your browser. '
                 'Educational only, not medical advice.',
@@ -47,11 +53,11 @@ class GuidesScreen extends StatelessWidget {
           final g = proNutritionGuides[i - 1];
           return ListTile(
             dense: true,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+            contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
             leading: Icon(Icons.menu_book_outlined, color: scheme.primary),
             title: Text(
               g.title,
-              style: const TextStyle(fontWeight: FontWeight.w700),
+              style: const TextStyle(fontWeight: FontWeight.w600),
             ),
             subtitle: Text('${g.source} · ${g.benefit}', maxLines: 2),
             trailing: const Icon(Icons.open_in_new, size: 18),

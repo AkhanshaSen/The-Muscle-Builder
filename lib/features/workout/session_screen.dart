@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../app/providers.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/engines/overload_engine.dart';
@@ -561,7 +562,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -572,14 +573,14 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
                     minHeight: 6,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: AppSpacing.md),
                 Text(
                   current.name,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: AppSpacing.xs),
                 Text(
                   'Set ${_setIndex + 1}/${current.sets} · target ${current.reps} reps · ${_completedSets.length} sets logged',
                   style: TextStyle(
@@ -588,7 +589,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
                   ),
                 ),
                 if (!_resting) ...[
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppSpacing.md),
                   SegmentedButton<_SessionPanel>(
                     segments: const [
                       ButtonSegment(
@@ -643,13 +644,18 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
         top: false,
         maintainBottomViewPadding: true,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 12, 16, 12 + (bottomInset > 0 ? 0 : 0)),
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.md,
+            AppSpacing.lg,
+            AppSpacing.md + (bottomInset > 0 ? 0 : 0),
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               if (!_setTimerRunning && _panel == _SessionPanel.train)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                   child: Text(
                     'Paused at ${_formatDuration(_setElapsedSeconds)} — Resume when ready',
                     style: const TextStyle(
@@ -736,27 +742,32 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
   }
 
   Widget _buildRestPanel(ColorScheme scheme) {
-    final bottomPad = MediaQuery.viewPaddingOf(context).bottom + 24;
+    final bottomPad = MediaQuery.viewPaddingOf(context).bottom + AppSpacing.lg;
     return ScrollConfiguration(
       behavior: const NoStretchScrollBehavior(),
       child: ListView(
       key: const ValueKey('rest'),
-      padding: EdgeInsets.fromLTRB(24, 24, 24, bottomPad),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.lg,
+        AppSpacing.lg,
+        bottomPad,
+      ),
       children: [
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         Icon(Icons.hourglass_top_rounded, size: 48, color: scheme.primary),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         if (_lastFeedback != null) ...[
           Text(
             _lastVerdict?.label ?? 'Set logged',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w600,
                 ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.sm),
           Text(_lastFeedback!, textAlign: TextAlign.center),
-          const SizedBox(height: 24),
+          const SizedBox(height: AppSpacing.lg),
         ],
         Text(
           _waterBreak ? 'Rest · water break' : 'Rest',
@@ -771,7 +782,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
                 color: scheme.primary,
               ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Text(
           _setIndex == 0
               ? 'Next: ${_current?.name ?? 'exercise'}'
@@ -779,11 +790,11 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         Card(
           color: scheme.primaryContainer.withValues(alpha: 0.35),
           child: Padding(
-            padding: const EdgeInsets.all(14),
+            padding: AppSpacing.card,
             child: Column(
               children: [
                 Row(
@@ -816,7 +827,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         FilledButton(
           onPressed: () {
             _restTimer?.cancel();
@@ -854,12 +865,12 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
       behavior: const NoStretchScrollBehavior(),
       child: ListView(
       key: const ValueKey('form'),
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
       children: [
         Text(
           'Review form, then start the set',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
         ),
         const SizedBox(height: 6),
@@ -869,13 +880,13 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
                 color: scheme.onSurface.withValues(alpha: 0.65),
               ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         ExercisePostureGallery(
           imageUrls: _imagesFor(current),
-          height: 190,
+          height: 150,
         ),
         if (current.formCues.isNotEmpty) ...[
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.md),
           _InfoCard(
             title: 'Do this',
             subtitle: 'Follow these in order before you start the set.',
@@ -886,7 +897,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
           ),
         ],
         if (current.commonMistakes.isNotEmpty) ...[
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           _InfoCard(
             title: 'Avoid',
             icon: Icons.close_rounded,
@@ -894,16 +905,16 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
             items: current.commonMistakes,
           ),
         ],
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         _compactLogFields(),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.lg),
         Text(
           'Coming up',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         SizedBox(
           height: 44,
           child: ListView.separated(
@@ -955,14 +966,14 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
       behavior: const NoStretchScrollBehavior(),
       child: ListView(
       key: const ValueKey('train'),
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
       children: [
         if (_overload != null) ...[
           Material(
             color: scheme.secondaryContainer.withValues(alpha: 0.55),
             borderRadius: BorderRadius.circular(12),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              padding: AppSpacing.cardTight,
               child: Row(
                 children: [
                   Icon(Icons.trending_up, color: scheme.secondary, size: 20),
@@ -979,18 +990,18 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
         ],
         Card(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: AppSpacing.card,
             child: Column(
               children: [
                 Row(
                   children: [
                     const Text(
                       'Set timer',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                      style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                     const Spacer(),
                     Container(
@@ -1006,23 +1017,23 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
                         'Target ${target.rangeLabel}',
                         style: TextStyle(
                           color: scheme.primary,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w600,
                           fontSize: 12,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   _formatDuration(_setElapsedSeconds),
                   style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                         color: liveColor,
                         fontFeatures: const [FontFeature.tabularFigures()],
                       ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: LinearProgressIndicator(
@@ -1038,21 +1049,21 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: liveColor,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.md),
         Text(
           'Tick sets as you finish',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
               ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -1174,13 +1185,13 @@ class _InfoCard extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(14),
+        padding: AppSpacing.card,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
             if (subtitle != null) ...[
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 subtitle!,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -1205,7 +1216,7 @@ class _InfoCard extends StatelessWidget {
                           '${i + 1}',
                           style: TextStyle(
                             fontSize: 12,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                             color: iconColor,
                           ),
                         ),
@@ -1223,7 +1234,7 @@ class _InfoCard extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .labelLarge
-                                  ?.copyWith(fontWeight: FontWeight.w700),
+                                  ?.copyWith(fontWeight: FontWeight.w600),
                             ),
                           Text(c),
                         ],

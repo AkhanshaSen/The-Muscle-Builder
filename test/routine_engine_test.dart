@@ -67,16 +67,4 @@ void main() {
     }
     expect(RoutineOrderGuide.sessionGuide(plan), contains('Order is intentional'));
   });
-
-  test('surprise muscles prefers undertrained groups', () {
-    final engine = RoutineEngine();
-    final picks = engine.surpriseMuscles(
-      recentlyTrained: const [MuscleGroup.chest, MuscleGroup.arms],
-      count: 2,
-      seed: 7,
-    );
-    expect(picks.length, 2);
-    expect(picks.contains(MuscleGroup.chest), isFalse);
-    expect(picks.contains(MuscleGroup.arms), isFalse);
-  });
 }

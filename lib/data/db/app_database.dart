@@ -70,6 +70,7 @@ class WorkoutPlans extends Table {
   TextColumn get preMealJson => text().nullable()();
   TextColumn get postMealJson => text().nullable()();
   IntColumn get gymMinutes => integer().withDefault(const Constant(45))();
+  IntColumn get exerciseCountOverride => integer().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -183,11 +184,19 @@ class AppDatabase extends _$AppDatabase {
       : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 10;
+  int get schemaVersion => 12;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (m) async => m.createAll(),
+        onCreate: (m) async {
+          await m.createAll();
+          await m.database.customStatement(
+            'CREATE UNIQUE INDEX IF NOT EXISTS day_logs_date_unique ON day_logs(date)',
+          );
+          await m.database.customStatement(
+            'CREATE UNIQUE INDEX IF NOT EXISTS hydration_logs_date_unique ON hydration_logs(date)',
+          );
+        },
         onUpgrade: (m, from, to) async {
           if (from < 2) {
             await m.addColumn(userProfiles, userProfiles.unlockedRecipesJson);
@@ -232,6 +241,41 @@ class AppDatabase extends _$AppDatabase {
             await m.addColumn(userProfiles, userProfiles.aspiration);
             await m.addColumn(userProfiles, userProfiles.targetWeightKg);
             await m.addColumn(userProfiles, userProfiles.weeklyTrainingDays);
+          }
+          if (from < 11) {
+            await m.addColumn(
+              workoutPlans,
+              workoutPlans.exerciseCountOverride,
+            );
+          }
+          if (from < 12) {
+            // Keep the logged (or latest) row per date, drop blank duplicates.
+            await m.database.customStatement('''
+DELETE FROM day_logs WHERE id NOT IN (
+  SELECT id FROM (
+    SELECT id, ROW_NUMBER() OVER (
+      PARTITION BY date
+      ORDER BY (actual_kind IS NOT NULL) DESC, updated_at DESC
+    ) AS rn FROM day_logs
+  ) WHERE rn = 1
+)
+''');
+            await m.database.customStatement('''
+DELETE FROM hydration_logs WHERE id NOT IN (
+  SELECT id FROM (
+    SELECT id, ROW_NUMBER() OVER (
+      PARTITION BY date
+      ORDER BY glasses DESC, updated_at DESC
+    ) AS rn FROM hydration_logs
+  ) WHERE rn = 1
+)
+''');
+            await m.database.customStatement(
+              'CREATE UNIQUE INDEX IF NOT EXISTS day_logs_date_unique ON day_logs(date)',
+            );
+            await m.database.customStatement(
+              'CREATE UNIQUE INDEX IF NOT EXISTS hydration_logs_date_unique ON hydration_logs(date)',
+            );
           }
         },
       );

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/providers.dart';
+import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/engines/routine_engine.dart';
@@ -10,6 +11,7 @@ import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 import '../nutrition/meal_icon_tile.dart';
 import 'exercise_posture_gallery.dart';
+import 'reset_today.dart';
 
 class WorkoutPlanScreen extends ConsumerStatefulWidget {
   const WorkoutPlanScreen({super.key, required this.planId});
@@ -166,6 +168,17 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
     setState(() => _plan = saved);
   }
 
+  Future<void> _setExerciseCount(int? count) async {
+    final plan = _plan;
+    if (plan == null) return;
+    final saved = await ref
+        .read(workoutRepositoryProvider)
+        .updatePlanExerciseCount(plan.id, count);
+    ref.invalidate(todaysPlanProvider);
+    if (!mounted) return;
+    setState(() => _plan = saved);
+  }
+
   Future<void> _removeExercise(int activeIndex) async {
     final plan = _plan;
     if (plan == null) return;
@@ -238,47 +251,99 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
         .map((m) => m.label)
         .toList();
 
+    // Group by primary muscle while preserving first-appearance order.
+    final grouped = <MuscleGroup, List<(int idx, PlannedExercise ex)>>{};
+    for (var i = 0; i < active.length; i++) {
+      final primary = active[i].muscleGroups.isNotEmpty
+          ? active[i].muscleGroups.first
+          : MuscleGroup.values.first;
+      grouped.putIfAbsent(primary, () => []).add((i, active[i]));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Today\'s routine'),
         leading: const NestedBackButton(),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (value) async {
+              if (value != 'reset') return;
+              final ok = await confirmResetToday(context, ref);
+              if (ok && context.mounted) {
+                context.go('/checkin');
+              }
+            },
+            itemBuilder: (context) => const [
+              PopupMenuItem(
+                value: 'reset',
+                child: Text('Reset today\'s routine'),
+              ),
+            ],
+          ),
+        ],
+      ),
+      bottomNavigationBar: Material(
+        color: scheme.surface,
+        elevation: 0,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.5)),
+            ),
+          ),
+          child: SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+              child: PrimaryCta(
+                label:
+                    'Start session · ${active.length} moves · ~$sessionMins min',
+                icon: Icons.play_arrow_rounded,
+                onPressed: () async {
+                  final sessionPlan = plan.copyWith(exercises: active);
+                  final session = await ref
+                      .read(workoutRepositoryProvider)
+                      .startSession(sessionPlan);
+                  if (context.mounted) {
+                    context.push('/session/${session.id}');
+                  }
+                },
+              ),
+            ),
+          ),
+        ),
       ),
       body: ScrollConfiguration(
         behavior: const NoStretchScrollBehavior(),
         child: ListView(
-        padding: EdgeInsets.fromLTRB(
-          20,
-          20,
-          20,
-          20 + MediaQuery.viewPaddingOf(context).bottom,
-        ),
+        padding: AppSpacing.page,
         children: [
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: AppSpacing.card,
               child: Text(plan.encouragement),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: AppSpacing.lg),
           _DayFuelCard(
             plan: plan,
             burnOverride: GymSessionSizing.activeBurnKcal(plan),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppSpacing.md),
           Text(
             'Fuel for this session',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w600,
                 ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             'Pre + post meals ride with your routine so Progress can balance calories at day end.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: scheme.onSurfaceVariant,
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           _PlanMealCard(
             label: 'Pre-workout',
             meal: plan.preMeal,
@@ -290,28 +355,32 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
             meal: plan.postMeal,
             onSelect: () => _pickMeal(MealTiming.postWorkout),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppSpacing.md),
           _OrderGuideCard(exercises: active),
-          const SizedBox(height: 20),
+          const SizedBox(height: AppSpacing.md),
           Text(
             'Exercises for your gym time',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w600,
                 ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: AppSpacing.xs),
           Text(
-            'Numbered by session clock — shorter gym time keeps early openers only.',
+            'Gym time sets a baseline — customize the count below. Clock is an estimate.',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: scheme.onSurfaceVariant,
                 ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: AppSpacing.md),
           _GymTimePicker(
             gymMinutes: plan.gymMinutes,
             exerciseCount: active.length,
+            baselineCount: GymSessionSizing.exerciseCountFor(plan.gymMinutes),
+            catalogLength: plan.exercises.length,
+            overrideCount: plan.exerciseCountOverride,
             estimatedMinutes: sessionMins,
-            onChanged: _setGymMinutes,
+            onGymMinutesChanged: _setGymMinutes,
+            onExerciseCountChanged: _setExerciseCount,
           ),
           if (muscles.isNotEmpty) ...[
             const SizedBox(height: 10),
@@ -328,106 +397,133 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
                   .toList(),
             ),
           ],
-          const SizedBox(height: 12),
-          ...active.asMap().entries.map((entry) {
-            final i = entry.key;
-            final e = entry.value;
-            final window = windows[i];
-            final images = e.demoImages.isNotEmpty
-                ? e.demoImages
-                : (demoById[e.exerciseId] ?? const <String>[]);
-            final role = RoutineOrderGuide.roleLabel(i, active.length, e);
-            final why = RoutineOrderGuide.roleWhy(i, active.length, e);
-            return Card(
-              margin: const EdgeInsets.only(bottom: 10),
-              child: ExpansionTile(
-                leading: CircleAvatar(
-                  child: Text(
-                    '${i + 1}',
-                    style: const TextStyle(fontWeight: FontWeight.w800),
-                  ),
-                ),
-                title: Text(e.name),
-                subtitle: Text(
-                  'Min ${window.start}–${window.end} · $role\n'
-                  '${e.sets} sets × ${e.reps} reps · rest ${e.restSeconds}s'
-                  '${e.includeDropSet ? ' · drop set on last' : ''}',
-                ),
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                    child: _SetsStepper(
-                      sets: e.sets,
-                      ideal: e.recommendedSets ?? e.sets,
-                      onChanged: (v) => _updateSets(e.exerciseId, v),
-                    ),
-                  ),
-                  if (active.length > 1)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton.icon(
-                        onPressed: () => _removeExercise(i),
-                        icon: const Icon(Icons.remove_circle_outline),
-                        label: const Text('Skip this today'),
-                      ),
-                    ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        why,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: scheme.onSurfaceVariant,
-                            ),
-                      ),
-                    ),
-                  ),
-                  if (images.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                      child: ExercisePostureGallery(
-                        imageUrls: images,
-                        height: 130,
-                      ),
-                    ),
-                  if (e.formCues.isNotEmpty)
-                    ListTile(
-                      title: const Text('Form cues'),
-                      subtitle: Text(
-                        e.formCues
-                            .asMap()
-                            .entries
-                            .map((c) => '${c.key + 1}. ${c.value}')
-                            .join('\n'),
-                      ),
-                    ),
-                  if (e.commonMistakes.isNotEmpty)
-                    ListTile(
-                      title: const Text('Common mistakes'),
-                      subtitle: Text(
-                        e.commonMistakes.map((c) => '• $c').join('\n'),
-                      ),
-                    ),
-                ],
+          const SizedBox(height: AppSpacing.md),
+          ...grouped.entries.expand((groupEntry) {
+            final muscle = groupEntry.key;
+            final items = groupEntry.value;
+            return [
+              SectionLabel(
+                '${muscle.label} · ${items.length} '
+                'move${items.length == 1 ? '' : 's'}',
               ),
-            );
+              const SizedBox(height: AppSpacing.sm),
+              ...items.map((item) {
+                final i = item.$1;
+                final e = item.$2;
+                final window = windows[i];
+                final images = e.demoImages.isNotEmpty
+                    ? e.demoImages
+                    : (demoById[e.exerciseId] ?? const <String>[]);
+                final role = RoutineOrderGuide.roleLabel(i, active.length, e);
+                final why = RoutineOrderGuide.roleWhy(i, active.length, e);
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: ExpansionTile(
+                    leading: CircleAvatar(
+                      child: Text(
+                        '${i + 1}',
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    title: Text(e.name),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (e.muscleGroups.isNotEmpty) ...[
+                          const SizedBox(height: 4),
+                          Wrap(
+                            spacing: 4,
+                            runSpacing: 4,
+                            children: e.muscleGroups.map((g) {
+                              return Chip(
+                                visualDensity: VisualDensity.compact,
+                                padding: EdgeInsets.zero,
+                                labelPadding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                ),
+                                label: Text(
+                                  g.label,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall
+                                      ?.copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 4),
+                        ],
+                        Text(
+                          'Min ${window.start}–${window.end} · $role\n'
+                          '${e.sets} sets × ${e.reps} reps · rest ${e.restSeconds}s'
+                          '${e.includeDropSet ? ' · drop set on last' : ''}',
+                        ),
+                      ],
+                    ),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                        child: _SetsStepper(
+                          sets: e.sets,
+                          ideal: e.recommendedSets ?? e.sets,
+                          onChanged: (v) => _updateSets(e.exerciseId, v),
+                        ),
+                      ),
+                      if (active.length > 1)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton.icon(
+                            onPressed: () => _removeExercise(i),
+                            icon: const Icon(Icons.remove_circle_outline),
+                            label: const Text('Skip this today'),
+                          ),
+                        ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            why,
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: scheme.onSurfaceVariant,
+                                    ),
+                          ),
+                        ),
+                      ),
+                      if (images.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                          child: ExercisePostureGallery(
+                            imageUrls: images,
+                            height: 110,
+                          ),
+                        ),
+                      if (e.formCues.isNotEmpty)
+                        ListTile(
+                          title: const Text('Form cues'),
+                          subtitle: Text(
+                            e.formCues
+                                .asMap()
+                                .entries
+                                .map((c) => '${c.key + 1}. ${c.value}')
+                                .join('\n'),
+                          ),
+                        ),
+                      if (e.commonMistakes.isNotEmpty)
+                        ListTile(
+                          title: const Text('Common mistakes'),
+                          subtitle: Text(
+                            e.commonMistakes.map((c) => '• $c').join('\n'),
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              }),
+              const SizedBox(height: AppSpacing.sm),
+            ];
           }),
-          const SizedBox(height: 12),
-          PrimaryCta(
-            label:
-                'Start session · ${active.length} moves · ~$sessionMins min',
-            icon: Icons.play_arrow_rounded,
-            onPressed: () async {
-              final sessionPlan = plan.copyWith(exercises: active);
-              final session = await ref
-                  .read(workoutRepositoryProvider)
-                  .startSession(sessionPlan);
-              if (context.mounted) {
-                context.push('/session/${session.id}');
-              }
-            },
-          ),
         ],
       ),
       ),
@@ -439,34 +535,50 @@ class _GymTimePicker extends StatelessWidget {
   const _GymTimePicker({
     required this.gymMinutes,
     required this.exerciseCount,
+    required this.baselineCount,
+    required this.catalogLength,
+    required this.overrideCount,
     required this.estimatedMinutes,
-    required this.onChanged,
+    required this.onGymMinutesChanged,
+    required this.onExerciseCountChanged,
   });
 
   final int gymMinutes;
   final int exerciseCount;
+  final int baselineCount;
+  final int catalogLength;
+  final int? overrideCount;
   final int estimatedMinutes;
-  final ValueChanged<int> onChanged;
+  final ValueChanged<int> onGymMinutesChanged;
+  final ValueChanged<int?> onExerciseCountChanged;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final customized = overrideCount != null;
+    final atCatalogCap = exerciseCount >= catalogLength &&
+        catalogLength < GymSessionSizing.maxExerciseCount;
+    final maxAllowed = catalogLength.clamp(
+      GymSessionSizing.minExerciseCount,
+      GymSessionSizing.maxExerciseCount,
+    );
+
     return Card(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+        padding: AppSpacing.cardTight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Gym time · $exerciseCount exercises · ~$estimatedMinutes min clock',
+              'Gym time · ~$estimatedMinutes min clock',
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
             ),
             const SizedBox(height: 10),
             Wrap(
-              spacing: 8,
-              runSpacing: 8,
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.sm,
               children: GymSessionSizing.optionsMinutes.map((m) {
                 final label = m >= 120
                     ? (m == 120 ? '2 hr' : '2.5 hr')
@@ -474,17 +586,68 @@ class _GymTimePicker extends StatelessWidget {
                 return ChoiceChip(
                   label: Text(label),
                   selected: gymMinutes == m,
-                  onSelected: (_) => onChanged(m),
+                  onSelected: (_) => onGymMinutesChanged(m),
                 );
               }).toList(),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.md),
             Text(
-              '${GymSessionSizing.labelForMinutes(gymMinutes)} — moves numbered 1–$exerciseCount for that window.',
+              'Exercises today',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              customized
+                  ? 'Custom · gym-time baseline is $baselineCount'
+                  : '${GymSessionSizing.labelForMinutes(gymMinutes)} baseline',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: scheme.onSurfaceVariant,
                   ),
             ),
+            const SizedBox(height: AppSpacing.sm),
+            Row(
+              children: [
+                IconButton(
+                  tooltip: 'Fewer exercises',
+                  onPressed: exerciseCount > GymSessionSizing.minExerciseCount
+                      ? () => onExerciseCountChanged(exerciseCount - 1)
+                      : null,
+                  icon: const Icon(Icons.remove_circle_outline),
+                ),
+                Text(
+                  '$exerciseCount',
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+                IconButton(
+                  tooltip: 'More exercises',
+                  onPressed: exerciseCount < maxAllowed
+                      ? () => onExerciseCountChanged(exerciseCount + 1)
+                      : null,
+                  icon: const Icon(Icons.add_circle_outline),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                if (customized)
+                  TextButton(
+                    onPressed: () => onExerciseCountChanged(null),
+                    child: const Text('Match gym time'),
+                  ),
+              ],
+            ),
+            if (atCatalogCap)
+              Padding(
+                padding: const EdgeInsets.only(top: AppSpacing.xs),
+                child: Text(
+                  'Catalog max for this plan is $catalogLength. '
+                  'Re-do check-in for a longer list.',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: scheme.tertiary,
+                      ),
+                ),
+              ),
           ],
         ),
       ),
@@ -516,7 +679,7 @@ class _SetsStepper extends StatelessWidget {
               Text(
                 'Sets',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
               Text(
@@ -538,7 +701,7 @@ class _SetsStepper extends StatelessWidget {
         Text(
           '$sets',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
               ),
         ),
         IconButton(
@@ -561,25 +724,25 @@ class _OrderGuideCard extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: AppSpacing.card,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Icon(Icons.route_rounded, color: scheme.primary),
-                const SizedBox(width: 8),
+                const SizedBox(width: AppSpacing.sm),
                 Text(
                   'Why this order',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
             Text(RoutineOrderGuide.sessionGuide(exercises)),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             _GuideStep(
               step: '1',
               title: 'Openers first',
@@ -628,7 +791,7 @@ class _GuideStep extends StatelessWidget {
               step,
               style: TextStyle(
                 fontSize: 12,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w600,
                 color: scheme.primary,
               ),
             ),
@@ -641,7 +804,7 @@ class _GuideStep extends StatelessWidget {
                 Text(
                   title,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
                 Text(
@@ -678,17 +841,17 @@ class _DayFuelCard extends StatelessWidget {
     return Card(
       color: scheme.primaryContainer.withValues(alpha: 0.28),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: AppSpacing.card,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Today\'s calorie snapshot',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w600,
                   ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             Row(
               children: [
                 Expanded(
@@ -755,7 +918,7 @@ class _FuelStat extends StatelessWidget {
         Text(
           value,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
               ),
         ),
         Text(
@@ -798,7 +961,7 @@ class _PlanMealCard extends StatelessWidget {
       child: InkWell(
         onTap: onSelect,
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: AppSpacing.card,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -812,24 +975,24 @@ class _PlanMealCard extends StatelessWidget {
                       label,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             color: scheme.primary,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                           ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       meal!.name,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                           ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: AppSpacing.xs),
                     Text(
                       meal!.portion,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: scheme.onSurfaceVariant,
                           ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: AppSpacing.sm),
                     Wrap(
                       spacing: 6,
                       runSpacing: 6,
@@ -902,7 +1065,7 @@ class _MealPickerSheet extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 4, 20, 8),
+          padding: const EdgeInsets.fromLTRB(12, 4, 12, 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -914,7 +1077,7 @@ class _MealPickerSheet extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 'Macros estimated from stated portions (ICMR–NIN / USDA-style '
                 'food composition). Educational — not lab analysis of your plate.',
@@ -928,9 +1091,9 @@ class _MealPickerSheet extends StatelessWidget {
         Expanded(
           child: ListView.separated(
             controller: controller,
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 16),
             itemCount: options.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 8),
+            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
             itemBuilder: (context, i) {
               final m = options[i];
               final selected = m.id == currentId;
@@ -943,12 +1106,12 @@ class _MealPickerSheet extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                   onTap: () => Navigator.pop(context, m),
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: AppSpacing.card,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MealIconTile(mealId: m.id, mealName: m.name),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: AppSpacing.md),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -958,7 +1121,7 @@ class _MealPickerSheet extends StatelessWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
-                                    ?.copyWith(fontWeight: FontWeight.w800),
+                                    ?.copyWith(fontWeight: FontWeight.w600),
                               ),
                               const SizedBox(height: 2),
                               Text(
@@ -979,11 +1142,11 @@ class _MealPickerSheet extends StatelessWidget {
                                     .labelLarge
                                     ?.copyWith(
                                       color: scheme.primary,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w600,
                                     ),
                               ),
                               if (m.nutritionNotes.isNotEmpty) ...[
-                                const SizedBox(height: 4),
+                                const SizedBox(height: AppSpacing.xs),
                                 Text(
                                   m.nutritionNotes.first,
                                   maxLines: 2,

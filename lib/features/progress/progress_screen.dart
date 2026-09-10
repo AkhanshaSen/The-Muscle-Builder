@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../app/providers.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/models/models.dart';
@@ -22,7 +23,6 @@ class ProgressScreen extends ConsumerWidget {
     final setsTodayAsync = ref.watch(setsTodayProvider);
     final setsWeekAsync = ref.watch(setsThisWeekProvider);
     final profileAsync = ref.watch(profileProvider);
-    final planAsync = ref.watch(todaysPlanProvider);
     final weekDaysAsync = ref.watch(thisWeekDayLogsProvider);
     final analysisAsync = ref.watch(routineAnalysisProvider);
     final dayLogsAsync = ref.watch(recentDayLogsProvider);
@@ -74,7 +74,12 @@ class ProgressScreen extends ConsumerWidget {
               .toList();
 
           return ListView(
-            padding: const EdgeInsets.fromLTRB(12, 6, 12, 20),
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.md,
+              6,
+              AppSpacing.md,
+              AppSpacing.lg,
+            ),
             children: [
               Card(
                 color: scheme.primaryContainer.withValues(alpha: 0.3),
@@ -85,35 +90,49 @@ class ProgressScreen extends ConsumerWidget {
                   subtitle: Text(cheer, maxLines: 2),
                 ),
               ),
-              if (planAsync.asData?.value case final plan?) ...[
-                const SizedBox(height: 8),
+              if (ref.watch(todayStatusProvider).asData?.value
+                  case final status?) ...[
+                const SizedBox(height: AppSpacing.sm),
                 Card(
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: AppSpacing.card,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Today',
+                          status.isRestLogged
+                              ? 'Today · ${status.loggedKind!.label}'
+                              : 'Today',
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall
-                              ?.copyWith(fontWeight: FontWeight.w800),
+                              ?.copyWith(fontWeight: FontWeight.w600),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Burn ~${GymSessionSizing.activeBurnKcal(plan)} · '
-                          'Meals ${plan.mealFuelKcal} kcal · '
-                          'P ${plan.mealProteinG.toStringAsFixed(0)}g · '
-                          '${plan.gymMinutes} min',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
+                        const SizedBox(height: AppSpacing.xs),
+                        if (status.isRestLogged)
+                          Text(
+                            status.loggedKind!.subtitle,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          )
+                        else if (status.plan case final plan?)
+                          Text(
+                            'Burn ~${GymSessionSizing.activeBurnKcal(plan)} · '
+                            'Meals ${plan.mealFuelKcal} kcal · '
+                            'P ${plan.mealProteinG.toStringAsFixed(0)}g · '
+                            '${plan.gymMinutes} min',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          )
+                        else
+                          Text(
+                            'No plan yet — start a check-in when you are ready.',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         TextButton(
                           style: TextButton.styleFrom(
                             visualDensity: VisualDensity.compact,
                           ),
-                          onPressed: () =>
-                              context.push(DayDetailScreen.pathFor(DateTime.now())),
+                          onPressed: () => context
+                              .push(DayDetailScreen.pathFor(DateTime.now())),
                           child: const Text('Open today\'s detail'),
                         ),
                       ],
@@ -179,7 +198,7 @@ class ProgressScreen extends ConsumerWidget {
               Text(
                 'This week',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
               const SizedBox(height: 6),
@@ -199,15 +218,9 @@ class ProgressScreen extends ConsumerWidget {
                     child: Text(
                       'Day history',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                           ),
                     ),
-                  ),
-                  Text(
-                    'Tap for detail',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: scheme.onSurfaceVariant,
-                        ),
                   ),
                 ],
               ),
@@ -225,7 +238,9 @@ class ProgressScreen extends ConsumerWidget {
                   clipBehavior: Clip.antiAlias,
                   child: Column(
                     children: [
-                      for (var i = 0; i < recentDays.length; i++) ...[
+                      for (var i = 0;
+                          i < recentDays.length && i < 5;
+                          i++) ...[
                         if (i > 0) const Divider(height: 1),
                         _DayHistoryTile(
                           log: recentDays[i],
@@ -235,6 +250,13 @@ class ProgressScreen extends ConsumerWidget {
                           ),
                         ),
                       ],
+                      if (recentDays.length > 5) ...[
+                        const Divider(height: 1),
+                        TextButton(
+                          onPressed: () => context.push('/day-history'),
+                          child: const Text('View more'),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -242,7 +264,7 @@ class ProgressScreen extends ConsumerWidget {
               Text(
                 'Meal history',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
               const SizedBox(height: 4),
@@ -278,7 +300,7 @@ class ProgressScreen extends ConsumerWidget {
               Text(
                 'Recent sessions',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
               const SizedBox(height: 4),
@@ -434,6 +456,8 @@ class _CompactWeekStrip extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final short = DateFormat('E');
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
     return Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
@@ -441,6 +465,8 @@ class _CompactWeekStrip extends StatelessWidget {
           children: days.map((d) {
             final kind = d.effectiveKind;
             final color = dayKindColor(scheme, kind);
+            final day = DateTime(d.date.year, d.date.month, d.date.day);
+            final isToday = day == today;
             return Expanded(
               child: InkWell(
                 onTap: () => onTapDay(d),
@@ -449,13 +475,32 @@ class _CompactWeekStrip extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Column(
                     children: [
-                      Text(short.format(d.date),
-                          style: Theme.of(context).textTheme.labelSmall),
+                      Text(
+                        short.format(d.date),
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              fontWeight:
+                                  isToday ? FontWeight.w700 : FontWeight.w500,
+                              color: isToday ? scheme.primary : null,
+                            ),
+                      ),
                       const SizedBox(height: 4),
-                      CircleAvatar(
-                        radius: 14,
-                        backgroundColor: color.withValues(alpha: 0.2),
-                        child: Icon(dayKindIcon(kind), size: 14, color: color),
+                      Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isToday
+                                ? scheme.primary
+                                : Colors.transparent,
+                            width: 2,
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: 14,
+                          backgroundColor: color.withValues(alpha: 0.2),
+                          child:
+                              Icon(dayKindIcon(kind), size: 14, color: color),
+                        ),
                       ),
                     ],
                   ),
@@ -474,12 +519,34 @@ class _CompactCharts extends StatelessWidget {
 
   final RoutineAnalysis analysis;
 
+  void _showInfo(BuildContext context, String title, String body) {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(title),
+        content: Text(body),
+        actions: [
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Got it'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final total =
         analysis.gymCount + analysis.restCount + analysis.cheatCount;
     final adherencePct = (analysis.adherence * 100).round();
+    const weekLabels = [
+      '3 weeks ago',
+      '2 weeks ago',
+      'Last week',
+      'This week',
+    ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -487,16 +554,30 @@ class _CompactCharts extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: StatChip(
+              child: _InfoStatCard(
                 label: 'Adherence',
                 value: total == 0 ? '—' : '$adherencePct%',
+                onInfo: () => _showInfo(
+                  context,
+                  'Adherence',
+                  'Adherence is the % of your planned gym days you actually '
+                      'showed up for, over the last 28 days.\n\n'
+                      'For example, 50% means you hit half of the gym days '
+                      'you had planned.',
+                ),
               ),
             ),
             const SizedBox(width: 8),
             Expanded(
-              child: StatChip(
+              child: _InfoStatCard(
                 label: 'Gym (4w)',
                 value: '${analysis.gymCount}',
+                onInfo: () => _showInfo(
+                  context,
+                  'Gym (4w)',
+                  'The total number of days you logged as Gym in the last '
+                      '4 weeks (28 days).',
+                ),
               ),
             ),
           ],
@@ -504,136 +585,235 @@ class _CompactCharts extends StatelessWidget {
         const SizedBox(height: 8),
         Card(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 10, 8, 4),
+            padding: AppSpacing.card,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Day mix · gym / week',
+                  'Your last 28 days',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
-                SizedBox(
-                  height: 120,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: total == 0
-                            ? const Center(child: Text('Log days'))
-                            : PieChart(
-                                PieChartData(
-                                  sectionsSpace: 1,
-                                  centerSpaceRadius: 18,
-                                  pieTouchData:
-                                      PieTouchData(enabled: false),
-                                  sections: [
-                                    if (analysis.gymCount > 0)
-                                      PieChartSectionData(
-                                        value: analysis.gymCount.toDouble(),
-                                        title: '${analysis.gymCount}',
-                                        color: scheme.primary,
-                                        radius: 28,
-                                        titleStyle: const TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    if (analysis.restCount > 0)
-                                      PieChartSectionData(
-                                        value: analysis.restCount.toDouble(),
-                                        title: '${analysis.restCount}',
-                                        color: scheme.tertiary,
-                                        radius: 28,
-                                        titleStyle: const TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    if (analysis.cheatCount > 0)
-                                      PieChartSectionData(
-                                        value: analysis.cheatCount.toDouble(),
-                                        title: '${analysis.cheatCount}',
-                                        color: scheme.secondary,
-                                        radius: 28,
-                                        titleStyle: const TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                      ),
-                      Expanded(
-                        child: BarChart(
-                          BarChartData(
-                            maxY: (analysis.weeklyGymCounts.fold<int>(
-                                      0,
-                                      (a, b) => a > b ? a : b,
-                                    ) +
-                                    1)
-                                .toDouble()
-                                .clamp(3, 7),
-                            barTouchData: const BarTouchData(enabled: false),
-                            barGroups: [
-                              for (var i = 0;
-                                  i < analysis.weeklyGymCounts.length;
-                                  i++)
-                                BarChartGroupData(
-                                  x: i,
-                                  barRods: [
-                                    BarChartRodData(
-                                      toY: analysis.weeklyGymCounts[i]
-                                          .toDouble(),
-                                      color: scheme.primary,
-                                      width: 12,
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                  ],
-                                ),
-                            ],
-                            titlesData: FlTitlesData(
-                              topTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              rightTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              leftTitles: const AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  getTitlesWidget: (v, _) {
-                                    const labels = ['-3', '-2', '-1', 'Now'];
-                                    final i = v.toInt();
-                                    if (i < 0 || i >= labels.length) {
-                                      return const SizedBox.shrink();
-                                    }
-                                    return Text(
-                                      labels[i],
-                                      style:
-                                          Theme.of(context).textTheme.labelSmall,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            gridData: const FlGridData(show: false),
-                            borderData: FlBorderData(show: false),
-                          ),
+                const SizedBox(height: 8),
+                if (total == 0)
+                  Text(
+                    'Log gym, rest or cheat days to see your mix here.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
                         ),
-                      ),
-                    ],
+                  )
+                else ...[
+                  _DayMixRow(
+                    color: scheme.primary,
+                    label: 'Gym',
+                    count: analysis.gymCount,
+                    hint: 'you trained',
                   ),
+                  const SizedBox(height: 6),
+                  _DayMixRow(
+                    color: scheme.tertiary,
+                    label: 'Rest',
+                    count: analysis.restCount,
+                    hint: 'recovery days',
+                  ),
+                  const SizedBox(height: 6),
+                  _DayMixRow(
+                    color: scheme.secondary,
+                    label: 'Cheat',
+                    count: analysis.cheatCount,
+                    hint: 'flexible days',
+                  ),
+                ],
+                const SizedBox(height: 14),
+                Text(
+                  'Gym days per week',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 8),
+                for (var i = 0; i < analysis.weeklyGymCounts.length; i++) ...[
+                  if (i > 0) const SizedBox(height: 6),
+                  _WeekBarRow(
+                    label: i < weekLabels.length
+                        ? weekLabels[i]
+                        : 'Week ${i + 1}',
+                    count: analysis.weeklyGymCounts[i],
+                    color: scheme.primary,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _InfoStatCard extends StatelessWidget {
+  const _InfoStatCard({
+    required this.label,
+    required this.value,
+    required this.onInfo,
+  });
+
+  final String label;
+  final String value;
+  final VoidCallback onInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 8, 4, 8),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  label,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: scheme.onSurface.withValues(alpha: 0.65),
+                      ),
+                ),
+              ),
+              IconButton(
+                tooltip: 'What is this?',
+                visualDensity: VisualDensity.compact,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+                iconSize: 16,
+                onPressed: onInfo,
+                icon: Icon(
+                  Icons.info_outline,
+                  color: scheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DayMixRow extends StatelessWidget {
+  const _DayMixRow({
+    required this.color,
+    required this.label,
+    required this.count,
+    required this.hint,
+  });
+
+  final Color color;
+  final String label;
+  final int count;
+  final String hint;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Row(
+      children: [
+        Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: label,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                TextSpan(
+                  text: '  — $hint',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: scheme.onSurfaceVariant,
+                      ),
                 ),
               ],
             ),
+          ),
+        ),
+        Text(
+          '$count days',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+      ],
+    );
+  }
+}
+
+class _WeekBarRow extends StatelessWidget {
+  const _WeekBarRow({
+    required this.label,
+    required this.count,
+    required this.color,
+  });
+
+  final String label;
+  final int count;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Row(
+      children: [
+        SizedBox(
+          width: 90,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                ),
+          ),
+        ),
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: (count / 7).clamp(0.0, 1.0),
+              minHeight: 8,
+              backgroundColor: scheme.surfaceContainerHighest,
+              color: color,
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        SizedBox(
+          width: 16,
+          child: Text(
+            '$count',
+            textAlign: TextAlign.end,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
           ),
         ),
       ],
@@ -660,7 +840,7 @@ class _BodyMetricsSection extends ConsumerWidget {
               child: Text(
                 'Body & water',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
               ),
             ),
@@ -687,18 +867,18 @@ class _BodyMetricsSection extends ConsumerWidget {
                 .toDouble();
             return Card(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+                padding: AppSpacing.cardTight,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Water · last ${logs.length} days',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                           ),
                     ),
                     SizedBox(
-                      height: 88,
+                      height: 76,
                       child: BarChart(
                         BarChartData(
                           maxY: (maxG + 1).clamp(4, 12),
@@ -787,14 +967,14 @@ class _BodyMetricsSection extends ConsumerWidget {
 
             return Card(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                padding: AppSpacing.cardTight,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Weight · ${logs.first.weightKg.toStringAsFixed(1)} kg latest',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w600,
                           ),
                     ),
                     const SizedBox(height: 4),
@@ -836,7 +1016,7 @@ class _BodyMetricsSection extends ConsumerWidget {
                     ),
                     const SizedBox(height: 10),
                     SizedBox(
-                      height: 140,
+                      height: 116,
                       child: LineChart(
                         LineChartData(
                           minY: minY,
@@ -993,5 +1173,59 @@ class _BodyMetricsSection extends ConsumerWidget {
           .saveProfile(profile.copyWith(weightKg: w));
     }
     ref.read(metricsTickProvider.notifier).state++;
+  }
+}
+
+class DayHistoryScreen extends ConsumerWidget {
+  const DayHistoryScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dayLogsAsync = ref.watch(recentDayLogsProvider);
+    final dayFmt = DateFormat('EEE d');
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Day history'),
+        leading: const NestedBackButton(fallbackLocation: '/progress'),
+      ),
+      body: dayLogsAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text('$e')),
+        data: (days) {
+          if (days.isEmpty) {
+            return const Center(
+              child: EmptyState(
+                icon: Icons.calendar_today_outlined,
+                title: 'No days yet',
+                message: 'Log today on Home or finish a session.',
+              ),
+            );
+          }
+          return ListView(
+            padding: AppSpacing.page,
+            children: [
+              Card(
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  children: [
+                    for (var i = 0; i < days.length; i++) ...[
+                      if (i > 0) const Divider(height: 1),
+                      _DayHistoryTile(
+                        log: days[i],
+                        label: dayFmt.format(days[i].date),
+                        onTap: () => context.push(
+                          DayDetailScreen.pathFor(days[i].date),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
   }
 }

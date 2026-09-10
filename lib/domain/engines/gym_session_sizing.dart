@@ -1,10 +1,14 @@
 import '../models/models.dart';
 
-/// Maps gym time today → exercise count and per-move time windows.
+/// Maps gym time today → baseline exercise count and per-move time windows.
+///
+/// [WorkoutPlan.exerciseCountOverride] wins over the time baseline when set.
 class GymSessionSizing {
   const GymSessionSizing._();
 
   static const optionsMinutes = [20, 30, 45, 60, 90, 120, 150];
+  static const minExerciseCount = 1;
+  static const maxExerciseCount = 12;
 
   static int exerciseCountFor(int gymMinutes) {
     if (gymMinutes <= 20) return 3;
@@ -17,6 +21,14 @@ class GymSessionSizing {
   }
 
   static int maxCatalogCount() => exerciseCountFor(optionsMinutes.last);
+
+  /// Effective exercise count for a plan (override or gym-time baseline).
+  static int resolvedCount(WorkoutPlan plan) {
+    final baseline = exerciseCountFor(plan.gymMinutes);
+    final raw = plan.exerciseCountOverride ?? baseline;
+    final max = plan.exercises.isEmpty ? maxExerciseCount : plan.exercises.length;
+    return raw.clamp(minExerciseCount, max);
+  }
 
   /// Rough block length for one exercise (work + rests).
   static int minutesForExercise(PlannedExercise e) {
@@ -55,10 +67,10 @@ class GymSessionSizing {
     return 'Marathon · ~2.5 hr';
   }
 
-  /// Exercises that fit the plan's gym window (numbered 1…N for that day).
+  /// Exercises that fit the plan's resolved count (numbered 1…N for that day).
   static List<PlannedExercise> activeExercises(WorkoutPlan plan) {
     if (plan.exercises.isEmpty) return const [];
-    final n = exerciseCountFor(plan.gymMinutes).clamp(1, plan.exercises.length);
+    final n = resolvedCount(plan).clamp(1, plan.exercises.length);
     return plan.exercises.take(n).toList();
   }
 

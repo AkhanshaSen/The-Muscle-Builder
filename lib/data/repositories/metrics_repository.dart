@@ -9,33 +9,57 @@ class MetricsRepository {
 
   final AppDatabase _db;
   final _uuid = const Uuid();
+  final _inflightHydration = <DateTime, Future<HydrationLog>>{};
 
   DateTime dayKey(DateTime d) => DateTime(d.year, d.month, d.day);
 
-  Future<HydrationLog> getOrCreateHydration(DateTime date) async {
+  Future<HydrationLog> getOrCreateHydration(DateTime date) {
     final key = dayKey(date);
+    return _inflightHydration
+        .putIfAbsent(key, () => _getOrCreateHydration(key))
+        .whenComplete(() => _inflightHydration.remove(key));
+  }
+
+  Future<HydrationLog> _getOrCreateHydration(DateTime key) async {
     final existing = await (_db.select(_db.hydrationLogs)
           ..where((t) => t.date.equals(key))
+          ..orderBy([
+            (t) => OrderingTerm.desc(t.glasses),
+            (t) => OrderingTerm.desc(t.updatedAt),
+          ])
           ..limit(1))
         .getSingleOrNull();
     if (existing != null) return _mapHydration(existing);
 
     final id = _uuid.v4();
     final now = DateTime.now();
-    await _db.into(_db.hydrationLogs).insert(
-          HydrationLogsCompanion.insert(
-            id: id,
-            date: key,
-            updatedAt: now,
-          ),
-        );
-    return HydrationLog(
-      id: id,
-      date: key,
-      glasses: 0,
-      goalGlasses: 8,
-      updatedAt: now,
-    );
+    try {
+      await _db.into(_db.hydrationLogs).insert(
+            HydrationLogsCompanion.insert(
+              id: id,
+              date: key,
+              updatedAt: now,
+            ),
+          );
+      return HydrationLog(
+        id: id,
+        date: key,
+        glasses: 0,
+        goalGlasses: 8,
+        updatedAt: now,
+      );
+    } catch (_) {
+      final again = await (_db.select(_db.hydrationLogs)
+            ..where((t) => t.date.equals(key))
+            ..orderBy([
+              (t) => OrderingTerm.desc(t.glasses),
+              (t) => OrderingTerm.desc(t.updatedAt),
+            ])
+            ..limit(1))
+          .getSingleOrNull();
+      if (again != null) return _mapHydration(again);
+      rethrow;
+    }
   }
 
   Future<HydrationLog> setGlasses(DateTime date, int glasses) async {

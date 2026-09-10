@@ -2129,6 +2129,16 @@ class $WorkoutPlansTable extends WorkoutPlans
     requiredDuringInsert: false,
     defaultValue: const Constant(45),
   );
+  static const VerificationMeta _exerciseCountOverrideMeta =
+      const VerificationMeta('exerciseCountOverride');
+  @override
+  late final GeneratedColumn<int> exerciseCountOverride = GeneratedColumn<int>(
+    'exercise_count_override',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -2139,6 +2149,7 @@ class $WorkoutPlansTable extends WorkoutPlans
     preMealJson,
     postMealJson,
     gymMinutes,
+    exerciseCountOverride,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2219,6 +2230,15 @@ class $WorkoutPlansTable extends WorkoutPlans
         gymMinutes.isAcceptableOrUnknown(data['gym_minutes']!, _gymMinutesMeta),
       );
     }
+    if (data.containsKey('exercise_count_override')) {
+      context.handle(
+        _exerciseCountOverrideMeta,
+        exerciseCountOverride.isAcceptableOrUnknown(
+          data['exercise_count_override']!,
+          _exerciseCountOverrideMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -2260,6 +2280,10 @@ class $WorkoutPlansTable extends WorkoutPlans
         DriftSqlType.int,
         data['${effectivePrefix}gym_minutes'],
       )!,
+      exerciseCountOverride: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}exercise_count_override'],
+      ),
     );
   }
 
@@ -2278,6 +2302,7 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
   final String? preMealJson;
   final String? postMealJson;
   final int gymMinutes;
+  final int? exerciseCountOverride;
   const WorkoutPlanRow({
     required this.id,
     required this.checkInId,
@@ -2287,6 +2312,7 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
     this.preMealJson,
     this.postMealJson,
     required this.gymMinutes,
+    this.exerciseCountOverride,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2303,6 +2329,9 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
       map['post_meal_json'] = Variable<String>(postMealJson);
     }
     map['gym_minutes'] = Variable<int>(gymMinutes);
+    if (!nullToAbsent || exerciseCountOverride != null) {
+      map['exercise_count_override'] = Variable<int>(exerciseCountOverride);
+    }
     return map;
   }
 
@@ -2320,6 +2349,9 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
           ? const Value.absent()
           : Value(postMealJson),
       gymMinutes: Value(gymMinutes),
+      exerciseCountOverride: exerciseCountOverride == null && nullToAbsent
+          ? const Value.absent()
+          : Value(exerciseCountOverride),
     );
   }
 
@@ -2337,6 +2369,9 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
       preMealJson: serializer.fromJson<String?>(json['preMealJson']),
       postMealJson: serializer.fromJson<String?>(json['postMealJson']),
       gymMinutes: serializer.fromJson<int>(json['gymMinutes']),
+      exerciseCountOverride: serializer.fromJson<int?>(
+        json['exerciseCountOverride'],
+      ),
     );
   }
   @override
@@ -2351,6 +2386,7 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
       'preMealJson': serializer.toJson<String?>(preMealJson),
       'postMealJson': serializer.toJson<String?>(postMealJson),
       'gymMinutes': serializer.toJson<int>(gymMinutes),
+      'exerciseCountOverride': serializer.toJson<int?>(exerciseCountOverride),
     };
   }
 
@@ -2363,6 +2399,7 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
     Value<String?> preMealJson = const Value.absent(),
     Value<String?> postMealJson = const Value.absent(),
     int? gymMinutes,
+    Value<int?> exerciseCountOverride = const Value.absent(),
   }) => WorkoutPlanRow(
     id: id ?? this.id,
     checkInId: checkInId ?? this.checkInId,
@@ -2372,6 +2409,9 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
     preMealJson: preMealJson.present ? preMealJson.value : this.preMealJson,
     postMealJson: postMealJson.present ? postMealJson.value : this.postMealJson,
     gymMinutes: gymMinutes ?? this.gymMinutes,
+    exerciseCountOverride: exerciseCountOverride.present
+        ? exerciseCountOverride.value
+        : this.exerciseCountOverride,
   );
   WorkoutPlanRow copyWithCompanion(WorkoutPlansCompanion data) {
     return WorkoutPlanRow(
@@ -2393,6 +2433,9 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
       gymMinutes: data.gymMinutes.present
           ? data.gymMinutes.value
           : this.gymMinutes,
+      exerciseCountOverride: data.exerciseCountOverride.present
+          ? data.exerciseCountOverride.value
+          : this.exerciseCountOverride,
     );
   }
 
@@ -2406,7 +2449,8 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
           ..write('encouragement: $encouragement, ')
           ..write('preMealJson: $preMealJson, ')
           ..write('postMealJson: $postMealJson, ')
-          ..write('gymMinutes: $gymMinutes')
+          ..write('gymMinutes: $gymMinutes, ')
+          ..write('exerciseCountOverride: $exerciseCountOverride')
           ..write(')'))
         .toString();
   }
@@ -2421,6 +2465,7 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
     preMealJson,
     postMealJson,
     gymMinutes,
+    exerciseCountOverride,
   );
   @override
   bool operator ==(Object other) =>
@@ -2433,7 +2478,8 @@ class WorkoutPlanRow extends DataClass implements Insertable<WorkoutPlanRow> {
           other.encouragement == this.encouragement &&
           other.preMealJson == this.preMealJson &&
           other.postMealJson == this.postMealJson &&
-          other.gymMinutes == this.gymMinutes);
+          other.gymMinutes == this.gymMinutes &&
+          other.exerciseCountOverride == this.exerciseCountOverride);
 }
 
 class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
@@ -2445,6 +2491,7 @@ class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
   final Value<String?> preMealJson;
   final Value<String?> postMealJson;
   final Value<int> gymMinutes;
+  final Value<int?> exerciseCountOverride;
   final Value<int> rowid;
   const WorkoutPlansCompanion({
     this.id = const Value.absent(),
@@ -2455,6 +2502,7 @@ class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
     this.preMealJson = const Value.absent(),
     this.postMealJson = const Value.absent(),
     this.gymMinutes = const Value.absent(),
+    this.exerciseCountOverride = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   WorkoutPlansCompanion.insert({
@@ -2466,6 +2514,7 @@ class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
     this.preMealJson = const Value.absent(),
     this.postMealJson = const Value.absent(),
     this.gymMinutes = const Value.absent(),
+    this.exerciseCountOverride = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        checkInId = Value(checkInId),
@@ -2481,6 +2530,7 @@ class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
     Expression<String>? preMealJson,
     Expression<String>? postMealJson,
     Expression<int>? gymMinutes,
+    Expression<int>? exerciseCountOverride,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -2492,6 +2542,8 @@ class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
       if (preMealJson != null) 'pre_meal_json': preMealJson,
       if (postMealJson != null) 'post_meal_json': postMealJson,
       if (gymMinutes != null) 'gym_minutes': gymMinutes,
+      if (exerciseCountOverride != null)
+        'exercise_count_override': exerciseCountOverride,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -2505,6 +2557,7 @@ class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
     Value<String?>? preMealJson,
     Value<String?>? postMealJson,
     Value<int>? gymMinutes,
+    Value<int?>? exerciseCountOverride,
     Value<int>? rowid,
   }) {
     return WorkoutPlansCompanion(
@@ -2516,6 +2569,8 @@ class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
       preMealJson: preMealJson ?? this.preMealJson,
       postMealJson: postMealJson ?? this.postMealJson,
       gymMinutes: gymMinutes ?? this.gymMinutes,
+      exerciseCountOverride:
+          exerciseCountOverride ?? this.exerciseCountOverride,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2547,6 +2602,11 @@ class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
     if (gymMinutes.present) {
       map['gym_minutes'] = Variable<int>(gymMinutes.value);
     }
+    if (exerciseCountOverride.present) {
+      map['exercise_count_override'] = Variable<int>(
+        exerciseCountOverride.value,
+      );
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -2564,6 +2624,7 @@ class WorkoutPlansCompanion extends UpdateCompanion<WorkoutPlanRow> {
           ..write('preMealJson: $preMealJson, ')
           ..write('postMealJson: $postMealJson, ')
           ..write('gymMinutes: $gymMinutes, ')
+          ..write('exerciseCountOverride: $exerciseCountOverride, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -6262,6 +6323,7 @@ typedef $$WorkoutPlansTableCreateCompanionBuilder =
       Value<String?> preMealJson,
       Value<String?> postMealJson,
       Value<int> gymMinutes,
+      Value<int?> exerciseCountOverride,
       Value<int> rowid,
     });
 typedef $$WorkoutPlansTableUpdateCompanionBuilder =
@@ -6274,6 +6336,7 @@ typedef $$WorkoutPlansTableUpdateCompanionBuilder =
       Value<String?> preMealJson,
       Value<String?> postMealJson,
       Value<int> gymMinutes,
+      Value<int?> exerciseCountOverride,
       Value<int> rowid,
     });
 
@@ -6323,6 +6386,11 @@ class $$WorkoutPlansTableFilterComposer
 
   ColumnFilters<int> get gymMinutes => $composableBuilder(
     column: $table.gymMinutes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get exerciseCountOverride => $composableBuilder(
+    column: $table.exerciseCountOverride,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -6375,6 +6443,11 @@ class $$WorkoutPlansTableOrderingComposer
     column: $table.gymMinutes,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<int> get exerciseCountOverride => $composableBuilder(
+    column: $table.exerciseCountOverride,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$WorkoutPlansTableAnnotationComposer
@@ -6419,6 +6492,11 @@ class $$WorkoutPlansTableAnnotationComposer
     column: $table.gymMinutes,
     builder: (column) => column,
   );
+
+  GeneratedColumn<int> get exerciseCountOverride => $composableBuilder(
+    column: $table.exerciseCountOverride,
+    builder: (column) => column,
+  );
 }
 
 class $$WorkoutPlansTableTableManager
@@ -6460,6 +6538,7 @@ class $$WorkoutPlansTableTableManager
                 Value<String?> preMealJson = const Value.absent(),
                 Value<String?> postMealJson = const Value.absent(),
                 Value<int> gymMinutes = const Value.absent(),
+                Value<int?> exerciseCountOverride = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WorkoutPlansCompanion(
                 id: id,
@@ -6470,6 +6549,7 @@ class $$WorkoutPlansTableTableManager
                 preMealJson: preMealJson,
                 postMealJson: postMealJson,
                 gymMinutes: gymMinutes,
+                exerciseCountOverride: exerciseCountOverride,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -6482,6 +6562,7 @@ class $$WorkoutPlansTableTableManager
                 Value<String?> preMealJson = const Value.absent(),
                 Value<String?> postMealJson = const Value.absent(),
                 Value<int> gymMinutes = const Value.absent(),
+                Value<int?> exerciseCountOverride = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WorkoutPlansCompanion.insert(
                 id: id,
@@ -6492,6 +6573,7 @@ class $$WorkoutPlansTableTableManager
                 preMealJson: preMealJson,
                 postMealJson: postMealJson,
                 gymMinutes: gymMinutes,
+                exerciseCountOverride: exerciseCountOverride,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

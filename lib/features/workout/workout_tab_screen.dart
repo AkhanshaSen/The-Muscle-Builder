@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/providers.dart';
+import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../domain/models/models.dart';
+import '../routine/routine_widgets.dart';
 import 'exercise_posture_gallery.dart';
 
 class WorkoutTabScreen extends ConsumerWidget {
@@ -12,14 +14,28 @@ class WorkoutTabScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final planAsync = ref.watch(todaysPlanProvider);
+    final statusAsync = ref.watch(todayStatusProvider);
+    final trainAnyway = ref.watch(trainAnywayProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Workout')),
-      body: planAsync.when(
+      body: statusAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('$e')),
-        data: (plan) {
+        data: (status) {
+          if (status.isRestLogged && !trainAnyway) {
+            return ListView(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              children: [
+                RestDayCard(
+                  kind: status.loggedKind!,
+                  hasPlan: status.plan != null,
+                ),
+              ],
+            );
+          }
+
+          final plan = status.plan;
           if (plan == null) {
             return EmptyState(
               icon: Icons.fitness_center,
@@ -34,18 +50,18 @@ class WorkoutTabScreen extends ConsumerWidget {
           }
 
           return ListView(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(AppSpacing.md),
             children: [
               Text(
                 plan.encouragement,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: AppSpacing.md),
               ...plan.exercises.asMap().entries.map((entry) {
                 final index = entry.key;
                 final e = entry.value;
                 return Card(
-                  margin: const EdgeInsets.only(bottom: 10),
+                  margin: const EdgeInsets.only(bottom: AppSpacing.sm),
                   clipBehavior: Clip.antiAlias,
                   child: ListTile(
                     leading: CircleAvatar(
@@ -57,7 +73,7 @@ class WorkoutTabScreen extends ConsumerWidget {
                         '${index + 1}',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -76,12 +92,12 @@ class WorkoutTabScreen extends ConsumerWidget {
                   ),
                 );
               }),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               PrimaryCta(
                 label: 'Open full plan',
                 onPressed: () => context.push('/plan/${plan.id}'),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               OutlinedButton(
                 onPressed: () => context.push('/checkin'),
                 child: const Text('New check-in'),
@@ -119,14 +135,14 @@ class WorkoutTabScreen extends ConsumerWidget {
                   'Exercise ${index + 1} of ${plan.exercises.length}',
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: scheme.primary,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   exercise.name,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w600,
                       ),
                 ),
                 const SizedBox(height: 8),
@@ -158,7 +174,7 @@ class WorkoutTabScreen extends ConsumerWidget {
                   Text(
                     'Form cues',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w600,
                         ),
                   ),
                   const SizedBox(height: 6),
@@ -174,7 +190,7 @@ class WorkoutTabScreen extends ConsumerWidget {
                   Text(
                     'Common mistakes',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w600,
                         ),
                   ),
                   const SizedBox(height: 6),

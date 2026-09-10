@@ -13,6 +13,7 @@ class RoutineRepository {
   final AppDatabase _db;
   static const _uuid = Uuid();
   static const _routineId = 'default_weekly';
+  final _inflightDayLogs = <DateTime, Future<DayLog>>{};
 
   DateTime dayKey(DateTime d) => DateTime(d.year, d.month, d.day);
 
@@ -93,8 +94,14 @@ class RoutineRepository {
     );
   }
 
-  Future<DayLog> ensureDayLog(DateTime date) async {
+  Future<DayLog> ensureDayLog(DateTime date) {
     final key = dayKey(date);
+    return _inflightDayLogs.putIfAbsent(key, () => _ensureDayLog(key)).whenComplete(
+          () => _inflightDayLogs.remove(key),
+        );
+  }
+
+  Future<DayLog> _ensureDayLog(DateTime key) async {
     final existing = await _findByDate(key);
     if (existing != null) return existing;
 
@@ -102,20 +109,27 @@ class RoutineRepository {
     final planned = routine.kindFor(key);
     final id = _uuid.v4();
     final now = DateTime.now();
-    await _db.into(_db.dayLogs).insert(
-          DayLogsCompanion.insert(
-            id: id,
-            date: key,
-            plannedKind: planned.name,
-            updatedAt: now,
-          ),
-        );
-    return DayLog(
-      id: id,
-      date: key,
-      plannedKind: planned,
-      updatedAt: now,
-    );
+    try {
+      await _db.into(_db.dayLogs).insert(
+            DayLogsCompanion.insert(
+              id: id,
+              date: key,
+              plannedKind: planned.name,
+              updatedAt: now,
+            ),
+          );
+      return DayLog(
+        id: id,
+        date: key,
+        plannedKind: planned,
+        updatedAt: now,
+      );
+    } catch (_) {
+      // Unique index on date — another writer won the race.
+      final again = await _findByDate(key);
+      if (again != null) return again;
+      rethrow;
+    }
   }
 
   Future<DayLog> logDay({
@@ -286,7 +300,14 @@ class RoutineRepository {
 
   Future<DayLog?> _findByDate(DateTime key) async {
     final rows = await (_db.select(_db.dayLogs)
-          ..where((t) => t.date.equals(key)))
+          ..where((t) => t.date.equals(key))
+          ..orderBy([
+            (t) => OrderingTerm(
+                  expression: t.actualKind.isNotNull(),
+                  mode: OrderingMode.desc,
+                ),
+            (t) => OrderingTerm.desc(t.updatedAt),
+          ]))
         .get();
     if (rows.isEmpty) return null;
     return _mapLog(rows.first);

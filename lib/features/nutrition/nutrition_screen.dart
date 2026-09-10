@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/providers.dart';
+import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../data/seed/pro_nutrition_guides.dart';
 import '../../domain/models/enums.dart';
@@ -22,6 +23,9 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
     with SingleTickerProviderStateMixin {
   late final TabController _tabs;
   CuisineRegion? _regionOverride;
+  bool _searching = false;
+  String _query = '';
+  late final TextEditingController _searchController;
 
   Future<void> _openPharmer(FoodPharmerPointer pointer) async {
     final uri = Uri.parse(pointer.url);
@@ -33,29 +37,68 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
     }
   }
 
+  void _openSearch() {
+    setState(() => _searching = true);
+  }
+
+  void _closeSearch() {
+    _searchController.clear();
+    setState(() {
+      _searching = false;
+      _query = '';
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     final initialIndex =
         widget.initialTiming == MealTiming.postWorkout ? 1 : 0;
     _tabs = TabController(length: 3, vsync: this, initialIndex: initialIndex);
+    _tabs.addListener(() {
+      if (!_tabs.indexIsChanging) setState(() {});
+    });
+    _searchController = TextEditingController();
   }
 
   @override
   void dispose() {
     _tabs.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final profileAsync = ref.watch(profileProvider);
+    final onPharmerTab = _tabs.index == 2;
+    final showSearchAction = !onPharmerTab;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nutrition'),
+        title: _searching && showSearchAction
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                textInputAction: TextInputAction.search,
+                decoration: const InputDecoration(
+                  hintText: 'Search meals or ingredients',
+                  border: InputBorder.none,
+                  isDense: true,
+                ),
+                onChanged: (v) => setState(() => _query = v),
+              )
+            : const Text('Nutrition'),
         toolbarHeight: 48,
         scrolledUnderElevation: 1,
+        actions: [
+          if (showSearchAction)
+            IconButton(
+              tooltip: _searching ? 'Close search' : 'Search',
+              icon: Icon(_searching ? Icons.close : Icons.search),
+              onPressed: _searching ? _closeSearch : _openSearch,
+            ),
+        ],
         bottom: TabBar(
           controller: _tabs,
           isScrollable: true,
@@ -90,6 +133,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
                     child: _NutritionFiltersHeader(
                       profile: profile,
                       region: region,
+                      query: _query,
                       onRegionChanged: (r) =>
                           setState(() => _regionOverride = r),
                     ),
@@ -99,6 +143,8 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
                   timing: MealTiming.preWorkout,
                   profile: profile,
                   region: region,
+                  query: _query,
+                  onClearSearch: _closeSearch,
                 ),
               ),
               NestedScrollView(
@@ -107,6 +153,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
                     child: _NutritionFiltersHeader(
                       profile: profile,
                       region: region,
+                      query: _query,
                       onRegionChanged: (r) =>
                           setState(() => _regionOverride = r),
                     ),
@@ -116,6 +163,8 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
                   timing: MealTiming.postWorkout,
                   profile: profile,
                   region: region,
+                  query: _query,
+                  onClearSearch: _closeSearch,
                 ),
               ),
               _FoodPharmerTab(onOpenPharmer: _openPharmer),
@@ -131,11 +180,13 @@ class _NutritionFiltersHeader extends ConsumerWidget {
   const _NutritionFiltersHeader({
     required this.profile,
     required this.region,
+    required this.query,
     required this.onRegionChanged,
   });
 
   final UserProfile profile;
   final CuisineRegion region;
+  final String query;
   final ValueChanged<CuisineRegion> onRegionChanged;
 
   @override
@@ -143,9 +194,10 @@ class _NutritionFiltersHeader extends ConsumerWidget {
     final proteinFocusOn = MealIngredientChip.proteinFocus.every(
       (c) => profile.preferredIngredients.contains(c.name),
     );
+    final searching = query.trim().isNotEmpty;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 6, 12, 4),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.md, 6, AppSpacing.md, 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -171,92 +223,104 @@ class _NutritionFiltersHeader extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 4),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                for (final r in CuisineRegion.values)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: ChoiceChip(
-                      visualDensity: VisualDensity.compact,
-                      label: Text(r.label),
-                      selected: region == r,
-                      onSelected: (_) => onRegionChanged(r),
+          if (!searching) ...[
+            const SizedBox(height: AppSpacing.xs),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (final r in CuisineRegion.values)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: ChoiceChip(
+                        visualDensity: VisualDensity.compact,
+                        label: Text(r.label),
+                        selected: region == r,
+                        onSelected: (_) => onRegionChanged(r),
+                      ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'I want to eat',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-          ),
-          const SizedBox(height: 4),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 6),
-                  child: FilterChip(
-                    visualDensity: VisualDensity.compact,
-                    avatar: const Icon(Icons.bolt, size: 16),
-                    label: const Text('Protein focus'),
-                    selected: proteinFocusOn,
-                    onSelected: (on) async {
-                      final next = Set<String>.from(profile.preferredIngredients);
-                      for (final c in MealIngredientChip.proteinFocus) {
-                        if (on) {
-                          next.add(c.name);
-                        } else {
-                          next.remove(c.name);
-                        }
-                      }
-                      await ref.read(profileRepositoryProvider).saveProfile(
-                            profile.copyWith(
-                              preferredIngredients: next.toList(),
-                            ),
-                          );
-                    },
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'I want to eat',
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
                   ),
-                ),
-                for (final chip in MealIngredientChip.values)
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 6),
                     child: FilterChip(
                       visualDensity: VisualDensity.compact,
-                      label: Text(chip.label),
-                      selected:
-                          profile.preferredIngredients.contains(chip.name),
+                      avatar: const Icon(Icons.bolt, size: 16),
+                      label: const Text('Protein focus'),
+                      selected: proteinFocusOn,
                       onSelected: (on) async {
                         final next =
-                            List<String>.from(profile.preferredIngredients);
-                        if (on) {
-                          if (!next.contains(chip.name)) next.add(chip.name);
-                        } else {
-                          next.remove(chip.name);
+                            Set<String>.from(profile.preferredIngredients);
+                        for (final c in MealIngredientChip.proteinFocus) {
+                          if (on) {
+                            next.add(c.name);
+                          } else {
+                            next.remove(c.name);
+                          }
                         }
                         await ref.read(profileRepositoryProvider).saveProfile(
-                              profile.copyWith(preferredIngredients: next),
+                              profile.copyWith(
+                                preferredIngredients: next.toList(),
+                              ),
                             );
                       },
                     ),
                   ),
-              ],
+                  for (final chip in MealIngredientChip.values)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 6),
+                      child: FilterChip(
+                        visualDensity: VisualDensity.compact,
+                        label: Text(chip.label),
+                        selected:
+                            profile.preferredIngredients.contains(chip.name),
+                        onSelected: (on) async {
+                          final next =
+                              List<String>.from(profile.preferredIngredients);
+                          if (on) {
+                            if (!next.contains(chip.name)) next.add(chip.name);
+                          } else {
+                            next.remove(chip.name);
+                          }
+                          await ref.read(profileRepositoryProvider).saveProfile(
+                                profile.copyWith(preferredIngredients: next),
+                              );
+                        },
+                      ),
+                    ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
+          ],
+          const SizedBox(height: AppSpacing.sm),
           Text(
             'Meals',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.w600,
                 ),
           ),
+          if (searching) ...[
+            const SizedBox(height: 2),
+            Text(
+              'Searching “${query.trim()}” · region & chips ignored',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          ],
         ],
       ),
     );
@@ -272,22 +336,22 @@ class _FoodPharmerTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return ListView(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+      padding: AppSpacing.page,
       children: [
         Text(
           'Label & shopping pointers',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w600,
               ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: AppSpacing.xs),
         Text(
           'Educational · Food Pharmer · not medical advice. Opens in your browser.',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: scheme.onSurfaceVariant,
               ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         FilledButton.tonalIcon(
           onPressed: () => onOpenPharmer(
             const FoodPharmerPointer(
@@ -300,10 +364,10 @@ class _FoodPharmerTab extends StatelessWidget {
           icon: const Icon(Icons.open_in_new),
           label: const Text('Open Food Pharmer site'),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
         ...foodPharmerPointers.map(
           (p) => Padding(
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: _FoodPharmerListTile(
               pointer: p,
               onTap: () => onOpenPharmer(p),
@@ -345,17 +409,22 @@ class _MealList extends ConsumerWidget {
     required this.timing,
     required this.profile,
     required this.region,
+    required this.query,
+    required this.onClearSearch,
   });
 
   final MealTiming timing;
   final UserProfile profile;
   final CuisineRegion region;
+  final String query;
+  final VoidCallback onClearSearch;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final searching = query.trim().isNotEmpty;
     return FutureBuilder<List<MealSuggestion>>(
       key: ValueKey(
-        '${timing.name}_${region.name}_${profile.preferredIngredients.join(',')}',
+        '${timing.name}_${region.name}_${profile.preferredIngredients.join(',')}_$query',
       ),
       future: ref.read(nutritionRepositoryProvider).suggestionsFor(
             timing: timing,
@@ -363,6 +432,7 @@ class _MealList extends ConsumerWidget {
             allergies: profile.allergies,
             region: region,
             preferredIngredients: profile.preferredIngredients,
+            query: query,
           ),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -370,6 +440,17 @@ class _MealList extends ConsumerWidget {
         }
         final meals = snapshot.data!;
         if (meals.isEmpty) {
+          if (searching) {
+            return EmptyState(
+              icon: Icons.search_off,
+              title: 'No meals match "${query.trim()}"',
+              message: 'Try another name or ingredient, or clear search.',
+              action: TextButton(
+                onPressed: onClearSearch,
+                child: const Text('Clear search'),
+              ),
+            );
+          }
           return EmptyState(
             icon: Icons.no_meals_outlined,
             title: 'No matches',
@@ -379,17 +460,31 @@ class _MealList extends ConsumerWidget {
           );
         }
         return ListView.separated(
-          padding: const EdgeInsets.fromLTRB(12, 4, 12, 16),
-          itemCount: meals.length,
-          separatorBuilder: (_, _) => const SizedBox(height: 8),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.md,
+            AppSpacing.xs,
+            AppSpacing.md,
+            AppSpacing.lg,
+          ),
+          itemCount: searching ? meals.length + 1 : meals.length,
+          separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
           itemBuilder: (context, index) {
-            final m = meals[index];
+            if (searching && index == 0) {
+              return Text(
+                '${meals.length} result${meals.length == 1 ? '' : 's'} for "${query.trim()}"',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
+              );
+            }
+            final m = meals[searching ? index - 1 : index];
             final unlocked = profile.unlockedRecipeIds.contains(m.id);
             final scheme = Theme.of(context).colorScheme;
             return Card(
               margin: EdgeInsets.zero,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                padding: AppSpacing.cardTight,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -405,7 +500,7 @@ class _MealList extends ConsumerWidget {
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleSmall
-                                    ?.copyWith(fontWeight: FontWeight.w800),
+                                    ?.copyWith(fontWeight: FontWeight.w600),
                               ),
                               const SizedBox(height: 2),
                               Text(
@@ -417,7 +512,7 @@ class _MealList extends ConsumerWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: AppSpacing.sm),
                         MealIconTile(
                           mealId: m.id,
                           mealName: m.name,
@@ -438,11 +533,11 @@ class _MealList extends ConsumerWidget {
                       '${m.calories} kcal · P ${m.proteinG.toStringAsFixed(0)}g · '
                       'C ${m.carbsG.toStringAsFixed(0)}g · F ${m.fatG.toStringAsFixed(0)}g',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                           ),
                     ),
                     if (profile.showMacros && m.nutritionNotes.isNotEmpty) ...[
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppSpacing.xs),
                       Text(
                         m.nutritionNotes.first,
                         maxLines: 2,
@@ -513,7 +608,12 @@ class _MealList extends ConsumerWidget {
         context: context,
         showDragHandle: true,
         builder: (context) => Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.sm,
+            AppSpacing.lg,
+            AppSpacing.lg,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -524,12 +624,12 @@ class _MealList extends ConsumerWidget {
                       fontWeight: FontWeight.w700,
                     ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.md),
               Text(
                 'Recipe unlocked in your library — full steps for this meal are coming soon.',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 'Portion for now: ${meal.portion}',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -537,7 +637,7 @@ class _MealList extends ConsumerWidget {
                       fontWeight: FontWeight.w600,
                     ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppSpacing.lg),
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
@@ -574,7 +674,12 @@ class _MealList extends ConsumerWidget {
 
             return ListView(
               controller: controller,
-              padding: const EdgeInsets.fromLTRB(24, 8, 12, 32),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.md,
+                AppSpacing.lg,
+              ),
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -588,7 +693,7 @@ class _MealList extends ConsumerWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineSmall
-                                ?.copyWith(fontWeight: FontWeight.w800),
+                                ?.copyWith(fontWeight: FontWeight.w600),
                           ),
                           const SizedBox(height: 6),
                           Text(
@@ -603,7 +708,7 @@ class _MealList extends ConsumerWidget {
                                 ),
                           ),
                           if (meal.description.isNotEmpty) ...[
-                            const SizedBox(height: 8),
+                            const SizedBox(height: AppSpacing.sm),
                             Text(
                               meal.description,
                               style: Theme.of(context)
@@ -619,7 +724,7 @@ class _MealList extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: AppSpacing.xs),
                     Transform.translate(
                       offset: const Offset(10, -4),
                       child: MealIconTile(
@@ -633,31 +738,31 @@ class _MealList extends ConsumerWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   'Ingredients',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 ...recipe.ingredients.map(
                   (i) => Padding(
                     padding: const EdgeInsets.only(bottom: 6),
                     child: Text('• $i'),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: AppSpacing.lg),
                 Text(
                   'Steps',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppSpacing.sm),
                 ...recipe.steps.asMap().entries.map(
                       (e) => Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
+                        padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                         child: Text('${e.key + 1}. ${e.value}'),
                       ),
                     ),

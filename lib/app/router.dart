@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../app/providers.dart';
-import '../../domain/models/enums.dart';
-import '../../domain/models/models.dart';
+import '../app/providers.dart';
+import '../domain/models/enums.dart';
+import '../domain/models/models.dart';
 import '../features/home/home_screen.dart';
 import '../features/mood_checkin/checkin_screen.dart';
 import '../features/nutrition/nutrition_screen.dart';
@@ -13,6 +13,7 @@ import '../features/profile/profile_screen.dart';
 import '../features/progress/day_detail_screen.dart';
 import '../features/progress/progress_screen.dart';
 import '../features/progress/guides_screen.dart';
+import '../features/splash/splash_screen.dart';
 import '../features/workout/session_screen.dart';
 import '../features/workout/workout_plan_screen.dart';
 import '../features/workout/workout_tab_screen.dart';
@@ -25,10 +26,12 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     navigatorKey: _rootKey,
-    initialLocation: '/home',
+    initialLocation: '/splash',
     refreshListenable: refresh,
     redirect: (context, state) {
-      final loggingIn = state.matchedLocation.startsWith('/onboarding');
+      final bypassRedirect =
+          state.matchedLocation.startsWith('/onboarding') ||
+          state.matchedLocation == '/splash';
       // Read (don't watch) so profile chip saves don't recreate GoRouter
       // and bounce the shell back to /home.
       final profileAsync = ref.read(profileProvider);
@@ -38,11 +41,18 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (loading) return null;
 
       final onboarded = profile?.onboardingComplete == true;
-      if (!onboarded && !loggingIn) return '/onboarding';
-      if (onboarded && loggingIn) return '/home';
+      if (!onboarded && !bypassRedirect) return '/onboarding';
+      if (onboarded && state.matchedLocation.startsWith('/onboarding')) {
+        return '/home';
+      }
       return null;
     },
     routes: [
+      GoRoute(
+        parentNavigatorKey: _rootKey,
+        path: '/splash',
+        builder: (context, state) => const SplashScreen(),
+      ),
       GoRoute(
         path: '/onboarding',
         builder: (context, state) => const OnboardingScreen(),
@@ -144,6 +154,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         parentNavigatorKey: _rootKey,
         path: '/guides',
         builder: (context, state) => const GuidesScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootKey,
+        path: '/day-history',
+        builder: (context, state) => const DayHistoryScreen(),
       ),
     ],
   );

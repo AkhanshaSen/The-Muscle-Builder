@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../app/providers.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
@@ -97,7 +98,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Text(
@@ -126,7 +132,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: AppSpacing.card,
               child: Row(
                 children: [
                   if (_step > 0)
@@ -165,16 +171,16 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Widget _welcomeStep() {
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         Text(
           'Welcome, builder.',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w600,
               ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Text(
           'Mood-aware workouts and Indian meal suggestions, tailored to you.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -184,7 +190,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     .withValues(alpha: 0.7),
               ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: AppSpacing.lg),
         TextField(
           controller: _nameCtrl,
           textCapitalization: TextCapitalization.words,
@@ -193,7 +199,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             hintText: 'e.g. Arjun',
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
         TextField(
           controller: _journeyCtrl,
           textCapitalization: TextCapitalization.words,
@@ -208,13 +214,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Widget _statsStep() {
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
         const SectionHeader(
           title: 'Body stats',
           subtitle: 'Used for personalization — you can update anytime.',
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: AppSpacing.lg),
         Text('Weight: ${_weight.toStringAsFixed(0)} kg'),
         Slider(
           min: 35,
@@ -239,11 +245,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           value: _age.toDouble(),
           onChanged: (v) => setState(() => _age = v.round()),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         Text('Gender', style: Theme.of(context).textTheme.titleSmall),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Wrap(
-          spacing: 8,
+          spacing: AppSpacing.sm,
           children: Gender.values.map((g) {
             return ChoiceChip(
               label: Text(g.label),
@@ -258,18 +264,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Widget _goalsStep() {
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
         const SectionHeader(
           title: 'Goals & experience',
           subtitle: 'This shapes intensity defaults and encouragement.',
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.lg),
         Text('Primary goal', style: Theme.of(context).textTheme.titleSmall),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         ...PrimaryGoal.values.map((g) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: SelectableCard(
               selected: _goal == g,
               onTap: () => setState(() => _goal = g),
@@ -277,12 +283,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
           );
         }),
-        const SizedBox(height: 12),
+        const SizedBox(height: AppSpacing.md),
         Text('Activity level', style: Theme.of(context).textTheme.titleSmall),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.sm,
           children: ActivityLevel.values.map((a) {
             return ChoiceChip(
               label: Text(a.label),
@@ -291,11 +297,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             );
           }).toList(),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
         Text('Experience', style: Theme.of(context).textTheme.titleSmall),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Wrap(
-          spacing: 8,
+          spacing: AppSpacing.sm,
           children: ExperienceLevel.values.map((e) {
             return ChoiceChip(
               label: Text(e.label),
@@ -310,17 +316,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Widget _equipmentStep() {
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
         const SectionHeader(
           title: 'Available equipment',
           subtitle: 'Routines will prefer what you actually have.',
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.lg),
         ...Equipment.values.map((e) {
           final on = _equipment.contains(e);
           return Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: SelectableCard(
               selected: on,
               onTap: () {
@@ -335,7 +341,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               child: Row(
                 children: [
                   Icon(on ? Icons.check_circle : Icons.circle_outlined),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: AppSpacing.md),
                   Text(e.label),
                 ],
               ),
@@ -348,16 +354,16 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   Widget _dietStep() {
     return ListView(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
         const SectionHeader(
           title: 'Diet & allergies',
           subtitle: 'Indian meal suggestions will auto-filter.',
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: AppSpacing.lg),
         ...DietType.values.map((d) {
           return Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: SelectableCard(
               selected: _diet == d,
               onTap: () => setState(() => _diet = d),
@@ -365,11 +371,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
           );
         }),
-        const SizedBox(height: 16),
+        const SizedBox(height: AppSpacing.lg),
         Text('Allergies', style: Theme.of(context).textTheme.titleSmall),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.sm),
         Wrap(
-          spacing: 8,
+          spacing: AppSpacing.sm,
           children: Allergy.values.map((a) {
             final on = _allergies.contains(a);
             return FilterChip(
