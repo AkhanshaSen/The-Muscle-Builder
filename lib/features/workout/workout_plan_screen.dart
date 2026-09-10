@@ -251,14 +251,34 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
         .map((m) => m.label)
         .toList();
 
-    // Group by primary muscle while preserving first-appearance order.
-    final grouped = <MuscleGroup, List<(int idx, PlannedExercise ex)>>{};
-    for (var i = 0; i < active.length; i++) {
-      final primary = active[i].muscleGroups.isNotEmpty
-          ? active[i].muscleGroups.first
-          : MuscleGroup.values.first;
-      grouped.putIfAbsent(primary, () => []).add((i, active[i]));
+    // Group by workout phase in logical session order.
+    // This preserves the routine engine's intentional ordering:
+    // Opener → Primary → Volume → Accessory → Finisher.
+    String phaseKey(int i, int total) {
+      if (i == 0) return '1_Opener';
+      if (i == total - 1) return '5_Finisher';
+      final third = total / 3;
+      if (i < third) return '2_Primary';
+      if (i < third * 2) return '3_Volume';
+      return '4_Accessory';
     }
+
+    String phaseLabel(String key) => switch (key) {
+          '1_Opener' => 'Opener — compounds & activation',
+          '2_Primary' => 'Primary — main strength work',
+          '3_Volume' => 'Volume — hypertrophy sets',
+          '4_Accessory' => 'Accessory — targeted detail',
+          '5_Finisher' => 'Finisher — pump & isolation',
+          _ => key,
+        };
+
+    final grouped = <String, List<(int idx, PlannedExercise ex)>>{};
+    for (var i = 0; i < active.length; i++) {
+      final phase = phaseKey(i, active.length);
+      grouped.putIfAbsent(phase, () => []).add((i, active[i]));
+    }
+    // Ensure phases render in correct order.
+    final sortedPhases = grouped.keys.toList()..sort();
 
     return Scaffold(
       appBar: AppBar(
@@ -398,18 +418,19 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
             ),
           ],
           const SizedBox(height: AppSpacing.md),
-          ...grouped.entries.expand((groupEntry) {
-            final muscle = groupEntry.key;
-            final items = groupEntry.value;
-            return [
-              SectionLabel(
-                '${muscle.label} · ${items.length} '
-                'move${items.length == 1 ? '' : 's'}',
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              ...items.map((item) {
-                final i = item.$1;
-                final e = item.$2;
+          ...() {
+            // Sequential display counter across all phases.
+            var displayNum = 0;
+            return sortedPhases.expand((phase) {
+              final items = grouped[phase]!;
+              return [
+                SectionLabel(phaseLabel(phase)),
+                const SizedBox(height: AppSpacing.sm),
+                ...items.map((item) {
+                  final i = item.$1;
+                  final e = item.$2;
+                  displayNum += 1;
+                  final displayIndex = displayNum;
                 final window = windows[i];
                 final images = e.demoImages.isNotEmpty
                     ? e.demoImages
@@ -421,7 +442,7 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
                   child: ExpansionTile(
                     leading: CircleAvatar(
                       child: Text(
-                        '${i + 1}',
+                        '$displayIndex',
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -523,7 +544,8 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
               }),
               const SizedBox(height: AppSpacing.sm),
             ];
-          }),
+          });
+        }(),
         ],
       ),
       ),
