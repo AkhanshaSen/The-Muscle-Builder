@@ -96,6 +96,7 @@
       "chest"
     ],
     "equipment": [
+      "barbell",
       "gym"
     ],
     "difficulty": "intermediate",
@@ -226,6 +227,7 @@
       "chest"
     ],
     "equipment": [
+      "cable",
       "gym"
     ],
     "difficulty": "intermediate",
@@ -443,6 +445,7 @@
       "back"
     ],
     "equipment": [
+      "cable",
       "gym"
     ],
     "difficulty": "beginner",
@@ -488,6 +491,7 @@
       "back"
     ],
     "equipment": [
+      "barbell",
       "gym"
     ],
     "difficulty": "intermediate",
@@ -619,8 +623,9 @@
       "shoulders"
     ],
     "equipment": [
-      "gym",
-      "resistanceBand"
+      "cable",
+      "resistanceBand",
+      "gym"
     ],
     "difficulty": "beginner",
     "estimatedCalories": 60,
@@ -664,6 +669,7 @@
       "legs"
     ],
     "equipment": [
+      "barbell",
       "gym"
     ],
     "difficulty": "advanced",
@@ -750,7 +756,8 @@
       "legs"
     ],
     "equipment": [
-      "dumbbell"
+      "dumbbell",
+      "kettlebell"
     ],
     "difficulty": "beginner",
     "estimatedCalories": 95,
@@ -793,6 +800,7 @@
       "legs"
     ],
     "equipment": [
+      "barbell",
       "gym"
     ],
     "difficulty": "intermediate",
@@ -838,6 +846,7 @@
     ],
     "equipment": [
       "dumbbell",
+      "barbell",
       "gym"
     ],
     "difficulty": "intermediate",
@@ -1141,6 +1150,7 @@
       "shoulders"
     ],
     "equipment": [
+      "barbell",
       "gym"
     ],
     "difficulty": "intermediate",
@@ -1487,6 +1497,7 @@
       "arms"
     ],
     "equipment": [
+      "cable",
       "gym"
     ],
     "difficulty": "beginner",
@@ -1879,8 +1890,9 @@
       "core"
     ],
     "equipment": [
-      "gym",
-      "resistanceBand"
+      "cable",
+      "resistanceBand",
+      "gym"
     ],
     "difficulty": "intermediate",
     "estimatedCalories": 40,
@@ -2145,6 +2157,7 @@
     ],
     "equipment": [
       "dumbbell",
+      "kettlebell",
       "gym"
     ],
     "difficulty": "beginner",

@@ -78,12 +78,18 @@ enum MuscleGroup {
 enum Equipment {
   bodyweight,
   dumbbell,
+  barbell,
+  kettlebell,
+  cable,
   gym,
   resistanceBand;
 
   String get label => switch (this) {
         Equipment.bodyweight => 'Bodyweight',
         Equipment.dumbbell => 'Dumbbell',
+        Equipment.barbell => 'Barbell',
+        Equipment.kettlebell => 'Kettlebell',
+        Equipment.cable => 'Cable',
         Equipment.gym => 'Gym',
         Equipment.resistanceBand => 'Resistance Band',
       };

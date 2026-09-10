@@ -378,176 +378,446 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
           const SizedBox(height: AppSpacing.md),
           _OrderGuideCard(exercises: active),
           const SizedBox(height: AppSpacing.md),
-          Text(
-            'Exercises for your gym time',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            'Gym time sets a baseline — customize the count below. Clock is an estimate.',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: scheme.onSurfaceVariant,
-                ),
-          ),
+          const _WarmUpCard(),
           const SizedBox(height: AppSpacing.md),
-          _GymTimePicker(
-            gymMinutes: plan.gymMinutes,
-            exerciseCount: active.length,
-            baselineCount: GymSessionSizing.exerciseCountFor(plan.gymMinutes),
-            catalogLength: plan.exercises.length,
-            overrideCount: plan.exerciseCountOverride,
-            estimatedMinutes: sessionMins,
-            onGymMinutesChanged: _setGymMinutes,
-            onExerciseCountChanged: _setExerciseCount,
-          ),
-          if (muscles.isNotEmpty) ...[
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: muscles
-                  .map(
-                    (m) => Chip(
-                      visualDensity: VisualDensity.compact,
-                      label: Text(m),
+          Card(
+            clipBehavior: Clip.antiAlias,
+            child: ExpansionTile(
+              initiallyExpanded: true,
+              leading: Icon(
+                Icons.fitness_center,
+                color: scheme.primary,
+              ),
+              title: Text(
+                'Exercises for your gym time · ${active.length} moves',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
                     ),
-                  )
-                  .toList(),
-            ),
-          ],
-          const SizedBox(height: AppSpacing.md),
-          ...() {
-            // Sequential display counter across all phases.
-            var displayNum = 0;
-            return sortedPhases.expand((phase) {
-              final items = grouped[phase]!;
-              return [
-                SectionLabel(phaseLabel(phase)),
-                const SizedBox(height: AppSpacing.sm),
-                ...items.map((item) {
-                  final i = item.$1;
-                  final e = item.$2;
-                  displayNum += 1;
-                  final displayIndex = displayNum;
-                final window = windows[i];
-                final images = e.demoImages.isNotEmpty
-                    ? e.demoImages
-                    : (demoById[e.exerciseId] ?? const <String>[]);
-                final role = RoutineOrderGuide.roleLabel(i, active.length, e);
-                final why = RoutineOrderGuide.roleWhy(i, active.length, e);
-                return Card(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: ExpansionTile(
-                    leading: CircleAvatar(
-                      child: Text(
-                        '$displayIndex',
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+              subtitle: Text(
+                '~$sessionMins min · Gym time sets a baseline — customize below.',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _GymTimePicker(
+                        gymMinutes: plan.gymMinutes,
+                        exerciseCount: active.length,
+                        baselineCount:
+                            GymSessionSizing.exerciseCountFor(plan.gymMinutes),
+                        catalogLength: plan.exercises.length,
+                        overrideCount: plan.exerciseCountOverride,
+                        estimatedMinutes: sessionMins,
+                        onGymMinutesChanged: _setGymMinutes,
+                        onExerciseCountChanged: _setExerciseCount,
                       ),
-                    ),
-                    title: Text(e.name),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (e.muscleGroups.isNotEmpty) ...[
-                          const SizedBox(height: 4),
-                          Wrap(
-                            spacing: 4,
-                            runSpacing: 4,
-                            children: e.muscleGroups.map((g) {
-                              return Chip(
-                                visualDensity: VisualDensity.compact,
-                                padding: EdgeInsets.zero,
-                                labelPadding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
+                      if (muscles.isNotEmpty) ...[
+                        const SizedBox(height: 10),
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          children: muscles
+                              .map(
+                                (m) => Chip(
+                                  visualDensity: VisualDensity.compact,
+                                  label: Text(m),
                                 ),
-                                label: Text(
-                                  g.label,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelSmall
-                                      ?.copyWith(fontWeight: FontWeight.w600),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                          const SizedBox(height: 4),
-                        ],
-                        Text(
-                          'Min ${window.start}–${window.end} · $role\n'
-                          '${e.sets} sets × ${e.reps} reps · rest ${e.restSeconds}s'
-                          '${e.includeDropSet ? ' · drop set on last' : ''}',
+                              )
+                              .toList(),
                         ),
                       ],
-                    ),
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                        child: _SetsStepper(
-                          sets: e.sets,
-                          ideal: e.recommendedSets ?? e.sets,
-                          onChanged: (v) => _updateSets(e.exerciseId, v),
-                        ),
-                      ),
-                      if (active.length > 1)
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton.icon(
-                            onPressed: () => _removeExercise(i),
-                            icon: const Icon(Icons.remove_circle_outline),
-                            label: const Text('Skip this today'),
-                          ),
-                        ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            why,
-                            style:
-                                Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: scheme.onSurfaceVariant,
+                      const SizedBox(height: AppSpacing.md),
+                      ...() {
+                        // Sequential display counter across all phases.
+                        var displayNum = 0;
+                        return sortedPhases.expand((phase) {
+                          final items = grouped[phase]!;
+                          return [
+                            SectionLabel(phaseLabel(phase)),
+                            const SizedBox(height: AppSpacing.sm),
+                            ...items.map((item) {
+                              final i = item.$1;
+                              final e = item.$2;
+                              displayNum += 1;
+                              final displayIndex = displayNum;
+                              final window = windows[i];
+                              final images = e.demoImages.isNotEmpty
+                                  ? e.demoImages
+                                  : (demoById[e.exerciseId] ??
+                                      const <String>[]);
+                              final role = RoutineOrderGuide.roleLabel(
+                                i,
+                                active.length,
+                                e,
+                              );
+                              final why = RoutineOrderGuide.roleWhy(
+                                i,
+                                active.length,
+                                e,
+                              );
+                              return Card(
+                                margin: const EdgeInsets.only(bottom: 10),
+                                child: ExpansionTile(
+                                  leading: CircleAvatar(
+                                    child: Text(
+                                      '$displayIndex',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                          ),
-                        ),
-                      ),
-                      if (images.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                          child: ExercisePostureGallery(
-                            imageUrls: images,
-                            height: 110,
-                          ),
-                        ),
-                      if (e.formCues.isNotEmpty)
-                        ListTile(
-                          title: const Text('Form cues'),
-                          subtitle: Text(
-                            e.formCues
-                                .asMap()
-                                .entries
-                                .map((c) => '${c.key + 1}. ${c.value}')
-                                .join('\n'),
-                          ),
-                        ),
-                      if (e.commonMistakes.isNotEmpty)
-                        ListTile(
-                          title: const Text('Common mistakes'),
-                          subtitle: Text(
-                            e.commonMistakes.map((c) => '• $c').join('\n'),
-                          ),
-                        ),
+                                  ),
+                                  title: Text(e.name),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      if (e.muscleGroups.isNotEmpty) ...[
+                                        const SizedBox(height: 4),
+                                        Wrap(
+                                          spacing: 4,
+                                          runSpacing: 4,
+                                          children: e.muscleGroups.map((g) {
+                                            return Chip(
+                                              visualDensity:
+                                                  VisualDensity.compact,
+                                              padding: EdgeInsets.zero,
+                                              labelPadding:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 6,
+                                              ),
+                                              label: Text(
+                                                g.label,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall
+                                                    ?.copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
+                                        const SizedBox(height: 4),
+                                      ],
+                                      Text(
+                                        'Min ${window.start}–${window.end} · $role\n'
+                                        '${e.sets} sets × ${e.reps} reps · rest ${e.restSeconds}s'
+                                        '${e.includeDropSet ? ' · drop set on last' : ''}',
+                                      ),
+                                    ],
+                                  ),
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                        12,
+                                        0,
+                                        12,
+                                        8,
+                                      ),
+                                      child: _SetsStepper(
+                                        sets: e.sets,
+                                        ideal: e.recommendedSets ?? e.sets,
+                                        onChanged: (v) =>
+                                            _updateSets(e.exerciseId, v),
+                                      ),
+                                    ),
+                                    if (active.length > 1)
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: TextButton.icon(
+                                          onPressed: () => _removeExercise(i),
+                                          icon: const Icon(
+                                            Icons.remove_circle_outline,
+                                          ),
+                                          label: const Text('Skip this today'),
+                                        ),
+                                      ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                        12,
+                                        0,
+                                        12,
+                                        8,
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          why,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall
+                                              ?.copyWith(
+                                                color: scheme.onSurfaceVariant,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                    if (images.isNotEmpty)
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                          12,
+                                          0,
+                                          12,
+                                          12,
+                                        ),
+                                        child: ExercisePostureGallery(
+                                          imageUrls: images,
+                                          height: 110,
+                                        ),
+                                      ),
+                                    if (e.formCues.isNotEmpty)
+                                      ListTile(
+                                        title: const Text('Form cues'),
+                                        subtitle: Text(
+                                          e.formCues
+                                              .asMap()
+                                              .entries
+                                              .map(
+                                                (c) =>
+                                                    '${c.key + 1}. ${c.value}',
+                                              )
+                                              .join('\n'),
+                                        ),
+                                      ),
+                                    if (e.commonMistakes.isNotEmpty)
+                                      ListTile(
+                                        title: const Text('Common mistakes'),
+                                        subtitle: Text(
+                                          e.commonMistakes
+                                              .map((c) => '• $c')
+                                              .join('\n'),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              );
+                            }),
+                            const SizedBox(height: AppSpacing.sm),
+                          ];
+                        });
+                      }(),
                     ],
                   ),
-                );
-              }),
-              const SizedBox(height: AppSpacing.sm),
-            ];
-          });
-        }(),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
+      ),
+    );
+  }
+}
+
+class _WarmUpMove {
+  const _WarmUpMove({
+    required this.name,
+    required this.cue,
+    required this.duration,
+    required this.imageUrl,
+  });
+
+  final String name;
+  final String cue;
+  final String duration;
+  final String imageUrl;
+}
+
+/// Standard ~8 min dynamic warm-up shown before the main session list.
+class _WarmUpCard extends StatelessWidget {
+  const _WarmUpCard();
+
+  static const _moves = <_WarmUpMove>[
+    _WarmUpMove(
+      name: 'Neck rolls',
+      cue: 'Slow circles — both directions. Keep shoulders relaxed.',
+      duration: '30 s',
+      imageUrl:
+          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Neck_Stretch/0.jpg',
+    ),
+    _WarmUpMove(
+      name: 'Shoulder circles',
+      cue: 'Big circles forward then reverse. Open the chest.',
+      duration: '30 s / arm',
+      imageUrl:
+          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Circles/0.jpg',
+    ),
+    _WarmUpMove(
+      name: 'Arm circles',
+      cue: 'Start small, grow larger. Control the swing — no pain.',
+      duration: '30 s',
+      imageUrl:
+          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arm_Circles/0.jpg',
+    ),
+    _WarmUpMove(
+      name: 'Hip circles',
+      cue: 'Hands on hips, draw wide circles. Loosen the hips.',
+      duration: '30 s',
+      imageUrl:
+          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hip_Circles/0.jpg',
+    ),
+    _WarmUpMove(
+      name: 'Leg swings (front–back)',
+      cue: 'Hold a wall if needed. Soft knee, controlled swing.',
+      duration: '10 / leg',
+      imageUrl:
+          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hip_Circles_prone/0.jpg',
+    ),
+    _WarmUpMove(
+      name: 'Bodyweight squat',
+      cue: 'Sit back, knees track toes, stand tall. Wake up the legs.',
+      duration: '10 reps',
+      imageUrl:
+          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg',
+    ),
+    _WarmUpMove(
+      name: 'Inchworm',
+      cue: 'Walk hands out to plank, walk feet in. Stretch + core.',
+      duration: '5 reps',
+      imageUrl:
+          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/0.jpg',
+    ),
+    _WarmUpMove(
+      name: 'High knees',
+      cue: 'Light bounce, drive knees up. Raise heart rate gently.',
+      duration: '30 s',
+      imageUrl:
+          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Step-up_with_Knee_Raise/0.jpg',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: ExpansionTile(
+        initiallyExpanded: true,
+        leading: Icon(Icons.self_improvement, color: scheme.primary),
+        title: Text(
+          'Warm-up · ~8 min',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+        subtitle: Text(
+          'Dynamic mobility before heavy work — do these first.',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: scheme.onSurfaceVariant,
+              ),
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+            child: Column(
+              children: [
+                for (var i = 0; i < _moves.length; i++) ...[
+                  if (i > 0) const SizedBox(height: AppSpacing.sm),
+                  _WarmUpMoveTile(index: i + 1, move: _moves[i]),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WarmUpMoveTile extends StatelessWidget {
+  const _WarmUpMoveTile({required this.index, required this.move});
+
+  final int index;
+  final _WarmUpMove move;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Material(
+      color: scheme.surfaceContainerHighest.withValues(alpha: 0.45),
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: SizedBox(
+                width: 72,
+                height: 72,
+                child: Image.network(
+                  move.imageUrl,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, _, _) => ColoredBox(
+                    color: scheme.primaryContainer,
+                    child: Icon(
+                      Icons.accessibility_new,
+                      color: scheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 11,
+                        child: Text(
+                          '$index',
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          move.name,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      Chip(
+                        visualDensity: VisualDensity.compact,
+                        labelPadding: const EdgeInsets.symmetric(horizontal: 6),
+                        label: Text(
+                          move.duration,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    move.cue,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -744,44 +1014,54 @@ class _OrderGuideCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final compounds = exercises.where((e) => e.isCompound).length;
     return Card(
-      child: Padding(
-        padding: AppSpacing.card,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      clipBehavior: Clip.antiAlias,
+      child: ExpansionTile(
+        initiallyExpanded: false,
+        leading: Icon(Icons.route_rounded, color: scheme.primary),
+        title: Text(
+          'Why this order',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+        ),
+        subtitle: Text(
+          'Compounds first ($compounds), then volume, then finisher',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: scheme.onSurfaceVariant,
+              ),
+        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.route_rounded, color: scheme.primary),
-                const SizedBox(width: AppSpacing.sm),
-                Text(
-                  'Why this order',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                Text(RoutineOrderGuide.sessionGuide(exercises)),
+                const SizedBox(height: AppSpacing.md),
+                const _GuideStep(
+                  step: '1',
+                  title: 'Openers first',
+                  body:
+                      'Strength + skill while you\'re fresh — biggest progress signal.',
+                ),
+                const _GuideStep(
+                  step: '2',
+                  title: 'Volume in the middle',
+                  body:
+                      'Hypertrophy and calorie burn with quality still high.',
+                ),
+                const _GuideStep(
+                  step: '3',
+                  title: 'Finishers last',
+                  body:
+                      'Isolation / drop sets when tired — pump without risky heavy loads.',
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(RoutineOrderGuide.sessionGuide(exercises)),
-            const SizedBox(height: AppSpacing.md),
-            _GuideStep(
-              step: '1',
-              title: 'Openers first',
-              body: 'Strength + skill while you\'re fresh — biggest progress signal.',
-            ),
-            _GuideStep(
-              step: '2',
-              title: 'Volume in the middle',
-              body: 'Hypertrophy and calorie burn with quality still high.',
-            ),
-            _GuideStep(
-              step: '3',
-              title: 'Finishers last',
-              body: 'Isolation / drop sets when tired — pump without risky heavy loads.',
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

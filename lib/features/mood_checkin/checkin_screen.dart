@@ -135,7 +135,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
         focus: _focus,
         exerciseCount: GymSessionSizing.maxCatalogCount(),
         soreness: _soreness,
-        avoidMuscles: _avoidMuscles.toList(),
+        avoidMuscles: _avoidMuscles.where(_muscles.contains).toList(),
         deloadActive: routine.isDeloadActive,
       );
 
@@ -148,7 +148,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
         surpriseMe: surprise,
         focus: _focus,
         soreness: _soreness,
-        avoidMuscles: _avoidMuscles.toList(),
+        avoidMuscles: _avoidMuscles.where(_muscles.contains).toList(),
         equipmentOverride: _equipmentToday?.toList(),
       );
       await ref.read(workoutRepositoryProvider).saveCheckIn(checkIn);
@@ -575,6 +575,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
             _muscles
               ..clear()
               ..addAll(v.where((m) => !blocked.contains(m)));
+            _avoidMuscles.removeWhere((m) => !_muscles.contains(m));
           }),
         ),
       ],
@@ -609,29 +610,51 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
           }).toList(),
         ),
         const SizedBox(height: AppSpacing.md),
-        Text(
-          'Avoid today (optional)',
-          style: Theme.of(context).textTheme.titleSmall,
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                'Avoid today (optional)',
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ),
+            TextButton(
+              onPressed: () => setState(() {
+                // Jump back to muscle-selection step so the user can retake.
+                _step = 3;
+                _avoidMuscles.removeWhere((m) => !_muscles.contains(m));
+              }),
+              child: const Text('Change muscles →'),
+            ),
+          ],
         ),
         const SizedBox(height: AppSpacing.sm),
-        Wrap(
-          spacing: AppSpacing.sm,
-          runSpacing: AppSpacing.sm,
-          children: MuscleGroup.values.map((m) {
-            final selected = _avoidMuscles.contains(m);
-            return FilterChip(
-              label: Text(m.label),
-              selected: selected,
-              onSelected: (v) => setState(() {
-                if (v) {
-                  _avoidMuscles.add(m);
-                } else {
-                  _avoidMuscles.remove(m);
-                }
-              }),
-            );
-          }).toList(),
-        ),
+        if (_muscles.isEmpty)
+          Text(
+            'No muscles selected — go back to pick some.',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+          )
+        else
+          Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: _muscles.map((m) {
+              final selected = _avoidMuscles.contains(m);
+              return FilterChip(
+                label: Text(m.label),
+                selected: selected,
+                onSelected: (v) => setState(() {
+                  if (v) {
+                    _avoidMuscles.add(m);
+                  } else {
+                    _avoidMuscles.remove(m);
+                  }
+                }),
+              );
+            }).toList(),
+          ),
         const SizedBox(height: AppSpacing.md),
         Text(
           'Equipment today',

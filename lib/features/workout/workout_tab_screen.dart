@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/providers.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
+import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/models/models.dart';
 import '../routine/routine_widgets.dart';
 import 'exercise_posture_gallery.dart';
@@ -49,58 +50,99 @@ class WorkoutTabScreen extends ConsumerWidget {
             );
           }
 
-          return ListView(
-            padding: const EdgeInsets.all(AppSpacing.md),
+          final active = GymSessionSizing.activeExercises(plan);
+          final mins = GymSessionSizing.totalMinutes(active);
+          final scheme = Theme.of(context).colorScheme;
+
+          return Column(
             children: [
-              Text(
-                plan.encouragement,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              ...plan.exercises.asMap().entries.map((entry) {
-                final index = entry.key;
-                final e = entry.value;
-                return Card(
-                  margin: const EdgeInsets.only(bottom: AppSpacing.sm),
-                  clipBehavior: Clip.antiAlias,
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withValues(alpha: 0.15),
-                      child: Text(
-                        '${index + 1}',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.w600,
+              Expanded(
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(14, 8, 14, 12),
+                  children: [
+                    Text(
+                      plan.encouragement,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 6,
+                      children: [
+                        Chip(
+                          visualDensity: VisualDensity.compact,
+                          avatar: Icon(
+                            Icons.fitness_center,
+                            size: 16,
+                            color: scheme.primary,
+                          ),
+                          label: Text('${active.length} moves'),
                         ),
+                        Chip(
+                          visualDensity: VisualDensity.compact,
+                          avatar: Icon(
+                            Icons.schedule,
+                            size: 16,
+                            color: scheme.primary,
+                          ),
+                          label: Text('~$mins min'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Card(
+                      clipBehavior: Clip.antiAlias,
+                      margin: EdgeInsets.zero,
+                      child: Column(
+                        children: [
+                          for (var i = 0; i < active.length; i++) ...[
+                            if (i > 0)
+                              Divider(
+                                height: 1,
+                                indent: 52,
+                                color: scheme.outlineVariant
+                                    .withValues(alpha: 0.5),
+                              ),
+                            _CompactExerciseRow(
+                              index: i + 1,
+                              exercise: active[i],
+                              onTap: () => _showExerciseDetail(
+                                context,
+                                plan: plan,
+                                exercise: active[i],
+                                index: i,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
-                    title: Text(e.name),
-                    subtitle: Text(
-                      '${e.sets}×${e.reps} · ${e.restSeconds}s rest'
-                      '${e.includeDropSet ? ' · drop set' : ''}',
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () => _showExerciseDetail(
-                      context,
-                      plan: plan,
-                      exercise: e,
-                      index: index,
-                    ),
-                  ),
-                );
-              }),
-              const SizedBox(height: AppSpacing.md),
-              PrimaryCta(
-                label: 'Open full plan',
-                onPressed: () => context.push('/plan/${plan.id}'),
+                  ],
+                ),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              OutlinedButton(
-                onPressed: () => context.push('/checkin'),
-                child: const Text('New check-in'),
+              SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(14, 8, 14, 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      PrimaryCta(
+                        label: 'Open full plan',
+                        onPressed: () => context.push('/plan/${plan.id}'),
+                      ),
+                      const SizedBox(height: 8),
+                      OutlinedButton(
+                        onPressed: () => context.push('/checkin'),
+                        child: const Text('New check-in'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           );
@@ -215,6 +257,75 @@ class WorkoutTabScreen extends ConsumerWidget {
           },
         );
       },
+    );
+  }
+}
+
+class _CompactExerciseRow extends StatelessWidget {
+  const _CompactExerciseRow({
+    required this.index,
+    required this.exercise,
+    required this.onTap,
+  });
+
+  final int index;
+  final PlannedExercise exercise;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: 14,
+              backgroundColor: scheme.primary.withValues(alpha: 0.15),
+              child: Text(
+                '$index',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: scheme.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    exercise.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  Text(
+                    '${exercise.sets}×${exercise.reps} · ${exercise.restSeconds}s'
+                    '${exercise.includeDropSet ? ' · drop' : ''}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right,
+              size: 20,
+              color: scheme.onSurfaceVariant,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
