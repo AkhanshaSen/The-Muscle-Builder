@@ -896,6 +896,30 @@ class _TodayRoutineCardState extends ConsumerState<TodayRoutineCard> {
                                 ?.copyWith(fontWeight: FontWeight.w600),
                           ),
                         ),
+                        if (expanded) ...[
+                          Icon(
+                            dayKindIcon(planned),
+                            size: 18,
+                            color: dayKindColor(scheme, planned),
+                          ),
+                          const SizedBox(width: 6),
+                          Flexible(
+                            child: Text(
+                              'Planned: ${planned.label} — ${planned.subtitle}',
+                              textAlign: TextAlign.end,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color: scheme.onSurfaceVariant,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.xs),
+                        ],
                         if (!expanded) ...[
                           TextButton(
                             onPressed: () =>
@@ -915,24 +939,8 @@ class _TodayRoutineCardState extends ConsumerState<TodayRoutineCard> {
                     ),
                   ),
                   if (expanded) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    Row(
-                      children: [
-                        Icon(
-                          dayKindIcon(planned),
-                          color: dayKindColor(scheme, planned),
-                        ),
-                        const SizedBox(width: AppSpacing.sm),
-                        Expanded(
-                          child: Text(
-                            'Planned: ${planned.label} — ${planned.subtitle}',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
-                      ],
-                    ),
                     if (selected != null) ...[
-                      const SizedBox(height: 6),
+                      const SizedBox(height: AppSpacing.sm),
                       Text(
                         'Logged: ${selected.label}',
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(

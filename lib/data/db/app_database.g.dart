@@ -288,6 +288,17 @@ class $UserProfilesTable extends UserProfiles
     requiredDuringInsert: false,
     defaultValue: const Constant(4),
   );
+  static const VerificationMeta _birthdayMeta = const VerificationMeta(
+    'birthday',
+  );
+  @override
+  late final GeneratedColumn<DateTime> birthday = GeneratedColumn<DateTime>(
+    'birthday',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -315,6 +326,7 @@ class $UserProfilesTable extends UserProfiles
     aspiration,
     targetWeightKg,
     weeklyTrainingDays,
+    birthday,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -546,6 +558,12 @@ class $UserProfilesTable extends UserProfiles
         ),
       );
     }
+    if (data.containsKey('birthday')) {
+      context.handle(
+        _birthdayMeta,
+        birthday.isAcceptableOrUnknown(data['birthday']!, _birthdayMeta),
+      );
+    }
     return context;
   }
 
@@ -655,6 +673,10 @@ class $UserProfilesTable extends UserProfiles
         DriftSqlType.int,
         data['${effectivePrefix}weekly_training_days'],
       )!,
+      birthday: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}birthday'],
+      ),
     );
   }
 
@@ -690,6 +712,7 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
   final String aspiration;
   final double? targetWeightKg;
   final int weeklyTrainingDays;
+  final DateTime? birthday;
   const UserProfileRow({
     required this.id,
     required this.name,
@@ -716,6 +739,7 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
     required this.aspiration,
     this.targetWeightKg,
     required this.weeklyTrainingDays,
+    this.birthday,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -749,6 +773,9 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
       map['target_weight_kg'] = Variable<double>(targetWeightKg);
     }
     map['weekly_training_days'] = Variable<int>(weeklyTrainingDays);
+    if (!nullToAbsent || birthday != null) {
+      map['birthday'] = Variable<DateTime>(birthday);
+    }
     return map;
   }
 
@@ -781,6 +808,9 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
           ? const Value.absent()
           : Value(targetWeightKg),
       weeklyTrainingDays: Value(weeklyTrainingDays),
+      birthday: birthday == null && nullToAbsent
+          ? const Value.absent()
+          : Value(birthday),
     );
   }
 
@@ -819,6 +849,7 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
       aspiration: serializer.fromJson<String>(json['aspiration']),
       targetWeightKg: serializer.fromJson<double?>(json['targetWeightKg']),
       weeklyTrainingDays: serializer.fromJson<int>(json['weeklyTrainingDays']),
+      birthday: serializer.fromJson<DateTime?>(json['birthday']),
     );
   }
   @override
@@ -852,6 +883,7 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
       'aspiration': serializer.toJson<String>(aspiration),
       'targetWeightKg': serializer.toJson<double?>(targetWeightKg),
       'weeklyTrainingDays': serializer.toJson<int>(weeklyTrainingDays),
+      'birthday': serializer.toJson<DateTime?>(birthday),
     };
   }
 
@@ -881,6 +913,7 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
     String? aspiration,
     Value<double?> targetWeightKg = const Value.absent(),
     int? weeklyTrainingDays,
+    Value<DateTime?> birthday = const Value.absent(),
   }) => UserProfileRow(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -910,6 +943,7 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
         ? targetWeightKg.value
         : this.targetWeightKg,
     weeklyTrainingDays: weeklyTrainingDays ?? this.weeklyTrainingDays,
+    birthday: birthday.present ? birthday.value : this.birthday,
   );
   UserProfileRow copyWithCompanion(UserProfilesCompanion data) {
     return UserProfileRow(
@@ -972,6 +1006,7 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
       weeklyTrainingDays: data.weeklyTrainingDays.present
           ? data.weeklyTrainingDays.value
           : this.weeklyTrainingDays,
+      birthday: data.birthday.present ? data.birthday.value : this.birthday,
     );
   }
 
@@ -1002,7 +1037,8 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
           ..write('fitnessWhy: $fitnessWhy, ')
           ..write('aspiration: $aspiration, ')
           ..write('targetWeightKg: $targetWeightKg, ')
-          ..write('weeklyTrainingDays: $weeklyTrainingDays')
+          ..write('weeklyTrainingDays: $weeklyTrainingDays, ')
+          ..write('birthday: $birthday')
           ..write(')'))
         .toString();
   }
@@ -1034,6 +1070,7 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
     aspiration,
     targetWeightKg,
     weeklyTrainingDays,
+    birthday,
   ]);
   @override
   bool operator ==(Object other) =>
@@ -1063,7 +1100,8 @@ class UserProfileRow extends DataClass implements Insertable<UserProfileRow> {
           other.fitnessWhy == this.fitnessWhy &&
           other.aspiration == this.aspiration &&
           other.targetWeightKg == this.targetWeightKg &&
-          other.weeklyTrainingDays == this.weeklyTrainingDays);
+          other.weeklyTrainingDays == this.weeklyTrainingDays &&
+          other.birthday == this.birthday);
 }
 
 class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
@@ -1092,6 +1130,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
   final Value<String> aspiration;
   final Value<double?> targetWeightKg;
   final Value<int> weeklyTrainingDays;
+  final Value<DateTime?> birthday;
   final Value<int> rowid;
   const UserProfilesCompanion({
     this.id = const Value.absent(),
@@ -1119,6 +1158,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
     this.aspiration = const Value.absent(),
     this.targetWeightKg = const Value.absent(),
     this.weeklyTrainingDays = const Value.absent(),
+    this.birthday = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UserProfilesCompanion.insert({
@@ -1147,6 +1187,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
     this.aspiration = const Value.absent(),
     this.targetWeightKg = const Value.absent(),
     this.weeklyTrainingDays = const Value.absent(),
+    this.birthday = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
@@ -1190,6 +1231,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
     Expression<String>? aspiration,
     Expression<double>? targetWeightKg,
     Expression<int>? weeklyTrainingDays,
+    Expression<DateTime>? birthday,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1221,6 +1263,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
       if (targetWeightKg != null) 'target_weight_kg': targetWeightKg,
       if (weeklyTrainingDays != null)
         'weekly_training_days': weeklyTrainingDays,
+      if (birthday != null) 'birthday': birthday,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1251,6 +1294,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
     Value<String>? aspiration,
     Value<double?>? targetWeightKg,
     Value<int>? weeklyTrainingDays,
+    Value<DateTime?>? birthday,
     Value<int>? rowid,
   }) {
     return UserProfilesCompanion(
@@ -1280,6 +1324,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
       aspiration: aspiration ?? this.aspiration,
       targetWeightKg: targetWeightKg ?? this.targetWeightKg,
       weeklyTrainingDays: weeklyTrainingDays ?? this.weeklyTrainingDays,
+      birthday: birthday ?? this.birthday,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1366,6 +1411,9 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
     if (weeklyTrainingDays.present) {
       map['weekly_training_days'] = Variable<int>(weeklyTrainingDays.value);
     }
+    if (birthday.present) {
+      map['birthday'] = Variable<DateTime>(birthday.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1400,6 +1448,7 @@ class UserProfilesCompanion extends UpdateCompanion<UserProfileRow> {
           ..write('aspiration: $aspiration, ')
           ..write('targetWeightKg: $targetWeightKg, ')
           ..write('weeklyTrainingDays: $weeklyTrainingDays, ')
+          ..write('birthday: $birthday, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -5423,6 +5472,7 @@ typedef $$UserProfilesTableCreateCompanionBuilder =
       Value<String> aspiration,
       Value<double?> targetWeightKg,
       Value<int> weeklyTrainingDays,
+      Value<DateTime?> birthday,
       Value<int> rowid,
     });
 typedef $$UserProfilesTableUpdateCompanionBuilder =
@@ -5452,6 +5502,7 @@ typedef $$UserProfilesTableUpdateCompanionBuilder =
       Value<String> aspiration,
       Value<double?> targetWeightKg,
       Value<int> weeklyTrainingDays,
+      Value<DateTime?> birthday,
       Value<int> rowid,
     });
 
@@ -5586,6 +5637,11 @@ class $$UserProfilesTableFilterComposer
 
   ColumnFilters<int> get weeklyTrainingDays => $composableBuilder(
     column: $table.weeklyTrainingDays,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get birthday => $composableBuilder(
+    column: $table.birthday,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -5723,6 +5779,11 @@ class $$UserProfilesTableOrderingComposer
     column: $table.weeklyTrainingDays,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<DateTime> get birthday => $composableBuilder(
+    column: $table.birthday,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$UserProfilesTableAnnotationComposer
@@ -5842,6 +5903,9 @@ class $$UserProfilesTableAnnotationComposer
     column: $table.weeklyTrainingDays,
     builder: (column) => column,
   );
+
+  GeneratedColumn<DateTime> get birthday =>
+      $composableBuilder(column: $table.birthday, builder: (column) => column);
 }
 
 class $$UserProfilesTableTableManager
@@ -5900,6 +5964,7 @@ class $$UserProfilesTableTableManager
                 Value<String> aspiration = const Value.absent(),
                 Value<double?> targetWeightKg = const Value.absent(),
                 Value<int> weeklyTrainingDays = const Value.absent(),
+                Value<DateTime?> birthday = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => UserProfilesCompanion(
                 id: id,
@@ -5927,6 +5992,7 @@ class $$UserProfilesTableTableManager
                 aspiration: aspiration,
                 targetWeightKg: targetWeightKg,
                 weeklyTrainingDays: weeklyTrainingDays,
+                birthday: birthday,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -5956,6 +6022,7 @@ class $$UserProfilesTableTableManager
                 Value<String> aspiration = const Value.absent(),
                 Value<double?> targetWeightKg = const Value.absent(),
                 Value<int> weeklyTrainingDays = const Value.absent(),
+                Value<DateTime?> birthday = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => UserProfilesCompanion.insert(
                 id: id,
@@ -5983,6 +6050,7 @@ class $$UserProfilesTableTableManager
                 aspiration: aspiration,
                 targetWeightKg: targetWeightKg,
                 weeklyTrainingDays: weeklyTrainingDays,
+                birthday: birthday,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

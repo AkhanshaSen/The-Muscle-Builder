@@ -483,68 +483,66 @@ class _MealList extends ConsumerWidget {
             final scheme = Theme.of(context).colorScheme;
             return Card(
               margin: EdgeInsets.zero,
-              child: Padding(
-                padding: AppSpacing.cardTight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              clipBehavior: Clip.antiAlias,
+              child: Theme(
+                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  tilePadding: const EdgeInsets.fromLTRB(12, 4, 8, 4),
+                  childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+                  leading: MealIconTile(
+                    mealId: m.id,
+                    mealName: m.name,
+                    size: 44,
+                  ),
+                  title: Text(
+                    m.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  subtitle: Text(
+                    '${m.calories} kcal · P ${m.proteinG.toStringAsFixed(0)}g · '
+                    'C ${m.carbsG.toStringAsFixed(0)}g · F ${m.fatG.toStringAsFixed(0)}g',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: scheme.onSurfaceVariant,
+                        ),
+                  ),
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                m.name,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                m.description,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: AppSpacing.sm),
-                        MealIconTile(
-                          mealId: m.id,
-                          mealName: m.name,
-                          size: 52,
-                        ),
-                      ],
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        m.description,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
                     ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '${m.portion} · ${m.timingGuidance}',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: scheme.primary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      '${m.calories} kcal · P ${m.proteinG.toStringAsFixed(0)}g · '
-                      'C ${m.carbsG.toStringAsFixed(0)}g · F ${m.fatG.toStringAsFixed(0)}g',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                    const SizedBox(height: 8),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        '${m.portion} · ${m.timingGuidance}',
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                              color: scheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
                     ),
                     if (profile.showMacros && m.nutritionNotes.isNotEmpty) ...[
                       const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        m.nutritionNotes.first,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: scheme.onSurfaceVariant,
-                            ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          m.nutritionNotes.first,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                color: scheme.onSurfaceVariant,
+                              ),
+                        ),
                       ),
                     ],
                     const SizedBox(height: 6),

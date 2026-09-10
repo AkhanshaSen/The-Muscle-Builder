@@ -58,6 +58,7 @@ class ProfileRepository {
       aspiration: Value(profile.aspiration),
       targetWeightKg: Value(profile.targetWeightKg),
       weeklyTrainingDays: Value(profile.weeklyTrainingDays),
+      birthday: Value(profile.birthday),
     );
     await _db.into(_db.userProfiles).insertOnConflictUpdate(companion);
     await _sync.syncProfile({'id': profile.id, 'name': profile.name});
@@ -118,6 +119,7 @@ class ProfileRepository {
       aspiration: row.aspiration,
       targetWeightKg: row.targetWeightKg,
       weeklyTrainingDays: row.weeklyTrainingDays,
+      birthday: row.birthday,
     );
   }
 }

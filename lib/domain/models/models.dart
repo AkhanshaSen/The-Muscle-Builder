@@ -228,6 +228,7 @@ class UserProfile {
     this.aspiration = '',
     this.targetWeightKg,
     this.weeklyTrainingDays = 4,
+    this.birthday,
   });
 
   final String id;
@@ -259,6 +260,21 @@ class UserProfile {
   final double? targetWeightKg;
   /// Ideal gym / training days per week (1–7).
   final int weeklyTrainingDays;
+  /// Optional date of birth — when set, [age] should match it.
+  final DateTime? birthday;
+
+  /// Age in whole years from a birthday (clamped 1–120).
+  static int ageFromBirthday(DateTime birth, [DateTime? now]) {
+    final n = now ?? DateTime.now();
+    var years = n.year - birth.year;
+    final hadBirthday =
+        n.month > birth.month ||
+        (n.month == birth.month && n.day >= birth.day);
+    if (!hadBirthday) years--;
+    if (years < 1) return 1;
+    if (years > 120) return 120;
+    return years;
+  }
 
   UserProfile copyWith({
     String? id,
@@ -287,6 +303,8 @@ class UserProfile {
     double? targetWeightKg,
     bool clearTargetWeight = false,
     int? weeklyTrainingDays,
+    DateTime? birthday,
+    bool clearBirthday = false,
   }) {
     return UserProfile(
       id: id ?? this.id,
@@ -315,6 +333,7 @@ class UserProfile {
       targetWeightKg:
           clearTargetWeight ? null : (targetWeightKg ?? this.targetWeightKg),
       weeklyTrainingDays: weeklyTrainingDays ?? this.weeklyTrainingDays,
+      birthday: clearBirthday ? null : (birthday ?? this.birthday),
     );
   }
 }

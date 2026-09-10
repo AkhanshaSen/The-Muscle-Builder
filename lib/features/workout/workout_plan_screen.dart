@@ -13,6 +13,14 @@ import '../nutrition/meal_icon_tile.dart';
 import 'exercise_posture_gallery.dart';
 import 'reset_today.dart';
 
+/// Soft tinted surface so session accordions read as distinct blocks.
+Color _accordionSurface(ColorScheme scheme, Color accent) {
+  return Color.alphaBlend(
+    accent.withValues(alpha: 0.16),
+    scheme.surfaceContainerHighest,
+  );
+}
+
 class WorkoutPlanScreen extends ConsumerStatefulWidget {
   const WorkoutPlanScreen({super.key, required this.planId});
 
@@ -350,30 +358,57 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
             burnOverride: GymSessionSizing.activeBurnKcal(plan),
           ),
           const SizedBox(height: AppSpacing.md),
-          Text(
-            'Fuel for this session',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
+          Card(
+            clipBehavior: Clip.antiAlias,
+            color: _accordionSurface(scheme, const Color(0xFFFFB74D)),
+            child: ExpansionTile(
+              initiallyExpanded: false,
+              leading: const Icon(
+                Icons.restaurant_outlined,
+                color: Color(0xFFFFB74D),
+              ),
+              title: Text(
+                'Fuel for this session',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+              subtitle: Text(
+                [
+                  if (plan.preMeal != null) 'Pre · ${plan.preMeal!.name}',
+                  if (plan.postMeal != null) 'Post · ${plan.postMeal!.name}',
+                  if (plan.preMeal == null && plan.postMeal == null)
+                    'Tap to add pre & post meals',
+                ].join('  ·  '),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                    ),
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  child: Column(
+                    children: [
+                      _PlanMealCard(
+                        label: 'Pre-workout',
+                        meal: plan.preMeal,
+                        accent: const Color(0xFFFF7043),
+                        onSelect: () => _pickMeal(MealTiming.preWorkout),
+                      ),
+                      const SizedBox(height: 8),
+                      _PlanMealCard(
+                        label: 'Post-workout',
+                        meal: plan.postMeal,
+                        accent: const Color(0xFF4FC3F7),
+                        onSelect: () => _pickMeal(MealTiming.postWorkout),
+                      ),
+                    ],
+                  ),
                 ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            'Pre + post meals ride with your routine so Progress can balance calories at day end.',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: scheme.onSurfaceVariant,
-                ),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          _PlanMealCard(
-            label: 'Pre-workout',
-            meal: plan.preMeal,
-            onSelect: () => _pickMeal(MealTiming.preWorkout),
-          ),
-          const SizedBox(height: 10),
-          _PlanMealCard(
-            label: 'Post-workout',
-            meal: plan.postMeal,
-            onSelect: () => _pickMeal(MealTiming.postWorkout),
+              ],
+            ),
           ),
           const SizedBox(height: AppSpacing.md),
           _OrderGuideCard(exercises: active),
@@ -382,11 +417,12 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
           const SizedBox(height: AppSpacing.md),
           Card(
             clipBehavior: Clip.antiAlias,
+            color: _accordionSurface(scheme, const Color(0xFFBA68C8)),
             child: ExpansionTile(
               initiallyExpanded: true,
-              leading: Icon(
+              leading: const Icon(
                 Icons.fitness_center,
-                color: scheme.primary,
+                color: Color(0xFFBA68C8),
               ),
               title: Text(
                 'Exercises for your gym time · ${active.length} moves',
@@ -698,9 +734,13 @@ class _WarmUpCard extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Card(
       clipBehavior: Clip.antiAlias,
+      color: _accordionSurface(scheme, const Color(0xFF81C784)),
       child: ExpansionTile(
         initiallyExpanded: true,
-        leading: Icon(Icons.self_improvement, color: scheme.primary),
+        leading: const Icon(
+          Icons.self_improvement,
+          color: Color(0xFF81C784),
+        ),
         title: Text(
           'Warm-up · ~8 min',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -1017,9 +1057,10 @@ class _OrderGuideCard extends StatelessWidget {
     final compounds = exercises.where((e) => e.isCompound).length;
     return Card(
       clipBehavior: Clip.antiAlias,
+      color: _accordionSurface(scheme, const Color(0xFF64B5F6)),
       child: ExpansionTile(
         initiallyExpanded: false,
-        leading: Icon(Icons.route_rounded, color: scheme.primary),
+        leading: const Icon(Icons.route_rounded, color: Color(0xFF64B5F6)),
         title: Text(
           'Why this order',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -1237,111 +1278,121 @@ class _PlanMealCard extends StatelessWidget {
     required this.label,
     required this.meal,
     required this.onSelect,
+    this.accent,
   });
 
   final String label;
   final MealSuggestion? meal;
   final VoidCallback onSelect;
+  final Color? accent;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final tint = accent ?? scheme.primary;
     if (meal == null) {
       return Card(
+        color: _accordionSurface(scheme, tint),
         child: ListTile(
-          leading: Icon(Icons.restaurant_outlined, color: scheme.primary),
+          dense: true,
+          leading: Icon(Icons.restaurant_outlined, color: tint),
           title: Text(label),
-          subtitle: const Text('Tap to choose a meal for your diet.'),
+          subtitle: const Text('Tap to choose a meal'),
           trailing: const Icon(Icons.chevron_right),
           onTap: onSelect,
         ),
       );
     }
 
+    final macros =
+        '${meal!.calories} kcal · P ${meal!.proteinG.toStringAsFixed(0)}g · '
+        'C ${meal!.carbsG.toStringAsFixed(0)}g · F ${meal!.fatG.toStringAsFixed(0)}g';
+
     return Card(
+      margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onSelect,
-        child: Padding(
-          padding: AppSpacing.card,
-          child: Row(
+      color: Color.alphaBlend(
+        tint.withValues(alpha: 0.22),
+        scheme.surfaceContainerHighest,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: tint.withValues(alpha: 0.45)),
+      ),
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          tilePadding: const EdgeInsets.fromLTRB(10, 2, 6, 2),
+          childrenPadding: const EdgeInsets.fromLTRB(12, 0, 12, 10),
+          leading: MealIconTile(
+            mealId: meal!.id,
+            mealName: meal!.name,
+            size: 40,
+          ),
+          title: Text(
+            meal!.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+          subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MealIconTile(mealId: meal!.id, mealName: meal!.name),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      label,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: scheme.primary,
-                            fontWeight: FontWeight.w600,
-                          ),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: tint,
+                      fontWeight: FontWeight.w700,
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      meal!.name,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                    const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      meal!.portion,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: scheme.onSurfaceVariant,
-                          ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
-                      children: [
-                        Chip(
-                          visualDensity: VisualDensity.compact,
-                          label: Text('${meal!.calories} kcal'),
-                        ),
-                        Chip(
-                          visualDensity: VisualDensity.compact,
-                          label: Text(
-                            'P ${meal!.proteinG.toStringAsFixed(0)}g',
-                          ),
-                        ),
-                        Chip(
-                          visualDensity: VisualDensity.compact,
-                          label: Text(
-                            'C ${meal!.carbsG.toStringAsFixed(0)}g',
-                          ),
-                        ),
-                        Chip(
-                          visualDensity: VisualDensity.compact,
-                          label: Text(
-                            'F ${meal!.fatG.toStringAsFixed(0)}g',
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      meal!.timingGuidance,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Tap to browse & select another meal',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: scheme.primary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ],
-                ),
               ),
-              Icon(Icons.expand_more_rounded, color: scheme.onSurfaceVariant),
+              Text(
+                macros,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: scheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
             ],
           ),
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        meal!.portion,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: scheme.onSurfaceVariant,
+                            ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        meal!.timingGuidance,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+                TextButton.icon(
+                  style: TextButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    foregroundColor: tint,
+                  ),
+                  onPressed: onSelect,
+                  icon: const Icon(Icons.swap_horiz, size: 18),
+                  label: const Text('Change meal'),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

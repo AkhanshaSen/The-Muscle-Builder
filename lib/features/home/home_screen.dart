@@ -120,18 +120,18 @@ class HomeScreen extends ConsumerWidget {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const CardHeader(
+                            CardHeader(
                               icon: Icons.fitness_center,
                               title: 'Today\'s plan',
+                              trailing: _CountPill(
+                                label:
+                                    '${plan.exercises.length} exercises ready',
+                              ),
                             ),
                             const SizedBox(height: AppSpacing.md),
                             Text(
                               plan.encouragement,
                               style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            const SizedBox(height: AppSpacing.md),
-                            _CountPill(
-                              label: '${plan.exercises.length} exercises ready',
                             ),
                             const SizedBox(height: AppSpacing.lg),
                             PrimaryCta(
@@ -142,7 +142,7 @@ class HomeScreen extends ConsumerWidget {
                             ),
                             const SizedBox(height: AppSpacing.xs),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 TextButton(
                                   onPressed: () => context.push('/checkin'),
@@ -531,32 +531,39 @@ class _QuickAction extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: AppSpacing.cardTight,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
               Container(
-                width: 32,
-                height: 32,
+                width: 36,
+                height: 36,
                 decoration: BoxDecoration(
                   color: scheme.primary.withValues(alpha: 0.16),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, size: 18, color: scheme.primary),
               ),
-              const SizedBox(height: AppSpacing.md),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: scheme.onSurfaceVariant,
+                    Text(
+                      subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
                     ),
+                  ],
+                ),
               ),
             ],
           ),

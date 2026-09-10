@@ -183,6 +183,7 @@ class BackupService {
         'aspiration': p.aspiration,
         'targetWeightKg': p.targetWeightKg,
         'weeklyTrainingDays': p.weeklyTrainingDays,
+        'birthday': p.birthday?.toIso8601String(),
       };
 
   UserProfile _profileFromJson(Map<String, dynamic> j) => UserProfile(
@@ -223,6 +224,9 @@ class BackupService {
         aspiration: j['aspiration'] as String? ?? '',
         targetWeightKg: (j['targetWeightKg'] as num?)?.toDouble(),
         weeklyTrainingDays: j['weeklyTrainingDays'] as int? ?? 4,
+        birthday: j['birthday'] == null
+            ? null
+            : DateTime.tryParse(j['birthday'] as String),
       );
 
   Map<String, dynamic> _checkInToJson(DailyCheckIn c) => {

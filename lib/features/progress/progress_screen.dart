@@ -99,34 +99,35 @@ class ProgressScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          status.isRestLogged
-                              ? 'Today · ${status.loggedKind!.label}'
-                              : 'Today',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall
-                              ?.copyWith(fontWeight: FontWeight.w600),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              status.isRestLogged
+                                  ? 'Today · ${status.loggedKind!.label}'
+                                  : 'Today',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall
+                                  ?.copyWith(fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                status.isRestLogged
+                                    ? status.loggedKind!.subtitle
+                                    : status.plan != null
+                                        ? 'Burn ~${GymSessionSizing.activeBurnKcal(status.plan!)} · '
+                                            'Meals ${status.plan!.mealFuelKcal} kcal · '
+                                            'P ${status.plan!.mealProteinG.toStringAsFixed(0)}g · '
+                                            '${status.plan!.gymMinutes} min'
+                                        : 'No plan yet — start a check-in when you are ready.',
+                                textAlign: TextAlign.end,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: AppSpacing.xs),
-                        if (status.isRestLogged)
-                          Text(
-                            status.loggedKind!.subtitle,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          )
-                        else if (status.plan case final plan?)
-                          Text(
-                            'Burn ~${GymSessionSizing.activeBurnKcal(plan)} · '
-                            'Meals ${plan.mealFuelKcal} kcal · '
-                            'P ${plan.mealProteinG.toStringAsFixed(0)}g · '
-                            '${plan.gymMinutes} min',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          )
-                        else
-                          Text(
-                            'No plan yet — start a check-in when you are ready.',
-                            style: Theme.of(context).textTheme.bodySmall,
-                          ),
                         TextButton(
                           style: TextButton.styleFrom(
                             visualDensity: VisualDensity.compact,
@@ -186,9 +187,25 @@ class ProgressScreen extends ConsumerWidget {
                       .map(
                         (m) => Chip(
                           visualDensity: VisualDensity.compact,
-                          label: Text(m),
-                          avatar: Icon(Icons.fitness_center,
-                              size: 14, color: scheme.primary),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
+                          padding: EdgeInsets.zero,
+                          labelPadding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 0,
+                          ),
+                          label: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.fitness_center,
+                                size: 14,
+                                color: scheme.primary,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(m),
+                            ],
+                          ),
                         ),
                       )
                       .toList(),

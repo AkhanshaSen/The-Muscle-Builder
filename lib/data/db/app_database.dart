@@ -37,6 +37,7 @@ class UserProfiles extends Table {
   RealColumn get targetWeightKg => real().nullable()();
   IntColumn get weeklyTrainingDays =>
       integer().withDefault(const Constant(4))();
+  DateTimeColumn get birthday => dateTime().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -184,7 +185,7 @@ class AppDatabase extends _$AppDatabase {
       : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 12;
+  int get schemaVersion => 14;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -277,8 +278,32 @@ DELETE FROM hydration_logs WHERE id NOT IN (
               'CREATE UNIQUE INDEX IF NOT EXISTS hydration_logs_date_unique ON hydration_logs(date)',
             );
           }
+          if (from < 13) {
+            await m.addColumn(userProfiles, userProfiles.birthday);
+          }
+          if (from < 14) {
+            // Self-heal installs that skipped v13 (hot restart / partial migrate).
+            await _ensureBirthdayColumn(m.database);
+          }
+        },
+        beforeOpen: (details) async {
+          // Always verify — theme/settings saves fail hard without this column.
+          await _ensureBirthdayColumn(this);
         },
       );
+
+  /// Adds [user_profiles.birthday] if an older DB is missing it.
+  static Future<void> _ensureBirthdayColumn(GeneratedDatabase db) async {
+    final rows = await db.customSelect("PRAGMA table_info('user_profiles')").get();
+    final cols = <String>{
+      for (final row in rows) row.read<String>('name'),
+    };
+    if (!cols.contains('birthday')) {
+      await db.customStatement(
+        'ALTER TABLE user_profiles ADD COLUMN birthday INTEGER NULL',
+      );
+    }
+  }
 
   static QueryExecutor _openConnection() {
     return driftDatabase(name: 'the_muscle_builder');

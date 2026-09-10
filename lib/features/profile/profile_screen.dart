@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../../app/providers.dart';
 import '../../core/constants/app_constants.dart';
@@ -21,6 +22,15 @@ bool _isYogurtMeal(MealSuggestion m) {
       key.contains('buttermilk') ||
       key.contains('raita') ||
       key.contains('doi');
+}
+
+bool _themeHexEquals(String a, String b) {
+  String norm(String h) {
+    final u = h.trim().toUpperCase();
+    return u.startsWith('#') ? u : '#$u';
+  }
+
+  return norm(a) == norm(b);
 }
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -47,7 +57,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   }
 
   Future<void> _save(UserProfile profile) async {
-    await ref.read(profileRepositoryProvider).saveProfile(profile);
+    try {
+      await ref.read(profileRepositoryProvider).saveProfile(profile);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Couldn\'t save settings: $e')),
+      );
+    }
   }
 
   @override
@@ -205,94 +222,370 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     final ageCtrl = TextEditingController(text: '${profile.age}');
     var gender = profile.gender;
     var activity = profile.activityLevel;
+    DateTime? birthday = profile.birthday;
+    final dateFmt = DateFormat('dd-MM-yyyy');
+    final birthdayCtrl = TextEditingController(
+      text: birthday == null ? '' : dateFmt.format(birthday),
+    );
 
-    final result = await showDialog<bool>(
+    final result = await showModalBottomSheet<bool>(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setLocal) => AlertDialog(
-          title: const Text('About you'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: nameCtrl,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: journeyCtrl,
-                  decoration: const InputDecoration(labelText: 'Journey name'),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: weightCtrl,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration: const InputDecoration(labelText: 'Weight (kg)'),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: heightCtrl,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Height (cm)'),
-                ),
-                const SizedBox(height: 10),
-                TextField(
-                  controller: ageCtrl,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Age'),
-                ),
-                const SizedBox(height: 10),
-                DropdownButtonFormField<Gender>(
-                  initialValue: gender,
-                  decoration: const InputDecoration(labelText: 'Gender'),
-                  items: Gender.values
-                      .map(
-                        (g) => DropdownMenuItem(
-                          value: g,
-                          child: Text(g.label),
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (context) {
+        final scheme = Theme.of(context).colorScheme;
+        final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
+
+        InputDecoration deco({
+          required String label,
+          String? suffix,
+          IconData? icon,
+          bool compact = false,
+        }) {
+          return InputDecoration(
+            labelText: label,
+            suffixText: suffix,
+            prefixIcon: icon == null ? null : Icon(icon, size: 20),
+            isDense: compact,
+            filled: true,
+            fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.55),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(
+                color: scheme.outlineVariant.withValues(alpha: 0.5),
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: scheme.primary, width: 1.4),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: compact ? 12 : 14,
+              vertical: compact ? 12 : 14,
+            ),
+          );
+        }
+
+        DateTime? parseBirthday(String raw) {
+          final t = raw.trim();
+          if (t.isEmpty) return null;
+          for (final pattern in const ['dd-MM-yyyy', 'dd.MM.yyyy', 'dd/MM/yyyy']) {
+            try {
+              return DateFormat(pattern).parseStrict(t);
+            } catch (_) {}
+          }
+          return null;
+        }
+
+        return StatefulBuilder(
+          builder: (context, setLocal) {
+            void applyBirthday(DateTime? d, {bool syncText = true}) {
+              setLocal(() {
+                birthday = d;
+                if (syncText) {
+                  birthdayCtrl.text = d == null ? '' : dateFmt.format(d);
+                }
+                if (d != null) {
+                  ageCtrl.text = '${UserProfile.ageFromBirthday(d)}';
+                }
+              });
+            }
+
+            Future<void> pickBirthday() async {
+              final now = DateTime.now();
+              final picked = await showDatePicker(
+                context: context,
+                initialDate: birthday ??
+                    DateTime(now.year - profile.age, now.month, now.day),
+                firstDate: DateTime(now.year - 120),
+                lastDate: now,
+                helpText: 'Select birthday',
+                // Avoid locale mm/dd/yyyy text entry — type dd-mm-yyyy in the field.
+                initialEntryMode: DatePickerEntryMode.calendarOnly,
+              );
+              if (picked == null) return;
+              applyBirthday(picked);
+            }
+
+            return Padding(
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 20 + bottomInset),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: scheme.primary.withValues(alpha: 0.16),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Icon(
+                            Icons.person_outline,
+                            color: scheme.primary,
+                          ),
                         ),
-                      )
-                      .toList(),
-                  onChanged: (v) {
-                    if (v != null) setLocal(() => gender = v);
-                  },
-                ),
-                const SizedBox(height: 10),
-                DropdownButtonFormField<ActivityLevel>(
-                  initialValue: activity,
-                  decoration:
-                      const InputDecoration(labelText: 'Activity level'),
-                  items: ActivityLevel.values
-                      .map(
-                        (a) => DropdownMenuItem(
-                          value: a,
-                          child: Text(a.label),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'About you',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(fontWeight: FontWeight.w700),
+                              ),
+                              Text(
+                                'Basics for coaching and calorie estimates',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(color: scheme.onSurfaceVariant),
+                              ),
+                            ],
+                          ),
                         ),
-                      )
-                      .toList(),
-                  onChanged: (v) {
-                    if (v != null) setLocal(() => activity = v);
-                  },
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Identity',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: scheme.primary,
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: nameCtrl,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: deco(
+                        label: 'Name',
+                        icon: Icons.badge_outlined,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: journeyCtrl,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: deco(
+                        label: 'Journey name',
+                        icon: Icons.auto_awesome_outlined,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Body metrics',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: scheme.primary,
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: weightCtrl,
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                            ),
+                            decoration: deco(
+                              label: 'Weight',
+                              suffix: 'kg',
+                              compact: true,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: TextField(
+                            controller: heightCtrl,
+                            keyboardType: TextInputType.number,
+                            decoration: deco(
+                              label: 'Height',
+                              suffix: 'cm',
+                              compact: true,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: birthdayCtrl,
+                      keyboardType: TextInputType.datetime,
+                      decoration: deco(
+                        label: 'Birthday',
+                        icon: Icons.cake_outlined,
+                      ).copyWith(
+                        hintText: 'dd-mm-yyyy',
+                        helperText: 'Format: dd-mm-yyyy',
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (birthday != null)
+                              IconButton(
+                                tooltip: 'Clear',
+                                onPressed: () {
+                                  birthdayCtrl.clear();
+                                  applyBirthday(null, syncText: false);
+                                },
+                                icon: const Icon(Icons.clear),
+                              ),
+                            IconButton(
+                              tooltip: 'Pick date',
+                              onPressed: pickBirthday,
+                              icon: const Icon(Icons.calendar_today_outlined),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onChanged: (raw) {
+                        final parsed = parseBirthday(raw);
+                        if (parsed != null) {
+                          applyBirthday(parsed, syncText: false);
+                        } else if (raw.trim().isEmpty) {
+                          applyBirthday(null, syncText: false);
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: ageCtrl,
+                            readOnly: birthday != null,
+                            keyboardType: TextInputType.number,
+                            decoration: deco(
+                              label: 'Age',
+                              suffix: 'yrs',
+                              compact: true,
+                            ).copyWith(
+                              helperText: birthday != null
+                                  ? 'From birthday'
+                                  : null,
+                              helperMaxLines: 1,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: DropdownButtonFormField<Gender>(
+                            initialValue: gender,
+                            isExpanded: true,
+                            decoration: deco(
+                              label: 'Gender',
+                              compact: true,
+                            ),
+                            items: Gender.values
+                                .map(
+                                  (g) => DropdownMenuItem(
+                                    value: g,
+                                    child: Text(
+                                      g.label,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (v) {
+                              if (v != null) setLocal(() => gender = v);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Lifestyle',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: scheme.primary,
+                          ),
+                    ),
+                    const SizedBox(height: 10),
+                    DropdownButtonFormField<ActivityLevel>(
+                      initialValue: activity,
+                      isExpanded: true,
+                      decoration: deco(
+                        label: 'Activity level',
+                        icon: Icons.directions_walk_outlined,
+                      ),
+                      items: ActivityLevel.values
+                          .map(
+                            (a) => DropdownMenuItem(
+                              value: a,
+                              child: Text(
+                                a.label,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (v) {
+                        if (v != null) setLocal(() => activity = v);
+                      },
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Cancel'),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: FilledButton(
+                            onPressed: () {
+                              final typed = parseBirthday(birthdayCtrl.text);
+                              if (typed != null) birthday = typed;
+                              if (birthdayCtrl.text.trim().isEmpty) {
+                                birthday = null;
+                              }
+                              Navigator.pop(context, true);
+                            },
+                            child: const Text('Save'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: const Text('Save'),
-            ),
-          ],
-        ),
-      ),
+              ),
+            );
+          },
+        );
+      },
     );
     if (result != true) return;
+    final typedBirthday = () {
+      final t = birthdayCtrl.text.trim();
+      if (t.isEmpty) return null;
+      for (final pattern in const ['dd-MM-yyyy', 'dd.MM.yyyy', 'dd/MM/yyyy']) {
+        try {
+          return DateFormat(pattern).parseStrict(t);
+        } catch (_) {}
+      }
+      return birthday;
+    }();
+    final resolvedBirthday = typedBirthday;
+    final parsedAge = int.tryParse(ageCtrl.text.trim()) ?? profile.age;
+    final resolvedAge = resolvedBirthday != null
+        ? UserProfile.ageFromBirthday(resolvedBirthday)
+        : parsedAge;
     await _save(
       profile.copyWith(
         name: nameCtrl.text.trim().isEmpty
@@ -303,9 +596,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
             : journeyCtrl.text.trim(),
         weightKg: double.tryParse(weightCtrl.text.trim()) ?? profile.weightKg,
         heightCm: double.tryParse(heightCtrl.text.trim()) ?? profile.heightCm,
-        age: int.tryParse(ageCtrl.text.trim()) ?? profile.age,
+        age: resolvedAge,
         gender: gender,
         activityLevel: activity,
+        birthday: resolvedBirthday,
+        clearBirthday: resolvedBirthday == null,
       ),
     );
   }
@@ -554,48 +849,34 @@ class _YouTab extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: AppSpacing.md),
-                Text(
-                  'Aspiration',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  profile.aspiration.isEmpty
-                      ? 'What does “fit” look like for you long-term? Tap Add.'
-                      : profile.aspiration,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontStyle: profile.aspiration.isEmpty
-                            ? FontStyle.italic
-                            : FontStyle.normal,
-                        color: profile.aspiration.isEmpty
-                            ? scheme.onSurfaceVariant
-                            : null,
-                      ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Text(
-                  'Why fitness?',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  profile.fitnessWhy.isEmpty
-                      ? 'Your personal why keeps hard days honest. Tap Add.'
-                      : profile.fitnessWhy,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontStyle: profile.fitnessWhy.isEmpty
-                            ? FontStyle.italic
-                            : FontStyle.normal,
-                        color: profile.fitnessWhy.isEmpty
-                            ? scheme.onSurfaceVariant
-                            : null,
-                      ),
-                ),
-                const SizedBox(height: AppSpacing.md),
+                if (profile.aspiration.isNotEmpty) ...[
+                  Text(
+                    'Aspiration',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    profile.aspiration,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                ],
+                if (profile.fitnessWhy.isNotEmpty) ...[
+                  Text(
+                    'Why fitness?',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  Text(
+                    profile.fitnessWhy,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                ],
                 Text(
                   'Primary focus',
                   style: Theme.of(context).textTheme.labelMedium,
@@ -746,8 +1027,6 @@ class _SettingsTab extends StatelessWidget {
           ),
           sliver: SliverList(
             delegate: SliverChildListDelegate([
-        const SectionLabel('Settings'),
-        const SizedBox(height: AppSpacing.md),
         CollapsibleSection(
           icon: Icons.calendar_month_outlined,
           title: 'Weekly routine',
@@ -768,7 +1047,9 @@ class _SettingsTab extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(height: 8),
-              Row(
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
                 children: [
                   for (final hex in const [
                     '#FF6B35',
@@ -778,26 +1059,57 @@ class _SettingsTab extends StatelessWidget {
                     '#FFC107',
                     '#E91E63',
                   ])
-                    GestureDetector(
-                      onTap: () =>
-                          onSave(profile.copyWith(themeColorHex: hex)),
-                      child: Container(
-                        width: 28,
-                        height: 28,
-                        margin: const EdgeInsets.only(right: 8),
-                        decoration: BoxDecoration(
-                          color: Color(
-                            int.parse('FF${hex.substring(1)}', radix: 16),
+                    Builder(
+                      builder: (context) {
+                        final selected = _themeHexEquals(
+                          profile.themeColorHex,
+                          hex,
+                        );
+                        final color = Color(
+                          int.parse('FF${hex.substring(1)}', radix: 16),
+                        );
+                        return Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: () async {
+                              await onSave(
+                                profile.copyWith(themeColorHex: hex),
+                              );
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Accent color updated'),
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                            },
+                            child: Ink(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: color,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: selected
+                                      ? scheme.onSurface
+                                      : scheme.outlineVariant,
+                                  width: selected ? 3 : 1,
+                                ),
+                              ),
+                              child: selected
+                                  ? Icon(
+                                      Icons.check,
+                                      size: 20,
+                                      color: color.computeLuminance() > 0.55
+                                          ? Colors.black
+                                          : Colors.white,
+                                    )
+                                  : null,
+                            ),
                           ),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: profile.themeColorHex.toUpperCase() == hex
-                                ? scheme.onSurface
-                                : Colors.transparent,
-                            width: 2.5,
-                          ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                 ],
               ),
@@ -815,8 +1127,16 @@ class _SettingsTab extends StatelessWidget {
                     visualDensity: VisualDensity.compact,
                     label: Text(t.label),
                     selected: profile.themePreference == t,
-                    onSelected: (_) =>
-                        onSave(profile.copyWith(themePreference: t)),
+                    onSelected: (_) async {
+                      await onSave(profile.copyWith(themePreference: t));
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Appearance: ${t.label}'),
+                          duration: const Duration(seconds: 1),
+                        ),
+                      );
+                    },
                   );
                 }).toList(),
               ),
@@ -834,8 +1154,16 @@ class _SettingsTab extends StatelessWidget {
                     visualDensity: VisualDensity.compact,
                     label: Text(t.shortLabel),
                     selected: profile.coachTone == t,
-                    onSelected: (_) =>
-                        onSave(profile.copyWith(coachTone: t)),
+                    onSelected: (_) async {
+                      await onSave(profile.copyWith(coachTone: t));
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Coach: ${t.shortLabel}'),
+                          duration: const Duration(seconds: 1),
+                        ),
+                      );
+                    },
                   );
                 }).toList(),
               ),
@@ -1005,6 +1333,7 @@ class _SettingsTab extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(height: 48),
             ]),
           ),
         ),
@@ -1013,13 +1342,13 @@ class _SettingsTab extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
               AppSpacing.md,
-              AppSpacing.lg,
+              24,
               AppSpacing.md,
               AppSpacing.lg + bottomPad,
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                const Spacer(),
                 Text(
                   AppConstants.appName,
                   style: Theme.of(context).textTheme.labelMedium,
