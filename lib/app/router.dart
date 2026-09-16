@@ -16,16 +16,17 @@ import '../features/progress/guides_screen.dart';
 import '../features/splash/splash_screen.dart';
 import '../features/workout/session_screen.dart';
 import '../features/workout/workout_plan_screen.dart';
+import '../features/fox_chat/fox_chat_screen.dart';
 import '../features/workout/workout_tab_screen.dart';
 
-final _rootKey = GlobalKey<NavigatorState>();
+final appNavigatorKey = GlobalKey<NavigatorState>();
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = _RouterRefresh(ref);
   ref.onDispose(refresh.dispose);
 
   return GoRouter(
-    navigatorKey: _rootKey,
+    navigatorKey: appNavigatorKey,
     initialLocation: '/splash',
     refreshListenable: refresh,
     redirect: (context, state) {
@@ -49,7 +50,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: appNavigatorKey,
         path: '/splash',
         builder: (context, state) => const SplashScreen(),
       ),
@@ -116,12 +117,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: appNavigatorKey,
         path: '/checkin',
         builder: (context, state) => const CheckInScreen(),
       ),
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: appNavigatorKey,
         path: '/plan/:planId',
         builder: (context, state) {
           final id = state.pathParameters['planId']!;
@@ -129,7 +130,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: appNavigatorKey,
         path: '/session/:sessionId',
         builder: (context, state) {
           final id = state.pathParameters['sessionId']!;
@@ -137,7 +138,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: appNavigatorKey,
         path: '/day/:date',
         builder: (context, state) {
           final raw = state.pathParameters['date']!;
@@ -151,12 +152,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: appNavigatorKey,
+        path: '/fox-chat',
+        builder: (context, state) => const FoxChatScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: appNavigatorKey,
         path: '/guides',
         builder: (context, state) => const GuidesScreen(),
       ),
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: appNavigatorKey,
         path: '/day-history',
         builder: (context, state) => const DayHistoryScreen(),
       ),

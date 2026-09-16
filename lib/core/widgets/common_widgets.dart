@@ -324,6 +324,7 @@ class CollapsibleSection extends StatefulWidget {
     required this.title,
     required this.child,
     this.subtitle,
+    this.contentPadding,
     this.initiallyExpanded = false,
   });
 
@@ -331,6 +332,7 @@ class CollapsibleSection extends StatefulWidget {
   final String title;
   final String? subtitle;
   final Widget child;
+  final EdgeInsetsGeometry? contentPadding;
   final bool initiallyExpanded;
 
   @override
@@ -410,7 +412,8 @@ class _CollapsibleSectionState extends State<CollapsibleSection> {
             alignment: Alignment.topCenter,
             child: _expanded
                 ? Padding(
-                    padding: AppSpacing.cardTight,
+                    padding:
+                        widget.contentPadding ?? AppSpacing.cardTight,
                     child: widget.child,
                   )
                 : const SizedBox.shrink(),

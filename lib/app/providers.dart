@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/db/app_database.dart';
 import '../../data/repositories/cloud_sync_port.dart';
@@ -207,4 +208,29 @@ final recentBodyMetricsProvider =
 final packageInfoProvider = FutureProvider<PackageInfo>((ref) {
   return PackageInfo.fromPlatform();
 });
+
+/// Idle fox mascot overlay — off until enabled in Profile → Settings.
+class IdleMascotEnabled extends Notifier<bool> {
+  static const prefsKey = 'idle_mascot_enabled';
+
+  @override
+  bool build() {
+    _hydrate();
+    return false;
+  }
+
+  Future<void> _hydrate() async {
+    final prefs = await SharedPreferences.getInstance();
+    state = prefs.getBool(prefsKey) ?? false;
+  }
+
+  Future<void> setEnabled(bool value) async {
+    state = value;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(prefsKey, value);
+  }
+}
+
+final idleMascotEnabledProvider =
+    NotifierProvider<IdleMascotEnabled, bool>(IdleMascotEnabled.new);
 

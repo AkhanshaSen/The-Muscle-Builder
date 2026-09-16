@@ -20,6 +20,22 @@ A Flutter fitness companion that adapts every training session to how you feel, 
   <em>Home &nbsp;·&nbsp; Nutrition &nbsp;·&nbsp; Progress</em>
 </p>
 
+<p align="center">
+  <img src="docs/screenshots/fox-mascot-chat.png" alt="Fox mascot — in-app chat welcome" width="260" />
+  &nbsp;&nbsp;&nbsp;
+  <img src="docs/screenshots/fox-mascot-chat-reply.png" alt="Fox mascot — chat with quick topics" width="260" />
+</p>
+
+<p align="center">
+  <em>Fox buddy &nbsp;·&nbsp; In-app chat</em>
+</p>
+
+### 🦊 Fox mascot buddy
+
+Your optional floating fox appears after a few seconds idle — push-ups, jump rope, and a tap-to-chat panel that knows the app.  
+Ask for tabs, settings, check-in, or nutrition; quick-topic chips get you there without hunting menus.  
+Turn it on under **Profile → Settings → Fox Mascot**; tap the fox to chat, **×** on the fox to hide it.
+
 ---
 
 ## ✨ What makes it different
@@ -73,6 +89,7 @@ Most fitness apps give you a fixed plan written for a 22-year-old gym bro in Cal
 - Primary goal, personal aspiration, and motivation statement
 - Coach personality, diet preferences, equipment setup
 - Theme & appearance · JSON backup & restore
+- **Fox Mascot** — optional idle buddy + in-app guide chat (see above)
 
 ---
 

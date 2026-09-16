@@ -1036,6 +1036,33 @@ class _SettingsTab extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         CollapsibleSection(
+          icon: Icons.pets_outlined,
+          title: 'Fox Mascot',
+          subtitle: 'Floating buddy after 10s idle · in-app chat',
+          initiallyExpanded: false,
+          contentPadding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+          child: Consumer(
+            builder: (context, ref, _) {
+              final on = ref.watch(idleMascotEnabledProvider);
+              return SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                visualDensity: VisualDensity.compact,
+                title: const Text('Show idle fox'),
+                subtitle: Text(
+                  on
+                      ? 'Tap the fox to chat · × on the fox turns it off'
+                      : 'Turn on to show the floating fox on any screen',
+                ),
+                value: on,
+                onChanged: (v) => ref
+                    .read(idleMascotEnabledProvider.notifier)
+                    .setEnabled(v),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 10),
+        CollapsibleSection(
           icon: Icons.palette_outlined,
           title: 'Personalization',
           subtitle: 'Theme, appearance, coach tone',

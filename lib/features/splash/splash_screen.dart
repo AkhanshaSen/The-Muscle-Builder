@@ -24,27 +24,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: scheme.primary,
+      backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              'assets/icon/app_icon.png',
-              width: 100,
-              height: 100,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'The Muscle Builder',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-          ],
+        child: Image.asset(
+          'assets/icon/app_icon.png',
+          width: 280,
+          height: 280,
+          fit: BoxFit.contain,
         ),
       ),
     );
