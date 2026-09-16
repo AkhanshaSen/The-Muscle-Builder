@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../app/providers.dart';
+import '../logging/app_log.dart';
 import '../../features/fox_chat/fox_chat_panel.dart';
 
 /// Idle fox overlay — opt-in via Settings; tap fox for chat, × to turn off.
@@ -32,20 +32,48 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
   var _chatOpen = false;
   /// Owned here so chat open/close never resets the clip via child remounts.
   var _clipIndex = 0;
+  String _lastMascotLog = '';
+
+  void _logMascotState(String reason) {
+    final enabled = ref.read(idleMascotEnabledProvider);
+    final snap =
+        'enabled=$enabled visible=$_visible chat=$_chatOpen clip=${_clipAssets[_clipIndex]}';
+    if (snap == _lastMascotLog) return;
+    _lastMascotLog = snap;
+    AppLog.info('Mascot', reason, {
+      'enabled': enabled,
+      'foxVisible': _visible,
+      'chatOpen': _chatOpen,
+      'clip': _clipAssets[_clipIndex],
+    });
+    AppLog.visibility(
+      'Fox mascot overlay',
+      visible: enabled && _visible,
+      details: {'chatOpen': _chatOpen},
+    );
+    AppLog.visibility(
+      'Fox chat panel',
+      visible: enabled && _visible && _chatOpen,
+    );
+  }
 
   @override
   void initState() {
     super.initState();
     GestureBinding.instance.pointerRouter.addGlobalRoute(_onPointer);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      if (!ref.read(idleMascotEnabledProvider)) return;
-      if (_visible && !_chatOpen) {
-        _armClipCycle();
-      } else if (!_visible) {
-        _armIdle();
-      }
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _syncWithSettings());
+  }
+
+  void _syncWithSettings() {
+    if (!mounted) return;
+    if (!ref.read(idleMascotEnabledProvider)) return;
+    if (_visible) {
+      if (!_chatOpen) _armClipCycle();
+      return;
+    }
+    setState(() => _visible = true);
+    _armClipCycle();
+    _logMascotState('Synced with settings — showing fox');
   }
 
   @override
@@ -91,6 +119,7 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
     _clipCycleTimer = Timer.periodic(_clipHold, (_) {
       if (!mounted || _chatOpen || !_visible) return;
       setState(() => _clipIndex = (_clipIndex + 1) % _clipAssets.length);
+      _logMascotState('Clip rotated');
     });
   }
 
@@ -100,20 +129,27 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
   }
 
   void _onFoxTap() {
-    // Stop the 20s swap before setState so it cannot race with opening chat.
+    AppLog.tap(
+      _chatOpen ? 'Fox (close chat)' : 'Fox (open chat)',
+      details: {'clip': _clipAssets[_clipIndex]},
+    );
     _pauseClipCycle();
     setState(() => _chatOpen = !_chatOpen);
     if (!_chatOpen) _armClipCycle();
+    _logMascotState(_chatOpen ? 'Chat opened' : 'Chat closed');
   }
 
   void _closeFoxChat() {
     if (!_chatOpen) return;
+    AppLog.tap('Fox chat backdrop / close');
     _pauseClipCycle();
     setState(() => _chatOpen = false);
     _armClipCycle();
+    _logMascotState('Chat closed');
   }
 
   Future<void> _dismissFox() async {
+    AppLog.tap('Fox dismiss (×)');
     _idleTimer?.cancel();
     _pauseClipCycle();
     setState(() {
@@ -122,22 +158,23 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
       _clipIndex = 0;
     });
     await ref.read(idleMascotEnabledProvider.notifier).setEnabled(false);
+    _logMascotState('Fox dismissed and setting turned off');
   }
 
   @override
   Widget build(BuildContext context) {
     ref.listen(idleMascotEnabledProvider, (prev, next) {
       if (next) {
-        if (prev == false) {
-          setState(() {
-            _visible = true;
-            _clipIndex = 0;
-          });
-          _armClipCycle();
-        } else {
-          _armIdle();
-        }
+        AppLog.success('Mascot', 'Setting turned ON');
+        setState(() {
+          _visible = true;
+          if (prev == false) _clipIndex = 0;
+        });
+        _idleTimer?.cancel();
+        _armClipCycle();
+        _logMascotState('Enabled in settings');
       } else {
+        AppLog.info('Mascot', 'Setting turned OFF');
         _idleTimer?.cancel();
         _pauseClipCycle();
         setState(() {
@@ -145,6 +182,7 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
           _chatOpen = false;
           _clipIndex = 0;
         });
+        _logMascotState('Disabled in settings');
       }
     });
 
@@ -284,7 +322,13 @@ class _FoxClipImageState extends State<_FoxClipImage> {
             gaplessPlayback: true,
             excludeFromSemantics: true,
             errorBuilder: (context, error, stackTrace) {
-              debugPrint('Fox clip failed: ${widget.asset} — $error');
+              AppLog.error(
+                'Mascot',
+                'Fox animation failed to load',
+                error: error,
+                stackTrace: stackTrace,
+                details: {'asset': widget.asset},
+              );
               return Icon(
                 Icons.pets_outlined,
                 size: 40,

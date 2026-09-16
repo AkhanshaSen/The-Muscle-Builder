@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/constants/app_constants.dart';
 import '../core/theme/app_theme.dart';
 import '../core/widgets/common_widgets.dart';
-import '../core/widgets/idle_mascot_host.dart';
 import '../domain/models/enums.dart';
 import 'providers.dart';
 import 'router.dart';
@@ -37,9 +36,6 @@ class MuscleBuilderApp extends ConsumerWidget {
       themeMode: mode,
       // Prevents Android stretch-overscroll from vertically elongating UI.
       scrollBehavior: const NoStretchScrollBehavior(),
-      builder: (context, child) {
-        return IdleMascotHost(child: child ?? const SizedBox.shrink());
-      },
       routerConfig: router,
     );
   }

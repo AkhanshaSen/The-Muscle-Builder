@@ -18,6 +18,10 @@ import '../features/workout/session_screen.dart';
 import '../features/workout/workout_plan_screen.dart';
 import '../features/fox_chat/fox_chat_screen.dart';
 import '../features/workout/workout_tab_screen.dart';
+import '../core/widgets/idle_mascot_host.dart';
+import '../core/logging/app_log.dart';
+import '../core/logging/app_nav_observer.dart';
+import '../core/logging/go_router_log.dart';
 
 final appNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -25,30 +29,21 @@ final routerProvider = Provider<GoRouter>((ref) {
   final refresh = _RouterRefresh(ref);
   ref.onDispose(refresh.dispose);
 
-  return GoRouter(
+  final routeLog = GoRouterLog();
+  final router = GoRouter(
     navigatorKey: appNavigatorKey,
     initialLocation: '/splash',
     refreshListenable: refresh,
-    redirect: (context, state) {
-      final bypassRedirect =
-          state.matchedLocation.startsWith('/onboarding') ||
-          state.matchedLocation == '/splash';
-      // Read (don't watch) so profile chip saves don't recreate GoRouter
-      // and bounce the shell back to /home.
-      final profileAsync = ref.read(profileProvider);
-      final profile = profileAsync.asData?.value;
-      final loading = profileAsync.isLoading && !profileAsync.hasValue;
+    observers: [AppNavObserver()],
+    redirect: (context, state) => _redirect(ref, state),
+    routes: _appRoutes,
+  );
+  routeLog.attach(router);
+  ref.onDispose(routeLog.detach);
+  return router;
+});
 
-      if (loading) return null;
-
-      final onboarded = profile?.onboardingComplete == true;
-      if (!onboarded && !bypassRedirect) return '/onboarding';
-      if (onboarded && state.matchedLocation.startsWith('/onboarding')) {
-        return '/home';
-      }
-      return null;
-    },
-    routes: [
+List<RouteBase> get _appRoutes => [
       GoRoute(
         parentNavigatorKey: appNavigatorKey,
         path: '/splash',
@@ -166,9 +161,42 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/day-history',
         builder: (context, state) => const DayHistoryScreen(),
       ),
-    ],
-  );
-});
+    ];
+
+String? _redirect(Ref ref, GoRouterState state) {
+  final bypassRedirect =
+      state.matchedLocation.startsWith('/onboarding') ||
+      state.matchedLocation == '/splash';
+  final profileAsync = ref.read(profileProvider);
+  final profile = profileAsync.asData?.value;
+  final loading = profileAsync.isLoading && !profileAsync.hasValue;
+
+  if (loading) {
+    AppLog.info(
+      'Navigation',
+      'Waiting for profile before routing',
+      {'path': state.matchedLocation},
+    );
+    return null;
+  }
+
+  final onboarded = profile?.onboardingComplete == true;
+  String? target;
+  if (!onboarded && !bypassRedirect) {
+    target = '/onboarding';
+  } else if (onboarded && state.matchedLocation.startsWith('/onboarding')) {
+    target = '/home';
+  }
+
+  if (target != null && target != state.matchedLocation) {
+    AppLog.info(
+      'Navigation',
+      'Redirecting for onboarding',
+      {'from': state.matchedLocation, 'to': target},
+    );
+  }
+  return target;
+}
 
 class _RouterRefresh extends ChangeNotifier {
   _RouterRefresh(this.ref) {
@@ -195,7 +223,8 @@ class AppShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Scaffold(
+    return IdleMascotHost(
+      child: Scaffold(
       body: navigationShell,
       bottomNavigationBar: Material(
         color: scheme.surfaceContainer,
@@ -205,7 +234,21 @@ class AppShell extends StatelessWidget {
           maintainBottomViewPadding: true,
           child: NavigationBar(
             selectedIndex: navigationShell.currentIndex,
-            onDestinationSelected: navigationShell.goBranch,
+            onDestinationSelected: (index) {
+              const tabs = [
+                'Home',
+                'Workout',
+                'Nutrition',
+                'Progress',
+                'Profile',
+              ];
+              AppLog.tap(
+                'Bottom tab: ${tabs[index]}',
+                screen: tabs[navigationShell.currentIndex],
+                details: {'tabIndex': index},
+              );
+              navigationShell.goBranch(index);
+            },
             destinations: const [
               NavigationDestination(
                 icon: Icon(Icons.home_outlined),
@@ -235,6 +278,7 @@ class AppShell extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }
