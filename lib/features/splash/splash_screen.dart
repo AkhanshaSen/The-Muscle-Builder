@@ -24,6 +24,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    // Android 12+ masks the native splash icon in a circle; show Flutter UI ASAP.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      FlutterNativeSplash.remove();
+      AppLog.info('Splash', 'Native splash removed — showing full logo');
+    });
     Future<void>.delayed(_minShow, () {
       if (!mounted) return;
       setState(() => _minElapsed = true);
@@ -60,8 +66,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     setState(() => _opacity = 0);
     Future<void>.delayed(_fadeOut, () {
       if (!mounted) return;
-      FlutterNativeSplash.remove();
-      AppLog.info('Splash', 'Native splash removed');
       context.go(target);
     });
   }
@@ -78,12 +82,23 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         opacity: _opacity,
         duration: _fadeOut,
         curve: Curves.easeOut,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 36),
-            child: Image.asset(
-              'assets/icon/splash_logo.png',
-              fit: BoxFit.contain,
+        child: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final side = constraints.maxWidth < constraints.maxHeight
+                      ? constraints.maxWidth
+                      : constraints.maxHeight;
+                  return Image.asset(
+                    'assets/icon/splash_logo.png',
+                    width: side,
+                    height: side,
+                    fit: BoxFit.contain,
+                  );
+                },
+              ),
             ),
           ),
         ),
