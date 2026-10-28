@@ -327,54 +327,63 @@ class _NutritionFiltersHeader extends ConsumerWidget {
   }
 }
 
-class _FoodPharmerTab extends StatelessWidget {
+class _FoodPharmerTab extends ConsumerWidget {
   const _FoodPharmerTab({required this.onOpenPharmer});
 
   final Future<void> Function(FoodPharmerPointer pointer) onOpenPharmer;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final scheme = Theme.of(context).colorScheme;
-    return ListView(
-      padding: AppSpacing.page,
-      children: [
-        Text(
-          'Label & shopping pointers',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-        ),
-        const SizedBox(height: AppSpacing.xs),
-        Text(
-          'Educational · Food Pharmer · not medical advice. Opens in your browser.',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: scheme.onSurfaceVariant,
-              ),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        FilledButton.tonalIcon(
-          onPressed: () => onOpenPharmer(
-            const FoodPharmerPointer(
-              id: 'fp_hub',
-              title: 'Food Pharmer',
-              tip: '',
-              url: 'https://foodpharmer.health/',
+    return FutureBuilder<List<FoodPharmerPointer>>(
+      future: ref.read(guidesRepositoryProvider).loadPharmerPointers(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final pointers = snapshot.data!;
+        return ListView(
+          padding: AppSpacing.page,
+          children: [
+            Text(
+              'Label & shopping pointers',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
-          ),
-          icon: const Icon(Icons.open_in_new),
-          label: const Text('Open Food Pharmer site'),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        ...foodPharmerPointers.map(
-          (p) => Padding(
-            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-            child: _FoodPharmerListTile(
-              pointer: p,
-              onTap: () => onOpenPharmer(p),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              'Educational · Food Pharmer · not medical advice. Opens in your browser.',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
             ),
-          ),
-        ),
-      ],
+            const SizedBox(height: AppSpacing.md),
+            FilledButton.tonalIcon(
+              onPressed: () => onOpenPharmer(
+                const FoodPharmerPointer(
+                  id: 'fp_hub',
+                  title: 'Food Pharmer',
+                  tip: '',
+                  url: 'https://foodpharmer.health/',
+                ),
+              ),
+              icon: const Icon(Icons.open_in_new),
+              label: const Text('Open Food Pharmer site'),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            ...pointers.map(
+              (p) => Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                child: _FoodPharmerListTile(
+                  pointer: p,
+                  onTap: () => onOpenPharmer(p),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

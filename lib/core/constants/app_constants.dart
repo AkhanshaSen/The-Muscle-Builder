@@ -4,6 +4,16 @@ class AppConstants {
   static const defaultJourneyName = 'My Journey';
   static const developerName = 'Akhansha Sen';
 
+  /// Supabase project: https://supabase.com/dashboard/project/kaiffjdbfjkjqisumklh
+  static const supabaseUrl = 'https://kaiffjdbfjkjqisumklh.supabase.co';
+
+  /// Project Settings → API → publishable / anon public key.
+  /// Override at build time with: `--dart-define=SUPABASE_ANON_KEY=...`
+  static const supabaseAnonKey = String.fromEnvironment(
+    'SUPABASE_ANON_KEY',
+    defaultValue: 'sb_publishable_HephyMXlwSaEJRAgvPwxfQ_6JjvTg_B',
+  );
+
   static String buildVersionLabel(String version) =>
       'Build version $version - development phase 🍀 - $developerName';
 }

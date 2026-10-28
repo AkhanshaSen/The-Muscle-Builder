@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../data/db/app_database.dart';
 import '../../data/repositories/cloud_sync_port.dart';
+import '../../data/repositories/guides_repository.dart';
 import '../../data/repositories/metrics_repository.dart';
 import '../../data/repositories/nutrition_repository.dart';
 import '../../data/repositories/profile_repository.dart';
@@ -24,8 +26,16 @@ final databaseProvider = Provider<AppDatabase>((ref) {
 
 final cloudSyncProvider = Provider<CloudSyncPort>((ref) => NoOpCloudSync());
 
+final supabaseClientProvider = Provider<SupabaseClient>((ref) {
+  return Supabase.instance.client;
+});
+
 final seedRepositoryProvider = Provider<SeedRepository>((ref) {
-  return SeedRepository();
+  return SeedRepository(ref.watch(supabaseClientProvider));
+});
+
+final guidesRepositoryProvider = Provider<GuidesRepository>((ref) {
+  return GuidesRepository(ref.watch(supabaseClientProvider));
 });
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {

@@ -232,7 +232,7 @@ class AppDatabase extends _$AppDatabase {
               dailyCheckIns,
               dailyCheckIns.equipmentOverrideJson,
             );
-            await m.addColumn(weeklyRoutines, weeklyRoutines.deloadUntil);
+            // weekly_routines created at v8 already includes deload_until.
             await m.createTable(hydrationLogs);
             await m.createTable(bodyMetricLogs);
             await m.createTable(progressPhotos);
@@ -289,8 +289,24 @@ DELETE FROM hydration_logs WHERE id NOT IN (
         beforeOpen: (details) async {
           // Always verify — theme/settings saves fail hard without this column.
           await _ensureBirthdayColumn(this);
+          await _ensureDeloadUntilColumn(this);
         },
       );
+
+  /// Adds [weekly_routines.deload_until] for DBs created before that field existed.
+  static Future<void> _ensureDeloadUntilColumn(GeneratedDatabase db) async {
+    final rows =
+        await db.customSelect("PRAGMA table_info('weekly_routines')").get();
+    if (rows.isEmpty) return;
+    final cols = <String>{
+      for (final row in rows) row.read<String>('name'),
+    };
+    if (!cols.contains('deload_until')) {
+      await db.customStatement(
+        'ALTER TABLE weekly_routines ADD COLUMN deload_until INTEGER NULL',
+      );
+    }
+  }
 
   /// Adds [user_profiles.birthday] if an older DB is missing it.
   static Future<void> _ensureBirthdayColumn(GeneratedDatabase db) async {
