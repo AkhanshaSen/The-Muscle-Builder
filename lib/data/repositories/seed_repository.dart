@@ -35,7 +35,9 @@ class SeedRepository {
           return _exercises!;
         }
       } catch (e) {
-        debugPrint('SeedRepository.loadExercises Supabase miss: $e');
+        if (kDebugMode) {
+          debugPrint('SeedRepository.loadExercises Supabase miss: $e');
+        }
       }
     }
 
@@ -62,7 +64,9 @@ class SeedRepository {
           return _meals!;
         }
       } catch (e) {
-        debugPrint('SeedRepository.loadMeals Supabase miss: $e');
+        if (kDebugMode) {
+          debugPrint('SeedRepository.loadMeals Supabase miss: $e');
+        }
       }
     }
 

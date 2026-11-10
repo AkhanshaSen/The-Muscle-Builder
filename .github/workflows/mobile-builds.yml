@@ -59,9 +59,17 @@ jobs:
           } > android/key.properties
 
       - name: Build release APK and App Bundle
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          flutter build apk --release --build-number="${{ github.run_number }}"
-          flutter build appbundle --release --build-number="${{ github.run_number }}"
+          DART_DEFINES=()
+          if [ -n "$SUPABASE_ANON_KEY" ]; then
+            DART_DEFINES+=(--dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY")
+          else
+            echo "SUPABASE_ANON_KEY secret not set — builds will use bundled asset fallback."
+          fi
+          flutter build apk --release --build-number="${{ github.run_number }}" "${DART_DEFINES[@]}"
+          flutter build appbundle --release --build-number="${{ github.run_number }}" "${DART_DEFINES[@]}"
           cp build/app/outputs/flutter-apk/app-release.apk \
             "TheMuscleBuilder-${{ github.run_number }}.apk"
           cp build/app/outputs/bundle/release/app-release.aab \
@@ -93,7 +101,16 @@ jobs:
         run: flutter pub get
 
       - name: Build iOS (unsigned)
-        run: flutter build ios --release --no-codesign --build-number="${{ github.run_number }}"
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          DART_DEFINES=()
+          if [ -n "$SUPABASE_ANON_KEY" ]; then
+            DART_DEFINES+=(--dart-define=SUPABASE_ANON_KEY="$SUPABASE_ANON_KEY")
+          else
+            echo "SUPABASE_ANON_KEY secret not set — builds will use bundled asset fallback."
+          fi
+          flutter build ios --release --no-codesign --build-number="${{ github.run_number }}" "${DART_DEFINES[@]}"
 
       - name: Package IPA
         run: |

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../app/providers.dart';
 import '../../core/theme/app_spacing.dart';
+import '../../core/widgets/error_display.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 
@@ -112,7 +113,7 @@ class WeeklyRoutineEditor extends ConsumerWidget {
         padding: AppSpacing.card,
         child: Center(child: CircularProgressIndicator()),
       ),
-      error: (e, _) => Text('$e'),
+      error: (e, _) => Text(userSafeError(e)),
       data: (routine) {
         final summary = summarizeWeeklyRoutine(routine.days);
         final body = Column(

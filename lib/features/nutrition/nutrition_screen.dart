@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../app/providers.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
+import '../../core/widgets/error_display.dart';
 import '../../data/seed/pro_nutrition_guides.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
@@ -112,7 +113,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
       ),
       body: profileAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        error: (e, _) => Center(child: Text(userSafeError(e))),
         data: (profile) {
           if (profile == null) {
             return const EmptyState(

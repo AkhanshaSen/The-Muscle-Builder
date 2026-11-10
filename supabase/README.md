@@ -13,15 +13,15 @@ Project: [`kaiffjdbfjkjqisumklh`](https://supabase.com/dashboard/project/kaiffjd
 
 ## App behaviour
 
-1. `main.dart` initializes Supabase with the publishable key in `AppConstants`.
-2. `SupabaseSeeder` upserts bundled data when a table is empty.
-3. `SeedRepository` / `GuidesRepository` fetch from Supabase first, then fall back to bundled assets / const lists offline.
+1. `main.dart` initializes Supabase only when `SUPABASE_ANON_KEY` is passed via `--dart-define`.
+2. `SeedRepository` / `GuidesRepository` fetch from Supabase first, then fall back to bundled assets / const lists.
+3. Client seeding from the app is **disabled** — anon INSERT policies are closed. Seed from SQL editor / Management API instead.
 
 ## Soft delete
 
 All four tables have `is_deleted BOOL NOT NULL DEFAULT FALSE`. Soft-deleted
 rows are hidden by RLS (`SELECT … USING (is_deleted = false)`). Mark a row
-deleted in the SQL editor / Management API (service role), not from the app:
+deleted via service role (SQL editor / Management API), not from the app:
 
 ```sql
 UPDATE meals SET is_deleted = true WHERE id = 'some_id';
@@ -37,3 +37,5 @@ supabase/migrations/002_is_deleted_and_security.sql
 ```
 
 Client (publishable key) is **SELECT-only**. Writes use the dashboard / CLI.
+
+See also [docs/SECURITY.md](../docs/SECURITY.md).

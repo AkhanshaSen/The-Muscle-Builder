@@ -109,10 +109,13 @@ Most fitness apps give you a fixed plan written for a 22-year-old gym bro in Cal
 
 ```bash
 flutter pub get
-flutter run
+# Optional: fetch meals/exercises/guides from Supabase (falls back to assets without it)
+flutter run --dart-define=SUPABASE_ANON_KEY=sb_publishable_...
 ```
 
 Requires a recent Flutter SDK (see `pubspec.yaml` for the minimum SDK version).
+
+Copy [`.env.example`](.env.example) for the key name only — do not commit real keys. See [docs/SECURITY.md](docs/SECURITY.md).
 
 ---
 
@@ -147,6 +150,7 @@ Add four repository secrets (**Settings → Secrets → Actions**):
 | `ANDROID_KEYSTORE_PASSWORD` | Keystore password |
 | `ANDROID_KEY_PASSWORD` | Key password |
 | `ANDROID_KEY_ALIAS` | `upload` (or your alias) |
+| `SUPABASE_ANON_KEY` | Publishable / anon key (optional; builds fall back to bundled assets) |
 
 ### iOS on a real device
 

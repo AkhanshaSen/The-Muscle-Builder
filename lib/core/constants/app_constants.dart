@@ -4,15 +4,23 @@ class AppConstants {
   static const defaultJourneyName = 'My Journey';
   static const developerName = 'Akhansha Sen';
 
+  /// Max length for free-text profile / onboarding fields.
+  static const maxNameLength = 80;
+  static const maxJourneyLength = 80;
+  static const maxStoryLength = 500;
+
   /// Supabase project: https://supabase.com/dashboard/project/kaiffjdbfjkjqisumklh
   static const supabaseUrl = 'https://kaiffjdbfjkjqisumklh.supabase.co';
 
-  /// Project Settings → API → publishable / anon public key.
-  /// Override at build time with: `--dart-define=SUPABASE_ANON_KEY=...`
+  /// Publishable / anon key — never commit a real value.
+  /// Pass at build/run time: `--dart-define=SUPABASE_ANON_KEY=...`
+  /// See `.env.example` and `docs/SECURITY.md`.
   static const supabaseAnonKey = String.fromEnvironment(
     'SUPABASE_ANON_KEY',
-    defaultValue: 'sb_publishable_HephyMXlwSaEJRAgvPwxfQ_6JjvTg_B',
+    defaultValue: '',
   );
+
+  static bool get hasSupabaseKey => supabaseAnonKey.trim().isNotEmpty;
 
   static String buildVersionLabel(String version) =>
       'Build version $version - development phase 🍀 - $developerName';

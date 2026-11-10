@@ -46,10 +46,15 @@ class SupabaseSeeder {
       if (guidesEmpty) await _seedNutritionGuides();
 
       await prefs.setBool(_prefsKey, true);
-      debugPrint('SupabaseSeeder: reference data upserted');
+      if (kDebugMode) {
+        debugPrint('SupabaseSeeder: reference data upserted');
+      }
     } catch (e, st) {
       // Never block app launch — SeedRepository falls back to assets.
-      debugPrint('SupabaseSeeder failed: $e\n$st');
+      // Writes require service role; anon INSERT policies are intentionally closed.
+      if (kDebugMode) {
+        debugPrint('SupabaseSeeder failed: $e\n$st');
+      }
     }
   }
 

@@ -7,6 +7,7 @@ import '../../app/providers.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
+import '../../core/widgets/error_display.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 import '../nutrition/meal_icon_tile.dart';
@@ -62,7 +63,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Couldn\'t save settings: $e')),
+        SnackBar(content: Text('Couldn\'t save settings: ${userSafeError(e)}')),
       );
     }
   }
@@ -87,7 +88,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       ),
       body: profileAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        error: (e, _) => Center(child: Text(userSafeError(e))),
         data: (profile) {
           if (profile == null) {
             return const EmptyState(
@@ -142,7 +143,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     } catch (e) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Export failed: $e')),
+        SnackBar(content: Text('Export failed: ${userSafeError(e)}')),
       );
     }
   }
@@ -188,7 +189,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     } catch (e) {
       if (!context.mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Import failed: $e')),
+        SnackBar(content: Text('Import failed: ${userSafeError(e)}')),
       );
     }
   }
@@ -368,6 +369,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                     TextField(
                       controller: nameCtrl,
                       textCapitalization: TextCapitalization.words,
+                      maxLength: AppConstants.maxNameLength,
                       decoration: deco(
                         label: 'Name',
                         icon: Icons.badge_outlined,
@@ -377,6 +379,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                     TextField(
                       controller: journeyCtrl,
                       textCapitalization: TextCapitalization.words,
+                      maxLength: AppConstants.maxJourneyLength,
                       decoration: deco(
                         label: 'Journey name',
                         icon: Icons.auto_awesome_outlined,
@@ -586,14 +589,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     final resolvedAge = resolvedBirthday != null
         ? UserProfile.ageFromBirthday(resolvedBirthday)
         : parsedAge;
+    String clamp(String raw, int max) {
+      final t = raw.trim();
+      if (t.length <= max) return t;
+      return t.substring(0, max);
+    }
+
+    final name = clamp(nameCtrl.text, AppConstants.maxNameLength);
+    final journey = clamp(journeyCtrl.text, AppConstants.maxJourneyLength);
     await _save(
       profile.copyWith(
-        name: nameCtrl.text.trim().isEmpty
-            ? profile.name
-            : nameCtrl.text.trim(),
-        journeyName: journeyCtrl.text.trim().isEmpty
-            ? profile.journeyName
-            : journeyCtrl.text.trim(),
+        name: name.isEmpty ? profile.name : name,
+        journeyName: journey.isEmpty ? profile.journeyName : journey,
         weightKg: double.tryParse(weightCtrl.text.trim()) ?? profile.weightKg,
         heightCm: double.tryParse(heightCtrl.text.trim()) ?? profile.heightCm,
         age: resolvedAge,
@@ -665,6 +672,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                 TextField(
                   controller: aspirationCtrl,
                   maxLines: 3,
+                  maxLength: AppConstants.maxStoryLength,
                   decoration: const InputDecoration(
                     labelText: 'Aspiration',
                     hintText: 'e.g. Feel strong for my kids / run a 10K…',
@@ -675,6 +683,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                 TextField(
                   controller: whyCtrl,
                   maxLines: 4,
+                  maxLength: AppConstants.maxStoryLength,
                   decoration: const InputDecoration(
                     labelText: 'Why fitness?',
                     hintText:
@@ -701,12 +710,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     if (result != true) return;
     final targetRaw = targetCtrl.text.trim();
     final target = double.tryParse(targetRaw);
+    String clamp(String raw, int max) {
+      final t = raw.trim();
+      if (t.length <= max) return t;
+      return t.substring(0, max);
+    }
+
     await _save(
       profile.copyWith(
         primaryGoal: goal,
         weeklyTrainingDays: days,
-        aspiration: aspirationCtrl.text.trim(),
-        fitnessWhy: whyCtrl.text.trim(),
+        aspiration: clamp(aspirationCtrl.text, AppConstants.maxStoryLength),
+        fitnessWhy: clamp(whyCtrl.text, AppConstants.maxStoryLength),
         targetWeightKg: target,
         clearTargetWeight: targetRaw.isEmpty,
       ),

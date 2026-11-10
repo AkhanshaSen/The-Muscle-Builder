@@ -36,6 +36,13 @@ migrate_working_dir/
 # Local tooling
 .venv-docs/
 
+# Secrets / env (never commit real keys)
+.env
+.env.*
+!.env.example
+*.local.env
+secrets/
+
 # Symbolication related
 app.*.symbols
 

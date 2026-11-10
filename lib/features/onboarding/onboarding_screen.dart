@@ -61,15 +61,21 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     await _finish();
   }
 
+  String _clampText(String raw, int max) {
+    final t = raw.trim();
+    if (t.length <= max) return t;
+    return t.substring(0, max);
+  }
+
   Future<void> _finish() async {
     setState(() => _saving = true);
     final existing = await ref.read(profileRepositoryProvider).getProfile();
+    final name = _clampText(_nameCtrl.text, AppConstants.maxNameLength);
+    final journey = _clampText(_journeyCtrl.text, AppConstants.maxJourneyLength);
     final profile = UserProfile(
       id: existing?.id ?? const Uuid().v4(),
-      name: _nameCtrl.text.trim(),
-      journeyName: _journeyCtrl.text.trim().isEmpty
-          ? AppConstants.defaultJourneyName
-          : _journeyCtrl.text.trim(),
+      name: name,
+      journeyName: journey.isEmpty ? AppConstants.defaultJourneyName : journey,
       weightKg: _weight,
       heightCm: _height,
       age: _age,
@@ -194,6 +200,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         TextField(
           controller: _nameCtrl,
           textCapitalization: TextCapitalization.words,
+          maxLength: AppConstants.maxNameLength,
           decoration: const InputDecoration(
             labelText: 'Your name',
             hintText: 'e.g. Arjun',
@@ -203,6 +210,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         TextField(
           controller: _journeyCtrl,
           textCapitalization: TextCapitalization.words,
+          maxLength: AppConstants.maxJourneyLength,
           decoration: const InputDecoration(
             labelText: 'Name your journey',
             hintText: 'e.g. Iron Monsoon',

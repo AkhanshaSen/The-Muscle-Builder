@@ -36,7 +36,9 @@ class GuidesRepository {
           return _pharmer!;
         }
       } catch (e) {
-        debugPrint('GuidesRepository.loadPharmerPointers Supabase miss: $e');
+        if (kDebugMode) {
+          debugPrint('GuidesRepository.loadPharmerPointers Supabase miss: $e');
+        }
       }
     }
 
@@ -69,7 +71,9 @@ class GuidesRepository {
           return _guides!;
         }
       } catch (e) {
-        debugPrint('GuidesRepository.loadNutritionGuides Supabase miss: $e');
+        if (kDebugMode) {
+          debugPrint('GuidesRepository.loadNutritionGuides Supabase miss: $e');
+        }
       }
     }
 

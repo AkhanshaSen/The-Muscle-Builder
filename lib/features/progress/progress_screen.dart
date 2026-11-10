@@ -8,6 +8,7 @@ import '../../app/providers.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
+import '../../core/widgets/error_display.dart';
 import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/models/models.dart';
 import '../routine/routine_widgets.dart';
@@ -51,7 +52,7 @@ class ProgressScreen extends ConsumerWidget {
       ),
       body: sessionsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        error: (e, _) => Center(child: Text(userSafeError(e))),
         data: (sessions) {
           final muscles = <String>{};
           for (final s in sessions) {
@@ -221,7 +222,7 @@ class ProgressScreen extends ConsumerWidget {
               const SizedBox(height: 6),
               weekDaysAsync.when(
                 loading: () => const LinearProgressIndicator(),
-                error: (e, _) => Text('$e'),
+                error: (e, _) => Text(userSafeError(e)),
                 data: (days) => _CompactWeekStrip(
                   days: days,
                   onTapDay: (d) =>
@@ -1208,7 +1209,7 @@ class DayHistoryScreen extends ConsumerWidget {
       ),
       body: dayLogsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        error: (e, _) => Center(child: Text(userSafeError(e))),
         data: (days) {
           if (days.isEmpty) {
             return const Center(

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/providers.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
+import '../../core/widgets/error_display.dart';
 import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/models/models.dart';
 import '../routine/routine_widgets.dart';
@@ -22,7 +23,7 @@ class WorkoutTabScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text('Workout')),
       body: statusAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        error: (e, _) => Center(child: Text(userSafeError(e))),
         data: (status) {
           if (status.isRestLogged && !trainAnyway) {
             return ListView(

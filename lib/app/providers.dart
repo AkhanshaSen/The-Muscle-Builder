@@ -3,6 +3,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../core/constants/app_constants.dart';
 import '../../data/db/app_database.dart';
 import '../../data/repositories/cloud_sync_port.dart';
 import '../../data/repositories/guides_repository.dart';
@@ -26,7 +27,9 @@ final databaseProvider = Provider<AppDatabase>((ref) {
 
 final cloudSyncProvider = Provider<CloudSyncPort>((ref) => NoOpCloudSync());
 
-final supabaseClientProvider = Provider<SupabaseClient>((ref) {
+/// Null when `SUPABASE_ANON_KEY` was not provided at build/run time.
+final supabaseClientProvider = Provider<SupabaseClient?>((ref) {
+  if (!AppConstants.hasSupabaseKey) return null;
   return Supabase.instance.client;
 });
 
