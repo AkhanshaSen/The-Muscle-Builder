@@ -13,7 +13,7 @@
       "type": "dart",
       "program": "lib/main.dart",
       "toolArgs": [
-        "--dart-define=SUPABASE_ANON_KEY=REPLACE_WITH_PUBLISHABLE_KEY"
+        "--dart-define=SUPABASE_ANON_KEY=XXXX"
       ]
     }
   ]

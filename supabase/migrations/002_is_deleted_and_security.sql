@@ -1,5 +1,5 @@
 -- Soft delete + tighten RLS for reference tables
--- Project: https://supabase.com/dashboard/project/kaiffjdbfjkjqisumklh
+-- Run in Supabase SQL Editor (Project → SQL).
 
 -- 1. Soft-delete flag on all reference tables
 ALTER TABLE meals ADD COLUMN IF NOT EXISTS is_deleted BOOL NOT NULL DEFAULT FALSE;

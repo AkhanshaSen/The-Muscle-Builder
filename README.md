@@ -110,12 +110,13 @@ Most fitness apps give you a fixed plan written for a 22-year-old gym bro in Cal
 ```bash
 flutter pub get
 # Optional: fetch meals/exercises/guides from Supabase (falls back to assets without it)
-flutter run --dart-define=SUPABASE_ANON_KEY=sb_publishable_...
+flutter run --dart-define=SUPABASE_ANON_KEY=XXXX
 ```
 
 Requires a recent Flutter SDK (see `pubspec.yaml` for the minimum SDK version).
 
-Copy [`.env.example`](.env.example) for the key name only — do not commit real keys. See [docs/SECURITY.md](docs/SECURITY.md).
+Copy [`.env.example`](.env.example) for the key name only — replace `XXXX` locally; do not commit real keys.  
+VS Code launch configs are templates (paste your key locally only). See [docs/SECURITY.md](docs/SECURITY.md).
 
 ---
 

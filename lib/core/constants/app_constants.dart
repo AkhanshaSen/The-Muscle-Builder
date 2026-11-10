@@ -9,11 +9,12 @@ class AppConstants {
   static const maxJourneyLength = 80;
   static const maxStoryLength = 500;
 
-  /// Supabase project: https://supabase.com/dashboard/project/kaiffjdbfjkjqisumklh
+  /// Supabase API host (project URL is not a secret; required by the client).
+  /// Dashboard → Project Settings → API for the publishable key.
   static const supabaseUrl = 'https://kaiffjdbfjkjqisumklh.supabase.co';
 
   /// Publishable / anon key — never commit a real value.
-  /// Pass at build/run time: `--dart-define=SUPABASE_ANON_KEY=...`
+  /// Pass at build/run time: `--dart-define=SUPABASE_ANON_KEY=XXXX`
   /// See `.env.example` and `docs/SECURITY.md`.
   static const supabaseAnonKey = String.fromEnvironment(
     'SUPABASE_ANON_KEY',

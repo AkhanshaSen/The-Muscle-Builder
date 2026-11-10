@@ -12,11 +12,11 @@ Right-sized for a single-user Flutter app: local Drift for personal data, Supaba
 ## Keys and secrets
 
 - **Never** commit `.env`, service_role keys, or signing keystores.
-- Publishable / anon key is passed at build time:
+- Publishable / anon key is passed at build time (replace `XXXX` with your key locally):
 
 ```bash
-flutter run --dart-define=SUPABASE_ANON_KEY=sb_publishable_...
-flutter build apk --release --dart-define=SUPABASE_ANON_KEY=sb_publishable_...
+flutter run --dart-define=SUPABASE_ANON_KEY=XXXX
+flutter build apk --release --dart-define=SUPABASE_ANON_KEY=XXXX
 ```
 
 - Without the key, the app uses bundled `assets/data/*.json` and Dart const lists.
@@ -57,7 +57,7 @@ flutter build apk --release --dart-define=SUPABASE_ANON_KEY=sb_publishable_...
 
 1. Confirm project backups are enabled in Supabase
 2. Never paste `service_role` into the Flutter app
-3. Prefer rotating the publishable key if it was ever committed to git history
+3. **Rotate the publishable key** in Supabase → Settings → API if it was ever committed to git history, then update GitHub secret `SUPABASE_ANON_KEY` and local `--dart-define`
 
 ## Pre-release checklist
 
@@ -65,7 +65,7 @@ flutter build apk --release --dart-define=SUPABASE_ANON_KEY=sb_publishable_...
 flutter pub outdated
 dart analyze
 flutter test
-flutter build apk --release --dart-define=SUPABASE_ANON_KEY=...
+flutter build apk --release --dart-define=SUPABASE_ANON_KEY=XXXX
 ```
 
 Smoke-test: onboarding → home → nutrition (meals load) → workout check-in.

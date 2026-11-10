@@ -1,5 +1,5 @@
 -- Reference data tables for The Muscle Builder
--- Run in Supabase SQL Editor: https://supabase.com/dashboard/project/kaiffjdbfjkjqisumklh/sql
+-- Run in Supabase SQL Editor (Project → SQL).
 
 -- meals
 CREATE TABLE IF NOT EXISTS meals (

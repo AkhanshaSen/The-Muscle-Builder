@@ -1,6 +1,6 @@
 # Supabase reference data
 
-Project: [`kaiffjdbfjkjqisumklh`](https://supabase.com/dashboard/project/kaiffjdbfjkjqisumklh)
+Project: [Supabase dashboard](https://supabase.com/dashboard/project/YOUR_PROJECT_REF)
 
 ## Tables
 
