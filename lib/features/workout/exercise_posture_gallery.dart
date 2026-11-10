@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 /// Side-by-side start/end posture frames from free-exercise-db (Unlicense).
@@ -122,21 +123,19 @@ class _PostureTile extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.network(
-              url,
+            CachedNetworkImage(
+              imageUrl: url,
               fit: BoxFit.cover,
               alignment: Alignment.topCenter,
-              loadingBuilder: (context, child, progress) {
-                if (progress == null) return child;
-                return const Center(
-                  child: SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                );
-              },
-              errorBuilder: (_, _, _) => ColoredBox(
+              fadeInDuration: const Duration(milliseconds: 180),
+              placeholder: (_, _) => const Center(
+                child: SizedBox(
+                  width: 22,
+                  height: 22,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+              errorWidget: (context, _, _) => ColoredBox(
                 color: const Color(0xFF222222),
                 child: Center(
                   child: Icon(

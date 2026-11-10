@@ -20,6 +20,11 @@ jobs:
   android:
     name: Android APK
     runs-on: ubuntu-latest
+    outputs:
+      release_signed: ${{ steps.keystore.outputs.release_signed }}
+      apk_sha256: ${{ steps.checksums.outputs.apk_sha256 }}
+      cert_sha256: ${{ steps.verify_apk.outputs.cert_sha256 }}
+      vt_url: ${{ steps.virustotal.outputs.vt_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,6 +35,12 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android build-tools
+        run: sdkmanager "build-tools;35.0.0"
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -39,7 +50,14 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Analyze
+        run: dart analyze --fatal-warnings
+
+      - name: Test
+        run: flutter test
+
       - name: Decode upload keystore
+        id: keystore
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -48,6 +66,8 @@ jobs:
         run: |
           if [ -z "$ANDROID_KEYSTORE_BASE64" ]; then
             echo "No ANDROID_KEYSTORE_BASE64 secret; release APK will use debug signing."
+            echo "release_signed=false" >> "$GITHUB_OUTPUT"
+            echo "release_signed=false" > signing-meta.txt
             exit 0
           fi
           echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
@@ -57,6 +77,8 @@ jobs:
             echo "keyAlias=$ANDROID_KEY_ALIAS"
             echo "storeFile=upload-keystore.jks"
           } > android/key.properties
+          echo "release_signed=true" >> "$GITHUB_OUTPUT"
+          echo "release_signed=true" > signing-meta.txt
 
       - name: Build release APK and App Bundle
         env:
@@ -75,6 +97,136 @@ jobs:
           cp build/app/outputs/bundle/release/app-release.aab \
             "TheMuscleBuilder-${{ github.run_number }}.aab"
 
+      - name: Verify APK signature
+        id: verify_apk
+        run: |
+          APK="TheMuscleBuilder-${{ github.run_number }}.apk"
+          APKSIGNER="$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -n 1)"
+          if [ -z "$APKSIGNER" ]; then
+            echo "apksigner not found under ANDROID_HOME=$ANDROID_HOME"
+            exit 1
+          fi
+          "$APKSIGNER" verify --verbose --print-certs "$APK" | tee apksigner-verify.txt
+
+          CERT="$(
+            grep -i 'Signer #1 certificate SHA-256 digest:' apksigner-verify.txt \
+              | head -n 1 \
+              | sed -E 's/.*SHA-256 digest:[[:space:]]*//' \
+              | tr -d '[:space:]'
+          )"
+          if [ -z "$CERT" ]; then
+            CERT="$(
+              grep -iE 'SHA-256 digest:' apksigner-verify.txt \
+                | head -n 1 \
+                | sed -E 's/.*SHA-256 digest:[[:space:]]*//' \
+                | tr -d '[:space:]'
+            )"
+          fi
+          echo "cert_sha256=${CERT:-unknown}" >> "$GITHUB_OUTPUT"
+          echo "cert_sha256=${CERT:-unknown}" > cert-sha256.txt
+          echo "APK signer certificate SHA-256: ${CERT:-unknown}"
+
+      - name: Generate SHA256 checksums
+        id: checksums
+        run: |
+          APK="TheMuscleBuilder-${{ github.run_number }}.apk"
+          AAB="TheMuscleBuilder-${{ github.run_number }}.aab"
+          {
+            sha256sum "$APK"
+            sha256sum "$AAB"
+          } | tee CHECKSUMS-SHA256.txt
+          APK_HASH="$(sha256sum "$APK" | awk '{print $1}')"
+          echo "apk_sha256=$APK_HASH" >> "$GITHUB_OUTPUT"
+          echo "APK SHA256: $APK_HASH"
+
+      - name: VirusTotal scan
+        id: virustotal
+        env:
+          VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
+          APK_SHA256: ${{ steps.checksums.outputs.apk_sha256 }}
+        run: |
+          set -euo pipefail
+          APK="TheMuscleBuilder-${{ github.run_number }}.apk"
+          echo "vt_url=" >> "$GITHUB_OUTPUT"
+          : > virustotal-url.txt
+
+          if [ -z "${VIRUSTOTAL_API_KEY:-}" ]; then
+            echo "VIRUSTOTAL_API_KEY secret not set — skipping VirusTotal scan."
+            exit 0
+          fi
+
+          echo "Uploading APK to VirusTotal..."
+          UPLOAD_JSON="$(mktemp)"
+          HTTP_CODE="$(
+            curl -sS -o "$UPLOAD_JSON" -w "%{http_code}" \
+              -X POST "https://www.virustotal.com/api/v3/files" \
+              -H "x-apikey: $VIRUSTOTAL_API_KEY" \
+              -F "file=@${APK}"
+          )"
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "VirusTotal upload failed (HTTP $HTTP_CODE). Response:"
+            cat "$UPLOAD_JSON" || true
+            echo "Continuing without a VT link (quota/network)."
+            # Still publish a file-hash URL for manual lookup after VT indexes the hash.
+            VT_URL="https://www.virustotal.com/gui/file/${APK_SHA256}"
+            echo "vt_url=$VT_URL" >> "$GITHUB_OUTPUT"
+            echo "$VT_URL" > virustotal-url.txt
+            exit 0
+          fi
+
+          ANALYSIS_ID="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["data"]["id"])' "$UPLOAD_JSON")"
+          echo "Analysis id: $ANALYSIS_ID"
+
+          ANALYSIS_JSON="$(mktemp)"
+          STATUS="queued"
+          for i in $(seq 1 36); do
+            sleep 10
+            curl -sS -o "$ANALYSIS_JSON" \
+              "https://www.virustotal.com/api/v3/analyses/${ANALYSIS_ID}" \
+              -H "x-apikey: $VIRUSTOTAL_API_KEY"
+            STATUS="$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["data"]["attributes"]["status"])' "$ANALYSIS_JSON")"
+            echo "VirusTotal status ($i): $STATUS"
+            if [ "$STATUS" = "completed" ]; then
+              break
+            fi
+          done
+
+          if [ "$STATUS" != "completed" ]; then
+            echo "VirusTotal analysis did not complete in time; publishing hash URL without fail."
+            VT_URL="https://www.virustotal.com/gui/file/${APK_SHA256}"
+            echo "vt_url=$VT_URL" >> "$GITHUB_OUTPUT"
+            echo "$VT_URL" > virustotal-url.txt
+            exit 0
+          fi
+
+          eval "$(
+            ANALYSIS_JSON_PATH="$ANALYSIS_JSON" python3 - <<'PY'
+          import json, os
+          path = os.environ["ANALYSIS_JSON_PATH"]
+          data = json.load(open(path))
+          attrs = data["data"]["attributes"]
+          stats = attrs.get("stats", {})
+          sha256 = (data.get("meta") or {}).get("file_info", {}).get("sha256") or ""
+          print(f'MALICIOUS={int(stats.get("malicious", 0))}')
+          print(f'SUSPICIOUS={int(stats.get("suspicious", 0))}')
+          print(f'SHA256={sha256}')
+          PY
+          )"
+
+          if [ -z "${SHA256:-}" ]; then
+            SHA256="$APK_SHA256"
+          fi
+          VT_URL="https://www.virustotal.com/gui/file/${SHA256}/detection"
+          echo "VirusTotal report: $VT_URL (malicious=$MALICIOUS suspicious=$SUSPICIOUS)"
+          echo "vt_url=$VT_URL" >> "$GITHUB_OUTPUT"
+          echo "$VT_URL" > virustotal-url.txt
+
+          if [ "${MALICIOUS:-0}" -gt 0 ]; then
+            echo "::error::VirusTotal reported ${MALICIOUS} malicious detection(s). See $VT_URL"
+            exit 1
+          fi
+
       - name: Upload Android artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -82,6 +234,10 @@ jobs:
           path: |
             TheMuscleBuilder-${{ github.run_number }}.apk
             TheMuscleBuilder-${{ github.run_number }}.aab
+            CHECKSUMS-SHA256.txt
+            signing-meta.txt
+            cert-sha256.txt
+            virustotal-url.txt
           if-no-files-found: error
 
   ios:
@@ -149,6 +305,54 @@ jobs:
           name: ios-release
           path: dist
 
+      - name: Build release notes
+        run: |
+          set -euo pipefail
+          APK_SHA256="${{ needs.android.outputs.apk_sha256 }}"
+          CERT_SHA256="${{ needs.android.outputs.cert_sha256 }}"
+          RELEASE_SIGNED="${{ needs.android.outputs.release_signed }}"
+          VT_URL="${{ needs.android.outputs.vt_url }}"
+
+          if [ -z "$APK_SHA256" ] && [ -f dist/CHECKSUMS-SHA256.txt ]; then
+            APK_SHA256="$(grep '\.apk$' dist/CHECKSUMS-SHA256.txt | awk '{print $1}' | head -n 1 || true)"
+          fi
+          if [ -z "$CERT_SHA256" ] && [ -f dist/cert-sha256.txt ]; then
+            CERT_SHA256="$(sed -n 's/^cert_sha256=//p' dist/cert-sha256.txt | head -n 1 || true)"
+          fi
+          if [ -z "$RELEASE_SIGNED" ] && [ -f dist/signing-meta.txt ]; then
+            RELEASE_SIGNED="$(sed -n 's/^release_signed=//p' dist/signing-meta.txt | head -n 1 || true)"
+          fi
+          if [ -z "$VT_URL" ] && [ -f dist/virustotal-url.txt ]; then
+            VT_URL="$(tr -d '[:space:]' < dist/virustotal-url.txt || true)"
+          fi
+
+          {
+            echo "Automated build from \`${{ github.sha }}\` (run #${{ github.run_number }})."
+            echo ""
+            echo "## Integrity"
+            echo ""
+            echo "- **APK SHA256:** \`${APK_SHA256:-n/a}\`"
+            echo "- **Signer cert SHA-256:** \`${CERT_SHA256:-n/a}\`"
+            if [ "${RELEASE_SIGNED:-false}" = "true" ]; then
+              echo "- **Signing:** release keystore (upload key)"
+            else
+              echo "- **Signing:** **debug-signed — do not distribute as a production build.** Configure \`ANDROID_KEYSTORE_*\` secrets for release signing."
+            fi
+            if [ -n "${VT_URL:-}" ]; then
+              echo "- **VirusTotal:** $VT_URL"
+            else
+              echo "- **VirusTotal:** not scanned (set repository secret \`VIRUSTOTAL_API_KEY\` to enable CI scans)."
+            fi
+            echo ""
+            echo "## Install"
+            echo ""
+            echo "- **Android:** install the \`.apk\` on a phone (enable Install unknown apps)."
+            echo "- Verify checksum before install: \`shasum -a 256 TheMuscleBuilder-*.apk\` (macOS) or \`sha256sum TheMuscleBuilder-*.apk\` (Linux)."
+            echo "- Play Protect / \"unknown app\" prompts are normal for sideloading — not proof of malware."
+            echo "- **Play Store:** use the \`.aab\`."
+            echo "- **iOS:** the \`.ipa\` is unsigned. A paid Apple Developer account and signing secrets are required to install on a device or upload to TestFlight."
+          } > release-body.md
+
       - name: Publish rolling latest release
         uses: ncipollo/release-action@v1
         with:
@@ -160,9 +364,4 @@ jobs:
           prerelease: true
           makeLatest: false
           artifacts: dist/*
-          body: |
-            Automated build from `${{ github.sha }}` (run #${{ github.run_number }}).
-
-            - **Android:** install the `.apk` on a phone (enable Install unknown apps).
-            - **Play Store:** use the `.aab`.
-            - **iOS:** the `.ipa` is unsigned. A paid Apple Developer account and signing secrets are required to install on a device or upload to TestFlight.
+          bodyFile: release-body.md

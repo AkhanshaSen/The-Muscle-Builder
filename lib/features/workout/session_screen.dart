@@ -13,6 +13,7 @@ import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/engines/overload_engine.dart';
 import '../../domain/engines/set_pace.dart';
 import '../../domain/models/models.dart';
+import 'exercise_image_cache.dart';
 import 'exercise_posture_gallery.dart';
 
 enum _SessionPanel { form, train }
@@ -83,9 +84,11 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
         await ref.read(workoutRepositoryProvider).getPlanById(session.planId);
     final bank = await ref.read(seedRepositoryProvider).loadExercises();
     if (!mounted) return;
+    final active =
+        plan == null ? const <PlannedExercise>[] : GymSessionSizing.activeExercises(plan);
     setState(() {
       _session = session;
-      _plan = plan?.copyWith(exercises: GymSessionSizing.activeExercises(plan));
+      _plan = plan?.copyWith(exercises: active);
       _demoById = {for (final e in bank) e.id: e.demoImages};
       if (plan != null && plan.exercises.isNotEmpty) {
         _repsCtrl.text = '${plan.exercises.first.reps}';
@@ -94,6 +97,15 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
       _panel = _SessionPanel.form;
       _setTimerRunning = false;
     });
+    if (mounted) {
+      final urls = <String>[
+        for (final e in active)
+          ...(e.demoImages.isNotEmpty
+              ? e.demoImages
+              : (_demoById[e.exerciseId] ?? const <String>[])),
+      ];
+      unawaited(precacheExerciseImageUrls(context, urls));
+    }
     await _refreshOverload();
   }
 
@@ -448,6 +460,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
         .updatePlanExercises(plan.id, updated);
     setState(() {
       _plan = newPlan;
+      _demoById = {for (final e in bank) e.id: e.demoImages};
       _repsCtrl.text = '${swapped.reps}';
       _setIndex = 0;
       _setElapsedSeconds = 0;
@@ -456,6 +469,12 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
       _lastLoadedExerciseId = null;
       _overload = null;
     });
+    if (mounted) {
+      final urls = swapped.demoImages.isNotEmpty
+          ? swapped.demoImages
+          : (_demoById[swapped.exerciseId] ?? const <String>[]);
+      unawaited(precacheExerciseImageUrls(context, urls));
+    }
     await _refreshOverload();
   }
 

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +13,7 @@ import '../../domain/engines/routine_engine.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 import '../nutrition/meal_icon_tile.dart';
+import 'exercise_image_cache.dart';
 import 'exercise_posture_gallery.dart';
 import 'reset_today.dart';
 
@@ -53,6 +57,14 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
       _plan = resolved;
       _loading = false;
     });
+    if (!mounted || resolved == null) return;
+    final urls = <String>[
+      for (final e in GymSessionSizing.activeExercises(resolved))
+        ...e.demoImages,
+      for (final move in _WarmUpCard._moves) move.imageUrl,
+    ];
+    // Fire-and-forget: UI already painted; cache warms for revisit / session.
+    unawaited(precacheExerciseImageUrls(context, urls));
   }
 
   /// Pull latest kcal/protein from seed catalog for saved meal IDs.
@@ -793,10 +805,21 @@ class _WarmUpMoveTile extends StatelessWidget {
               child: SizedBox(
                 width: 72,
                 height: 72,
-                child: Image.network(
-                  move.imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: move.imageUrl,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => ColoredBox(
+                  fadeInDuration: const Duration(milliseconds: 180),
+                  placeholder: (_, _) => ColoredBox(
+                    color: scheme.surfaceContainerHighest,
+                    child: const Center(
+                      child: SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (_, _, _) => ColoredBox(
                     color: scheme.primaryContainer,
                     child: Icon(
                       Icons.accessibility_new,

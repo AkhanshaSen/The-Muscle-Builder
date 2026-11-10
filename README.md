@@ -122,7 +122,7 @@ VS Code launch configs are templates (paste your key locally only). See [docs/SE
 
 ## 📦 Install a build from GitHub
 
-Every push to `main` runs [`.github/workflows/mobile-builds.yml`](.github/workflows/mobile-builds.yml) and produces ready-to-install binaries:
+Every push to `main` runs [`.github/workflows/mobile-builds.yml`](.github/workflows/mobile-builds.yml): analyze + test, then release APK/AAB (with SHA256 checksums, signature verify, and optional VirusTotal scan).
 
 | Platform | Artifact | Notes |
 |---|---|---|
@@ -134,16 +134,36 @@ Every push to `main` runs [`.github/workflows/mobile-builds.yml`](.github/workfl
 1. [Actions](https://github.com/AkhanshaSen/The-Muscle-Builder/actions) → **Mobile builds** → latest run → **Artifacts**
 2. On `main`, files are also pinned to the [**Latest build**](https://github.com/AkhanshaSen/The-Muscle-Builder/releases/tag/latest) release
 
+### Safe install checklist
+
+1. Download **only** from this repo’s Actions artifacts or the [Latest build](https://github.com/AkhanshaSen/The-Muscle-Builder/releases/tag/latest) release — not random mirrors.
+2. Match the **APK SHA256** printed in the release notes before installing:
+
+```bash
+# macOS
+shasum -a 256 TheMuscleBuilder-*.apk
+# Linux
+sha256sum TheMuscleBuilder-*.apk
+# Windows (PowerShell)
+Get-FileHash .\TheMuscleBuilder-*.apk -Algorithm SHA256
+```
+
+3. Play Protect / “unknown app” prompts are **normal for sideloading** — not proof of malware.
+4. Optional: open the **VirusTotal** link from the release notes, or upload the APK at [virustotal.com](https://www.virustotal.com/) and compare.
+5. This app’s Android release manifest requests **INTERNET** only (plus Flutter’s standard text-process query). Personal data stays on-device.
+
+See [docs/SECURITY.md](docs/SECURITY.md) for CI trust signals and VirusTotal caveats.
+
 ### Signed Android release (Play Store)
 
-CI produces a debug-signed APK without secrets. For Play Store / production:
+Without keystore secrets, CI produces a **debug-signed** APK (fine for personal testing; release notes warn not to distribute). For Play Store / production:
 
 ```bash
 keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
 base64 -i upload-keystore.jks | pbcopy
 ```
 
-Add four repository secrets (**Settings → Secrets → Actions**):
+Add repository secrets (**Settings → Secrets → Actions**):
 
 | Secret | Value |
 |---|---|
@@ -152,6 +172,7 @@ Add four repository secrets (**Settings → Secrets → Actions**):
 | `ANDROID_KEY_PASSWORD` | Key password |
 | `ANDROID_KEY_ALIAS` | `upload` (or your alias) |
 | `SUPABASE_ANON_KEY` | Publishable / anon key (optional; builds fall back to bundled assets) |
+| `VIRUSTOTAL_API_KEY` | VirusTotal API key (optional; CI uploads each APK for a public scan report) |
 
 ### iOS on a real device
 

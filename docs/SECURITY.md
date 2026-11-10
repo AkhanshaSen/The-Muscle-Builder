@@ -59,6 +59,27 @@ flutter build apk --release --dart-define=SUPABASE_ANON_KEY=XXXX
 2. Never paste `service_role` into the Flutter app
 3. **Rotate the publishable key** in Supabase → Settings → API if it was ever committed to git history, then update GitHub secret `SUPABASE_ANON_KEY` and local `--dart-define`
 
+## GitHub APK trust signals
+
+CI ([`.github/workflows/mobile-builds.yml`](../.github/workflows/mobile-builds.yml)) on each Android build:
+
+1. **`dart analyze --fatal-warnings`** and **`flutter test`** — no APK if either fails
+2. **`apksigner verify`** — confirms the APK signature; cert SHA-256 is written to the release notes
+3. **SHA256 checksums** — `CHECKSUMS-SHA256.txt` uploaded with the APK; hash also in the [Latest build](https://github.com/AkhanshaSen/The-Muscle-Builder/releases/tag/latest) body
+4. **VirusTotal** (optional) — when repository secret `VIRUSTOTAL_API_KEY` is set, CI uploads the APK and links the report; the job **fails** if any vendor reports `malicious`
+
+VirusTotal is a **best-effort** signal, not a legal guarantee. Free-tier API keys have daily quotas; if upload/analysis times out, CI still publishes a file-hash URL for later lookup. Re-scan happens on every new build.
+
+### Safe sideload checklist
+
+1. Download only from this repo’s Actions artifacts or the Latest build release
+2. Verify `shasum -a 256` / `sha256sum` / `Get-FileHash` matches the release notes
+3. Expect Play Protect / “unknown app” for sideloading — normal, not malware proof
+4. Compare the CI VirusTotal link (or upload manually at [virustotal.com](https://www.virustotal.com/))
+5. Permissions: `INTERNET` only in the release manifest (plus Flutter `PROCESS_TEXT` query)
+
+Debug-signed APKs (no `ANDROID_KEYSTORE_*` secrets) are labeled in release notes as **not for distribution**.
+
 ## Pre-release checklist
 
 ```bash
