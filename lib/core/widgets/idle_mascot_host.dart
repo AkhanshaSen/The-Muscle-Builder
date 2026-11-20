@@ -201,11 +201,9 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
       children: [
         widget.child,
         if (_visible && _chatOpen)
-          Positioned.fill(
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: _closeFoxChat,
-              child: const ColoredBox(color: Color(0x18000000)),
+          const Positioned.fill(
+            child: IgnorePointer(
+              child: ColoredBox(color: Color(0x18000000)),
             ),
           ),
         if (_visible && _chatOpen)

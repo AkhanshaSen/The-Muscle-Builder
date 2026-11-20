@@ -315,12 +315,9 @@ class _InputRow extends StatelessWidget {
               controller: controller,
               minLines: 1,
               maxLines: 3,
-              enableInteractiveSelection: false,
               style: Theme.of(context).textTheme.bodySmall,
               textInputAction: TextInputAction.send,
               onSubmitted: (_) => onSend(),
-              contextMenuBuilder: (context, editableTextState) =>
-                  const SizedBox.shrink(),
               decoration: InputDecoration(
                 isDense: true,
                 hintText: 'Ask about ${AppConstants.appName}…',
