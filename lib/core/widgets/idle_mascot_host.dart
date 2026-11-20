@@ -22,15 +22,15 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
   static const _clipHold = Duration(seconds: 20);
   static const _clipAssets = [
     'assets/mascot/idle_fox.webp',
-    // GIF — Android Skia often fails on our animated WebP skip clip.
     'assets/mascot/ski_fox.gif',
   ];
+
+  final _overlayController = OverlayPortalController();
 
   Timer? _idleTimer;
   Timer? _clipCycleTimer;
   var _visible = false;
   var _chatOpen = false;
-  /// Owned here so chat open/close never resets the clip via child remounts.
   var _clipIndex = 0;
   String _lastMascotLog = '';
 
@@ -61,7 +61,14 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
   void initState() {
     super.initState();
     GestureBinding.instance.pointerRouter.addGlobalRoute(_onPointer);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _syncWithSettings());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref.read(idleMascotHostBridgeProvider).closeChat = _closeFoxChat;
+      _syncWithSettings();
+      if (ref.read(idleMascotEnabledProvider)) {
+        _overlayController.show();
+      }
+    });
   }
 
   void _syncWithSettings() {
@@ -79,7 +86,6 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
   @override
   void reassemble() {
     super.reassemble();
-    // Hot reload: drop stale timers and re-arm clip cycle if the fox is out.
     _pauseClipCycle();
     if (_visible && !_chatOpen && ref.read(idleMascotEnabledProvider)) {
       _armClipCycle();
@@ -88,6 +94,7 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
 
   @override
   void dispose() {
+    ref.read(idleMascotHostBridgeProvider).closeChat = null;
     GestureBinding.instance.pointerRouter.removeGlobalRoute(_onPointer);
     _idleTimer?.cancel();
     _clipCycleTimer?.cancel();
@@ -141,7 +148,7 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
 
   void _closeFoxChat() {
     if (!_chatOpen) return;
-    AppLog.tap('Fox chat backdrop / close');
+    AppLog.tap('Fox chat close');
     _pauseClipCycle();
     setState(() => _chatOpen = false);
     _armClipCycle();
@@ -161,6 +168,60 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
     _logMascotState('Fox dismissed and setting turned off');
   }
 
+  Widget _buildFoxOverlay(BuildContext context) {
+    if (!_visible) return const SizedBox.shrink();
+
+    final bottom = MediaQuery.paddingOf(context).bottom + 72;
+    final screenW = MediaQuery.sizeOf(context).width;
+    final chatWidth = 280.0.clamp(200.0, screenW - 24);
+    final clipAsset = _clipAssets[_clipIndex];
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        if (_chatOpen)
+          const Positioned.fill(
+            child: IgnorePointer(
+              child: ColoredBox(color: Color(0x18000000)),
+            ),
+          ),
+        if (_chatOpen)
+          Positioned(
+            right: 10,
+            bottom: bottom + 72 + 6,
+            width: chatWidth,
+            child: FoxChatPanel(onClose: _closeFoxChat),
+          ),
+        Positioned(
+          right: 10,
+          bottom: bottom,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              GestureDetector(
+                behavior: HitTestBehavior.deferToChild,
+                onTap: _onFoxTap,
+                child: SizedBox(
+                  width: 108,
+                  height: 72,
+                  child: _FoxClipImage(
+                    key: ValueKey<String>(clipAsset),
+                    asset: clipAsset,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 0,
+                right: -4,
+                child: _FoxDismissButton(onDismiss: _dismissFox),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     ref.listen(idleMascotEnabledProvider, (prev, next) {
@@ -172,6 +233,7 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
         });
         _idleTimer?.cancel();
         _armClipCycle();
+        _overlayController.show();
         _logMascotState('Enabled in settings');
       } else {
         AppLog.info('Mascot', 'Setting turned OFF');
@@ -182,6 +244,7 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
           _chatOpen = false;
           _clipIndex = 0;
         });
+        _overlayController.hide();
         _logMascotState('Disabled in settings');
       }
     });
@@ -191,56 +254,10 @@ class _IdleMascotHostState extends ConsumerState<IdleMascotHost> {
       return widget.child;
     }
 
-    final bottom = MediaQuery.paddingOf(context).bottom + 72;
-    final screenW = MediaQuery.sizeOf(context).width;
-    final chatWidth = 280.0.clamp(200.0, screenW - 24);
-    final clipAsset = _clipAssets[_clipIndex];
-
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        widget.child,
-        if (_visible && _chatOpen)
-          const Positioned.fill(
-            child: IgnorePointer(
-              child: ColoredBox(color: Color(0x18000000)),
-            ),
-          ),
-        if (_visible && _chatOpen)
-          Positioned(
-            right: 10,
-            bottom: bottom + 72 + 6,
-            width: chatWidth,
-            child: FoxChatPanel(onClose: _closeFoxChat),
-          ),
-        if (_visible)
-          Positioned(
-            right: 10,
-            bottom: bottom,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: _onFoxTap,
-                  child: SizedBox(
-                    width: 108,
-                    height: 72,
-                    child: _FoxClipImage(
-                      key: ValueKey<String>(clipAsset),
-                      asset: clipAsset,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  right: -4,
-                  child: _FoxDismissButton(onDismiss: _dismissFox),
-                ),
-              ],
-            ),
-          ),
-      ],
+    return OverlayPortal(
+      controller: _overlayController,
+      overlayChildBuilder: _buildFoxOverlay,
+      child: widget.child,
     );
   }
 }

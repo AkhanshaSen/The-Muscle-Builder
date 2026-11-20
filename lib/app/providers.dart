@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -301,4 +302,14 @@ class IdleMascotEnabled extends Notifier<bool> {
 
 final idleMascotEnabledProvider =
     NotifierProvider<IdleMascotEnabled, bool>(IdleMascotEnabled.new);
+
+/// Lets screens (e.g. meal log) close fox chat before text fields take focus.
+class IdleMascotHostBridge {
+  VoidCallback? closeChat;
+
+  void collapseForTextInput() => closeChat?.call();
+}
+
+final idleMascotHostBridgeProvider =
+    Provider<IdleMascotHostBridge>((ref) => IdleMascotHostBridge());
 

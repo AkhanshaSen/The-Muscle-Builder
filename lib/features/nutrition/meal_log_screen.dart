@@ -56,6 +56,10 @@ class _MealLogScreenState extends ConsumerState<MealLogScreen> {
   double get _carbs => _draftItems.fold(0.0, (s, i) => s + i.carbsG);
   double get _fat => _draftItems.fold(0.0, (s, i) => s + i.fatG);
 
+  void _prepareMealLogTextInput() {
+    ref.read(idleMascotHostBridgeProvider).collapseForTextInput();
+  }
+
   Future<void> _pickDateTime() async {
     final date = await showDatePicker(
       context: context,
@@ -228,6 +232,7 @@ class _MealLogScreenState extends ConsumerState<MealLogScreen> {
               onPressed: _addItemFromQuery,
             ),
           ),
+          onTap: _prepareMealLogTextInput,
           onChanged: (_) => setState(() {}),
           onSubmitted: (_) => _addItemFromQuery(),
         ),
@@ -343,6 +348,7 @@ class _MealLogScreenState extends ConsumerState<MealLogScreen> {
             labelText: 'Notes (optional)',
           ),
           maxLines: 2,
+          onTap: _prepareMealLogTextInput,
         ),
         const SizedBox(height: AppSpacing.md),
         SizedBox(
