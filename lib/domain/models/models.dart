@@ -977,6 +977,36 @@ class MealLogLineItem {
   MealFoodSource get resolvedSource => source ??
       MealFoodSource.fromStored(null, foodId: foodId);
 
+  /// Rescales macros when the user changes quantity (e.g. 1 → 2 servings).
+  MealLogLineItem scaledToQuantity(double newQty) {
+    final qty = newQty <= 0 ? 0.5 : newQty;
+    if (quantity <= 0) {
+      return MealLogLineItem(
+        foodId: foodId,
+        label: label,
+        quantity: qty,
+        unit: unit,
+        kcal: kcal,
+        proteinG: proteinG,
+        carbsG: carbsG,
+        fatG: fatG,
+        source: source,
+      );
+    }
+    final factor = qty / quantity;
+    return MealLogLineItem(
+      foodId: foodId,
+      label: label,
+      quantity: qty,
+      unit: unit,
+      kcal: kcal * factor,
+      proteinG: proteinG * factor,
+      carbsG: carbsG * factor,
+      fatG: fatG * factor,
+      source: source,
+    );
+  }
+
   Map<String, dynamic> toJson() => {
         if (foodId != null) 'foodId': foodId,
         'label': label,

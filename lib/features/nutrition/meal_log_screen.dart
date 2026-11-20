@@ -22,7 +22,6 @@ class _MealLogScreenState extends ConsumerState<MealLogScreen> {
   final _notes = TextEditingController();
   DateTime _eatenAt = DateTime.now();
   MealLogTiming _timing = MealLogTiming.general;
-  double _servings = 1;
   List<FoodItem> _catalog = const [];
   List<MealLogLineItem> _draftItems = [];
   MealLogVerdict? _lastVerdict;
@@ -96,11 +95,11 @@ class _MealLogScreenState extends ConsumerState<MealLogScreen> {
     );
     final MealLogLineItem item;
     if (hit != null) {
-      item = MealFoodSearch.lineItemFromHit(hit, _servings);
+      item = MealFoodSearch.lineItemFromHit(hit, 1);
     } else {
       item = MealLogLineItem(
         label: q,
-        quantity: _servings,
+        quantity: 1,
         unit: 'serving',
         kcal: 0,
         proteinG: 0,
@@ -113,7 +112,6 @@ class _MealLogScreenState extends ConsumerState<MealLogScreen> {
     setState(() {
       _draftItems = [..._draftItems, item];
       _foodQuery.clear();
-      _servings = 1;
       _lastVerdict = null;
     });
   }
@@ -122,10 +120,9 @@ class _MealLogScreenState extends ConsumerState<MealLogScreen> {
     setState(() {
       _draftItems = [
         ..._draftItems,
-        MealFoodSearch.lineItemFromHit(hit, _servings),
+        MealFoodSearch.lineItemFromHit(hit, 1),
       ];
       _foodQuery.clear();
-      _servings = 1;
       _lastVerdict = null;
     });
   }
@@ -267,27 +264,6 @@ class _MealLogScreenState extends ConsumerState<MealLogScreen> {
             }).toList(),
           ),
         ],
-        const SizedBox(height: AppSpacing.sm),
-        Row(
-          children: [
-            Text(
-              'Servings',
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-            const Spacer(),
-            IconButton(
-              onPressed: _servings > 0.5
-                  ? () => setState(() => _servings -= 0.5)
-                  : null,
-              icon: const Icon(Icons.remove_circle_outline),
-            ),
-            Text(_servings.toStringAsFixed(1)),
-            IconButton(
-              onPressed: () => setState(() => _servings += 0.5),
-              icon: const Icon(Icons.add_circle_outline),
-            ),
-          ],
-        ),
         if (_draftItems.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.md),
           Text(
@@ -316,14 +292,50 @@ class _MealLogScreenState extends ConsumerState<MealLogScreen> {
                 ],
               ),
               subtitle: Text(
-                '${item.quantity} ${item.unit} · '
+                '${item.quantity.toStringAsFixed(item.quantity == item.quantity.roundToDouble() ? 0 : 1)} '
+                '${item.unit} · '
                 '${item.kcal.round()} kcal · P ${item.proteinG.round()}g',
               ),
-              trailing: IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => setState(() {
-                  _draftItems = [..._draftItems]..removeAt(i);
-                }),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    tooltip: 'Less',
+                    onPressed: item.quantity > 0.5
+                        ? () => setState(() {
+                              _draftItems[i] = item.scaledToQuantity(
+                                item.quantity - 0.5,
+                              );
+                            })
+                        : null,
+                    icon: const Icon(Icons.remove_circle_outline, size: 20),
+                  ),
+                  SizedBox(
+                    width: 28,
+                    child: Text(
+                      item.quantity.toStringAsFixed(1),
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                  ),
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    tooltip: 'More',
+                    onPressed: () => setState(() {
+                      _draftItems[i] =
+                          item.scaledToQuantity(item.quantity + 0.5);
+                    }),
+                    icon: const Icon(Icons.add_circle_outline, size: 20),
+                  ),
+                  IconButton(
+                    visualDensity: VisualDensity.compact,
+                    icon: const Icon(Icons.close, size: 20),
+                    onPressed: () => setState(() {
+                      _draftItems = [..._draftItems]..removeAt(i);
+                    }),
+                  ),
+                ],
               ),
             );
           }),

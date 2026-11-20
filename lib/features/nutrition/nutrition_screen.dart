@@ -54,8 +54,11 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
   @override
   void initState() {
     super.initState();
-    final initialIndex =
-        widget.initialTiming == MealTiming.postWorkout ? 1 : 0;
+    final initialIndex = switch (widget.initialTiming) {
+      MealTiming.postWorkout => 2,
+      MealTiming.preWorkout => 1,
+      _ => 0,
+    };
     _tabs = TabController(length: 4, vsync: this, initialIndex: initialIndex);
     _tabs.addListener(() {
       if (!_tabs.indexIsChanging) setState(() {});
@@ -73,8 +76,8 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
   @override
   Widget build(BuildContext context) {
     final profileAsync = ref.watch(profileProvider);
-    final onPharmerTab = _tabs.index == 2;
-    final onYourMealsTab = _tabs.index == 3;
+    final onYourMealsTab = _tabs.index == 0;
+    final onPharmerTab = _tabs.index == 3;
     final showSearchAction = !onPharmerTab && !onYourMealsTab;
 
     return Scaffold(
@@ -107,10 +110,10 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
           isScrollable: true,
           tabAlignment: TabAlignment.start,
           tabs: const [
+            Tab(height: 40, text: 'Your meals'),
             Tab(height: 40, text: 'Pre-workout'),
             Tab(height: 40, text: 'Post-workout'),
             Tab(height: 40, text: 'Food Pharmer'),
-            Tab(height: 40, text: 'Your meals'),
           ],
         ),
       ),
@@ -131,6 +134,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
           return TabBarView(
             controller: _tabs,
             children: [
+              const MealLogScreen(),
               NestedScrollView(
                 headerSliverBuilder: (context, _) => [
                   SliverToBoxAdapter(
@@ -172,7 +176,6 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
                 ),
               ),
               _FoodPharmerTab(onOpenPharmer: _openPharmer),
-              const MealLogScreen(),
             ],
           );
         },

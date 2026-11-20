@@ -13,6 +13,7 @@ import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 import '../../domain/models/workout_category.dart';
 import '../nutrition/meal_icon_tile.dart';
+import '../workout/gym_time_picker.dart';
 import 'body_map_selector.dart';
 
 IconData _focusIcon(TrainingFocus f) => switch (f) {
@@ -30,7 +31,7 @@ class CheckInScreen extends ConsumerStatefulWidget {
 }
 
 class _CheckInScreenState extends ConsumerState<CheckInScreen> {
-  static const _totalSteps = 6;
+  static const _totalSteps = 7;
 
   int _step = 0;
   Mood? _mood;
@@ -256,6 +257,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                     _moodStep(),
                     _intensityStep(),
                     _focusStep(),
+                    _sessionSizeStep(),
                     _muscleStep(),
                     _recoveryStep(),
                     _preMealStep(),
@@ -282,7 +284,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                           );
                           return;
                         }
-                        if (_step == 3 && _muscles.isEmpty) {
+                        if (_step == 4 && _muscles.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Select at least one muscle group'),
@@ -292,7 +294,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
                         }
                         final next = _step + 1;
                         setState(() => _step = next);
-                        if (next == 5) await _loadPreMeals();
+                        if (next == 6) await _loadPreMeals();
                       },
                       child: const Text('Next'),
                     )
@@ -353,10 +355,6 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   }
 
   Widget _intensityStep() {
-    final baseline = GymSessionSizing.exerciseCountFor(_gymMinutes);
-    final count = _effectiveExerciseCount;
-    final customized = _exerciseCount != null;
-    final scheme = Theme.of(context).colorScheme;
     return ListView(
       padding: const EdgeInsets.all(14),
       children: [
@@ -394,73 +392,30 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
             onTap: () => setState(() => _intensity = i),
           );
         }),
-        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  Widget _sessionSizeStep() {
+    final count = _effectiveExerciseCount;
+    return ListView(
+      padding: const EdgeInsets.all(14),
+      children: [
         const SectionHeader(
-          title: 'Gym time today',
-          subtitle: 'Sets a baseline exercise count — you can customize below.',
+          title: 'Gym time & exercises today',
+          subtitle: 'Sets how many moves we build into your plan — same controls as on the workout screen.',
         ),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: GymSessionSizing.optionsMinutes.map((m) {
-            final selected = _gymMinutes == m;
-            final label = m >= 120
-                ? (m == 120 ? '2 hr' : '2.5 hr')
-                : '$m min';
-            return ChoiceChip(
-              label: Text(label),
-              selected: selected,
-              onSelected: (_) => setState(() => _gymMinutes = m),
-            );
-          }).toList(),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          'Exercises today',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-        ),
-        const SizedBox(height: AppSpacing.xs),
-        Text(
-          customized
-              ? 'Custom · gym-time baseline is $baseline'
-              : '${GymSessionSizing.labelForMinutes(_gymMinutes)} baseline',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: scheme.onSurfaceVariant,
-              ),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        Row(
-          children: [
-            IconButton(
-              tooltip: 'Fewer exercises',
-              onPressed: count > GymSessionSizing.minExerciseCount
-                  ? () => setState(() => _exerciseCount = count - 1)
-                  : null,
-              icon: const Icon(Icons.remove_circle_outline),
-            ),
-            Text(
-              '$count',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-            IconButton(
-              tooltip: 'More exercises',
-              onPressed: count < GymSessionSizing.maxExerciseCount
-                  ? () => setState(() => _exerciseCount = count + 1)
-                  : null,
-              icon: const Icon(Icons.add_circle_outline),
-            ),
-            const SizedBox(width: 8),
-            if (customized)
-              TextButton(
-                onPressed: () => setState(() => _exerciseCount = null),
-                child: const Text('Match gym time'),
-              ),
-          ],
+        const SizedBox(height: AppSpacing.md),
+        GymTimePicker(
+          showCatalogCapHint: false,
+          gymMinutes: _gymMinutes,
+          exerciseCount: count,
+          baselineCount: GymSessionSizing.exerciseCountFor(_gymMinutes),
+          catalogLength: GymSessionSizing.maxExerciseCount,
+          overrideCount: _exerciseCount,
+          estimatedMinutes: _gymMinutes,
+          onGymMinutesChanged: (m) => setState(() => _gymMinutes = m),
+          onExerciseCountChanged: (v) => setState(() => _exerciseCount = v),
         ),
       ],
     );
@@ -652,7 +607,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
             TextButton(
               onPressed: () => setState(() {
                 // Jump back to muscle-selection step so the user can retake.
-                _step = 3;
+                _step = 4;
                 _avoidMuscles.removeWhere((m) => !_muscles.contains(m));
               }),
               child: const Text('Change muscles →'),

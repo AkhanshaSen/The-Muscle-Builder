@@ -16,6 +16,7 @@ import '../nutrition/meal_icon_tile.dart';
 import 'exercise_image_cache.dart';
 import 'reset_today.dart';
 import 'exercise_posture_gallery.dart';
+import 'gym_time_picker.dart';
 import 'session_exercise_panel.dart';
 
 /// Soft tinted surface so session accordions read as distinct blocks.
@@ -497,7 +498,7 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      _GymTimePicker(
+                      GymTimePicker(
                         gymMinutes: plan.gymMinutes,
                         exerciseCount: active.length,
                         baselineCount:
@@ -901,129 +902,6 @@ class _WarmUpMoveTile extends StatelessWidget {
   }
 }
 
-class _GymTimePicker extends StatelessWidget {
-  const _GymTimePicker({
-    required this.gymMinutes,
-    required this.exerciseCount,
-    required this.baselineCount,
-    required this.catalogLength,
-    required this.overrideCount,
-    required this.estimatedMinutes,
-    required this.onGymMinutesChanged,
-    required this.onExerciseCountChanged,
-  });
-
-  final int gymMinutes;
-  final int exerciseCount;
-  final int baselineCount;
-  final int catalogLength;
-  final int? overrideCount;
-  final int estimatedMinutes;
-  final ValueChanged<int> onGymMinutesChanged;
-  final ValueChanged<int?> onExerciseCountChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final customized = overrideCount != null;
-    final atCatalogCap = exerciseCount >= catalogLength &&
-        catalogLength < GymSessionSizing.maxExerciseCount;
-    final maxAllowed = catalogLength.clamp(
-      GymSessionSizing.minExerciseCount,
-      GymSessionSizing.maxExerciseCount,
-    );
-
-    return Card(
-      child: Padding(
-        padding: AppSpacing.cardTight,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Gym time · ~$estimatedMinutes min clock',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-            const SizedBox(height: 10),
-            Wrap(
-              spacing: AppSpacing.sm,
-              runSpacing: AppSpacing.sm,
-              children: GymSessionSizing.optionsMinutes.map((m) {
-                final label = m >= 120
-                    ? (m == 120 ? '2 hr' : '2.5 hr')
-                    : '$m min';
-                return ChoiceChip(
-                  label: Text(label),
-                  selected: gymMinutes == m,
-                  onSelected: (_) => onGymMinutesChanged(m),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Text(
-              'Exercises today',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              customized
-                  ? 'Custom · gym-time baseline is $baselineCount'
-                  : '${GymSessionSizing.labelForMinutes(gymMinutes)} baseline',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                  ),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Row(
-              children: [
-                IconButton(
-                  tooltip: 'Fewer exercises',
-                  onPressed: exerciseCount > GymSessionSizing.minExerciseCount
-                      ? () => onExerciseCountChanged(exerciseCount - 1)
-                      : null,
-                  icon: const Icon(Icons.remove_circle_outline),
-                ),
-                Text(
-                  '$exerciseCount',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                ),
-                IconButton(
-                  tooltip: 'More exercises',
-                  onPressed: exerciseCount < maxAllowed
-                      ? () => onExerciseCountChanged(exerciseCount + 1)
-                      : null,
-                  icon: const Icon(Icons.add_circle_outline),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                if (customized)
-                  TextButton(
-                    onPressed: () => onExerciseCountChanged(null),
-                    child: const Text('Match gym time'),
-                  ),
-              ],
-            ),
-            if (atCatalogCap)
-              Padding(
-                padding: const EdgeInsets.only(top: AppSpacing.xs),
-                child: Text(
-                  'Catalog max for this plan is $catalogLength. '
-                  'Re-do check-in for a longer list.',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: scheme.tertiary,
-                      ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _OrderGuideCard extends StatelessWidget {
   const _OrderGuideCard({required this.exercises});
