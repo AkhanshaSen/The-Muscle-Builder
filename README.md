@@ -180,6 +180,12 @@ Apple requires a paid [Developer account](https://developer.apple.com/programs/)
 
 ---
 
+## Contributing and AI context
+
+For architecture, Supabase vs Drift, Android CI guardrails, typography, and day-to-day workflows, see **[docs/AGENT_AND_WORKFLOW_HANDBOOK.md](docs/AGENT_AND_WORKFLOW_HANDBOOK.md)** (safe to commit — no secrets).
+
+---
+
 ## 📄 License
 
 MIT — see [LICENSE](LICENSE).

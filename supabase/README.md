@@ -14,8 +14,9 @@ Project: [Supabase dashboard](https://supabase.com/dashboard/project/YOUR_PROJEC
 ## App behaviour
 
 1. `main.dart` initializes Supabase only when `SUPABASE_ANON_KEY` is passed via `--dart-define`.
-2. `SeedRepository` / `GuidesRepository` fetch from Supabase first, then fall back to bundled assets / const lists.
-3. Client seeding from the app is **disabled** — anon INSERT policies are closed. Seed from SQL editor / Management API instead.
+2. **`SeedRepository`** (meals + exercises): loads **only from Supabase** when the key is set; bundled JSON is used **only** when the key is missing (CI/tests).
+3. **`GuidesRepository`**: Supabase first, then Dart const fallbacks.
+4. Client seeding from the app is **disabled** — anon INSERT policies are closed. Seed from SQL editor / `scripts/upsert_reference_data.py` (service role).
 
 ## Soft delete
 
@@ -36,18 +37,22 @@ supabase/migrations/001_reference_tables.sql
 supabase/migrations/002_is_deleted_and_security.sql
 # Exercise catalog columns (audiences, quick_steps, demo_frames, etc.):
 supabase/migrations/003_exercise_extensions.sql
+# created_at / updated_at on reference tables:
+supabase/migrations/004_reference_timestamps.sql
 ```
 
-## Refreshing exercises after JSON changes
+## Refreshing meals and exercises after JSON changes
 
-The in-app catalog reads Supabase when `SUPABASE_ANON_KEY` is set. Bundled `assets/data/exercises.json` is the source of truth for generation.
+JSON under `assets/data/` is the **generation source**; runtime uses Supabase when `SUPABASE_ANON_KEY` is set.
 
-1. Run `003_exercise_extensions.sql` in the SQL editor if not applied yet.
-2. Generate upsert SQL:
+1. Run prerequisites: `000_run_once_prerequisite_columns.sql` or migrations `003` + `004` (see [`supabase/seed/README.md`](seed/README.md)).
+2. Full catalogs (recommended): **`meals_upsert.sql`** (58) + **`exercises_upsert_full.sql`** (88).
+3. Regenerate:
    ```bash
-   python3 scripts/generate_exercises_upsert_sql.py > supabase/seed/exercises_upsert.sql
+   python3 scripts/generate_meals_upsert_sql.py > supabase/seed/meals_upsert.sql
+   python3 scripts/generate_exercises_upsert_sql.py > supabase/seed/exercises_upsert_full.sql
    ```
-3. Paste and run `exercises_upsert.sql` in the dashboard (service role / SQL editor), **or** from the project root:
+4. Paste and run the SQL in the dashboard, **or** from the project root:
    ```bash
    # .env.local: SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY (see .env.example)
    python3 scripts/upsert_reference_data.py

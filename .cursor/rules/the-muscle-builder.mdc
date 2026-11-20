@@ -1,0 +1,17 @@
+---
+description: Project context — read the agent handbook before Android, Supabase, theme, or data-layer work
+alwaysApply: true
+---
+
+# The Muscle Builder
+
+Before changing Android Gradle, Supabase reference data, Drift schema, typography, or CI workflows, read **[docs/AGENT_AND_WORKFLOW_HANDBOOK.md](../../docs/AGENT_AND_WORKFLOW_HANDBOOK.md)**.
+
+That handbook is the single source of truth for:
+
+- Local Drift (schema v17) vs Supabase read-only catalogs
+- `.env.local`, scripts, and SQL seed order
+- Android AGP 9 stable lane (`builtInKotlin=false`, no `kotlinOptions`, lintVital task disable)
+- Font roles (Barlow Semi Condensed, Source Sans 3, IBM Plex Mono) and `AppNeutrals`
+
+Do not commit secrets or push to `main` without explicit user request.

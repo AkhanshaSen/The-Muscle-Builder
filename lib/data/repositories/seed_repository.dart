@@ -4,7 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../core/constants/app_constants.dart';
 import '../../domain/models/models.dart';
+import 'reference_data_unavailable.dart';
 
 class SeedRepository {
   /// [client] is optional so unit tests can use asset fallback only.
@@ -15,62 +17,97 @@ class SeedRepository {
   List<Exercise>? _exercises;
   List<MealSuggestion>? _meals;
 
+  void clearCache() {
+    _exercises = null;
+    _meals = null;
+  }
+
   Future<List<Exercise>> loadExercises() async {
     if (_exercises != null) return _exercises!;
 
-    final client = _client;
-    if (client != null) {
-      try {
-        final rows =
-            await client.from('exercises').select().eq('is_deleted', false);
-        final list = rows as List<dynamic>;
-        if (list.isNotEmpty) {
-          _exercises = list
-              .map(
-                (e) => Exercise.fromJson(
-                  _rowToExerciseJson(Map<String, dynamic>.from(e as Map)),
-                ),
-              )
-              .toList();
-          return _exercises!;
-        }
-      } catch (e) {
-        if (kDebugMode) {
-          debugPrint('SeedRepository.loadExercises Supabase miss: $e');
-        }
-      }
+    if (AppConstants.hasSupabaseKey) {
+      _exercises = await _loadExercisesFromSupabase();
+      return _exercises!;
     }
 
     return _loadExercisesFromAssets();
   }
 
   Future<List<MealSuggestion>> loadMeals({bool forceReload = false}) async {
-    if (!forceReload && _meals != null) return _meals!;
+    if (forceReload) {
+      _meals = null;
+    }
+    if (_meals != null) return _meals!;
 
-    final client = _client;
-    if (client != null) {
-      try {
-        final rows =
-            await client.from('meals').select().eq('is_deleted', false);
-        final list = rows as List<dynamic>;
-        if (list.isNotEmpty) {
-          _meals = list
-              .map(
-                (e) => MealSuggestion.fromJson(
-                  _rowToMealJson(Map<String, dynamic>.from(e as Map)),
-                ),
-              )
-              .toList();
-          return _meals!;
-        }
-      } catch (e) {
-        if (kDebugMode) {
-          debugPrint('SeedRepository.loadMeals Supabase miss: $e');
-        }
-      }
+    if (AppConstants.hasSupabaseKey) {
+      _meals = await _loadMealsFromSupabase();
+      return _meals!;
     }
 
-    return _loadMealsFromAssets(forceReload: forceReload);
+    return _loadMealsFromAssets();
+  }
+
+  Future<List<Exercise>> _loadExercisesFromSupabase() async {
+    final client = _client;
+    if (client == null) {
+      throw ReferenceDataUnavailableException(
+        'SUPABASE_ANON_KEY is set but Supabase client is not initialized.',
+      );
+    }
+    try {
+      final rows =
+          await client.from('exercises').select().eq('is_deleted', false);
+      final list = rows as List<dynamic>;
+      if (list.isEmpty) {
+        throw ReferenceDataUnavailableException(
+          'exercises table is empty — run supabase/seed/exercises_upsert_full.sql',
+        );
+      }
+      return list
+          .map(
+            (e) => Exercise.fromJson(
+              _rowToExerciseJson(Map<String, dynamic>.from(e as Map)),
+            ),
+          )
+          .toList();
+    } catch (e) {
+      if (e is ReferenceDataUnavailableException) rethrow;
+      throw ReferenceDataUnavailableException(
+        'Failed to load exercises from Supabase',
+        cause: e,
+      );
+    }
+  }
+
+  Future<List<MealSuggestion>> _loadMealsFromSupabase() async {
+    final client = _client;
+    if (client == null) {
+      throw ReferenceDataUnavailableException(
+        'SUPABASE_ANON_KEY is set but Supabase client is not initialized.',
+      );
+    }
+    try {
+      final rows = await client.from('meals').select().eq('is_deleted', false);
+      final list = rows as List<dynamic>;
+      if (list.isEmpty) {
+        throw ReferenceDataUnavailableException(
+          'meals table is empty — run supabase/seed/meals_upsert.sql',
+        );
+      }
+      return list
+          .map(
+            (e) => MealSuggestion.fromJson(
+              _rowToMealJson(Map<String, dynamic>.from(e as Map)),
+            ),
+          )
+          .toList();
+    } catch (e) {
+      if (e is ReferenceDataUnavailableException) rethrow;
+      throw ReferenceDataUnavailableException(
+        'Failed to load meals from Supabase',
+        cause: e,
+      );
+    }
   }
 
   Future<List<Exercise>> _loadExercisesFromAssets() async {
@@ -82,10 +119,7 @@ class SeedRepository {
     return _exercises!;
   }
 
-  Future<List<MealSuggestion>> _loadMealsFromAssets({
-    bool forceReload = false,
-  }) async {
-    if (!forceReload && _meals != null) return _meals!;
+  Future<List<MealSuggestion>> _loadMealsFromAssets() async {
     final raw = await rootBundle.loadString('assets/data/meals.json');
     final list = jsonDecode(raw) as List<dynamic>;
     _meals = list
@@ -93,6 +127,14 @@ class SeedRepository {
         .toList();
     return _meals!;
   }
+
+  @visibleForTesting
+  static Map<String, dynamic> rowToMealJsonForTest(Map<String, dynamic> row) =>
+      _rowToMealJson(row);
+
+  @visibleForTesting
+  static Map<String, dynamic> rowToExerciseJsonForTest(Map<String, dynamic> row) =>
+      _rowToExerciseJson(row);
 
   /// Bridges snake_case Supabase columns → camelCase [MealSuggestion.fromJson].
   static Map<String, dynamic> _rowToMealJson(Map<String, dynamic> row) {

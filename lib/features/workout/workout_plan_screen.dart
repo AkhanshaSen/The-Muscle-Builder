@@ -258,6 +258,22 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
       );
     }
 
+    if (exercisesAsync.hasError) {
+      return Scaffold(
+        appBar: AppBar(leading: const NestedBackButton()),
+        body: EmptyState(
+          icon: Icons.cloud_off_outlined,
+          title: 'Exercise catalog unavailable',
+          message: exercisesAsync.error.toString(),
+        ),
+      );
+    }
+    if (exercisesAsync.isLoading) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     final exerciseBank = exercisesAsync.asData?.value ?? const <Exercise>[];
     final demoById = {for (final e in exerciseBank) e.id: e.demoImages};
     final catalogById = {for (final e in exerciseBank) e.id: e};
