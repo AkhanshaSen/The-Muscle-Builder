@@ -1,6 +1,3 @@
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.LibraryExtension
-
 allprojects {
     repositories {
         google()
@@ -8,22 +5,13 @@ allprojects {
     }
 }
 
-// AGP 9 release lint can crash on JDK 17 inside third-party plugin sources
-// (NoSuchMethodError: List.removeLast). Skip release lint for app + Flutter plugins.
+// AGP 9 release lint can crash in Flutter plugin sources; disable vital lint tasks
+// without importing deprecated AppExtension/LibraryExtension types in this script.
 subprojects {
-    plugins.withId("com.android.library") {
-        extensions.configure<LibraryExtension> {
-            lint {
-                checkReleaseBuilds = false
-            }
-        }
-    }
-    plugins.withId("com.android.application") {
-        extensions.configure<AppExtension> {
-            lint {
-                checkReleaseBuilds = false
-            }
-        }
+    afterEvaluate {
+        tasks.matching {
+            it.name == "lintVitalAnalyzeRelease" || it.name.startsWith("lintVital")
+        }.configureEach { enabled = false }
     }
 }
 
