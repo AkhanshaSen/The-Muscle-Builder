@@ -18,6 +18,8 @@ import 'exercise_posture_gallery.dart';
 
 enum _SessionPanel { form, train }
 
+const _sessionUiRadius = 14.0;
+
 class _CompletedSetInfo {
   const _CompletedSetInfo({
     required this.durationSeconds,
@@ -282,6 +284,120 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
         content: Text('Water logged · keep sipping'),
       ),
     );
+  }
+
+  Future<bool> _showCompleteSetConfirmation({
+    required PlannedExercise current,
+    required int setNumber,
+  }) async {
+    final scheme = Theme.of(context).colorScheme;
+    final reps = int.tryParse(_repsCtrl.text) ?? current.reps;
+    final weight = double.tryParse(_weightCtrl.text) ?? 0;
+    final duration = _setElapsedSeconds;
+    final target = _targetFor(current);
+    final liveTone = SetPaceEvaluator.liveTone(duration, target);
+    final paceColor = _toneColor(liveTone, scheme);
+    final paceLabel = SetPaceEvaluator.liveStatus(duration, target);
+
+    final isLastSet = setNumber >= current.sets;
+    final afterLine = isLastSet
+        ? (_exerciseIndex + 1 >= (_plan?.exercises.length ?? 0)
+            ? 'This logs your last set — then we wrap the session.'
+            : 'Next up: rest, then the next exercise.')
+        : 'Next up: rest, then set ${setNumber + 1}.';
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(_sessionUiRadius),
+        ),
+        title: Text('Log set $setNumber?'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _ConfirmMetricRow(label: 'Time', value: _formatDuration(duration)),
+            _ConfirmMetricRow(label: 'Reps', value: '$reps'),
+            _ConfirmMetricRow(
+              label: 'Weight',
+              value: weight == weight.roundToDouble()
+                  ? '${weight.toInt()} kg'
+                  : '${weight.toStringAsFixed(1)} kg',
+            ),
+            _ConfirmMetricRow(label: 'RPE', value: '${_rpe.round()}'),
+            const SizedBox(height: AppSpacing.sm),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: paceColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(_sessionUiRadius),
+                border: Border.all(color: paceColor.withValues(alpha: 0.35)),
+              ),
+              child: Text(
+                paceLabel,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: paceColor,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              afterLine,
+              style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Back'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Log set'),
+          ),
+        ],
+      ),
+    );
+    return confirmed == true;
+  }
+
+  Future<void> _promptCompleteSet({int? setNumberOverride}) async {
+    final current = _current;
+    final session = _session;
+    if (current == null || session == null || _resting) return;
+
+    final setNumber = setNumberOverride ?? (_setIndex + 1);
+    if (setNumber != _setIndex + 1) return;
+    if (_completedSets.containsKey(_setKey(current.exerciseId, setNumber))) {
+      return;
+    }
+
+    final wasRunning = _setTimerRunning;
+    if (wasRunning) {
+      _setTimer?.cancel();
+      setState(() => _setTimerRunning = false);
+    }
+
+    final confirmed = await _showCompleteSetConfirmation(
+      current: current,
+      setNumber: setNumber,
+    );
+
+    if (!confirmed) {
+      if (wasRunning && mounted) {
+        _startSetTimer(resetElapsed: false);
+      }
+      return;
+    }
+    if (!mounted) return;
+    await _completeSet(setNumberOverride: setNumberOverride);
   }
 
   Future<void> _completeSet({int? setNumberOverride}) async {
@@ -586,7 +702,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(_sessionUiRadius),
                   child: LinearProgressIndicator(
                     value: overall.clamp(0.05, 1.0),
                     minHeight: 6,
@@ -609,29 +725,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
                 ),
                 if (!_resting) ...[
                   const SizedBox(height: AppSpacing.md),
-                  SegmentedButton<_SessionPanel>(
-                    segments: const [
-                      ButtonSegment(
-                        value: _SessionPanel.form,
-                        icon: Icon(Icons.accessibility_new),
-                        label: Text('Form'),
-                      ),
-                      ButtonSegment(
-                        value: _SessionPanel.train,
-                        icon: Icon(Icons.timer_outlined),
-                        label: Text('Train'),
-                      ),
-                    ],
-                    selected: {_panel},
-                    onSelectionChanged: (s) {
-                      final next = s.first;
-                      if (next == _SessionPanel.form) {
-                        _showFormPanel();
-                      } else {
-                        _showTrainPanel();
-                      }
-                    },
-                  ),
+                  _buildPanelToggle(scheme),
                 ],
               ],
             ),
@@ -657,7 +751,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
     final bottomInset = MediaQuery.viewPaddingOf(context).bottom;
     return Material(
       elevation: 0,
-      color: const Color(0xFF161616),
+      color: scheme.surfaceContainerLow,
       surfaceTintColor: Colors.transparent,
       child: SafeArea(
         top: false,
@@ -726,7 +820,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
                     Expanded(
                       flex: 2,
                       child: FilledButton.icon(
-                        onPressed: () => _completeSet(),
+                        onPressed: _promptCompleteSet,
                         icon: const Icon(Icons.check_rounded),
                         label: FittedBox(
                           fit: BoxFit.scaleDown,
@@ -1011,127 +1105,232 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
           ),
           const SizedBox(height: AppSpacing.md),
         ],
-        Card(
-          child: Padding(
-            padding: AppSpacing.card,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Text(
-                      'Set timer',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: scheme.primary.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        'Target ${target.rangeLabel}',
-                        style: TextStyle(
-                          color: scheme.primary,
+        _SessionSurface(
+          scheme: scheme,
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Set timer',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w600,
-                          fontSize: 12,
                         ),
+                  ),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: scheme.primary.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      'Target ${target.rangeLabel}',
+                      style: TextStyle(
+                        color: scheme.primary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
                       ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  _formatDuration(_setElapsedSeconds),
-                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: liveColor,
-                        fontFeatures: const [FontFeature.tabularFigures()],
-                      ),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 12,
-                    color: liveColor,
-                    backgroundColor: scheme.surfaceContainerHighest,
                   ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                _formatDuration(_setElapsedSeconds),
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: liveColor,
+                      fontFeatures: const [FontFeature.tabularFigures()],
+                    ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: LinearProgressIndicator(
+                  value: progress,
+                  minHeight: 10,
+                  color: liveColor,
+                  backgroundColor: scheme.surfaceContainerHighest,
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  SetPaceEvaluator.liveStatus(_setElapsedSeconds, target),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: liveColor,
-                    fontWeight: FontWeight.w600,
-                  ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                SetPaceEvaluator.liveStatus(_setElapsedSeconds, target),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: liveColor,
+                  fontWeight: FontWeight.w600,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: AppSpacing.md),
         Text(
-          'Tick sets as you finish',
+          'Sets',
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
         ),
         const SizedBox(height: AppSpacing.sm),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (var i = 1; i <= current.sets; i++)
-              _setChip(current, i, target, scheme),
-          ],
+        _buildSetTabBar(current, scheme),
+        const SizedBox(height: AppSpacing.md),
+        _SessionSurface(
+          scheme: scheme,
+          child: _compactLogFields(),
         ),
-        const SizedBox(height: 16),
-        _compactLogFields(),
       ],
       ),
     );
   }
 
-  Widget _setChip(
+  Widget _buildPanelToggle(ColorScheme scheme) {
+    return _SessionSurface(
+      scheme: scheme,
+      padding: const EdgeInsets.all(4),
+      child: SegmentedButton<_SessionPanel>(
+        showSelectedIcon: false,
+        segments: const [
+          ButtonSegment(
+            value: _SessionPanel.form,
+            icon: Icon(Icons.accessibility_new, size: 18),
+            label: Text('Form'),
+          ),
+          ButtonSegment(
+            value: _SessionPanel.train,
+            icon: Icon(Icons.timer_outlined, size: 18),
+            label: Text('Train'),
+          ),
+        ],
+        style: SegmentedButton.styleFrom(
+          visualDensity: VisualDensity.compact,
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          side: BorderSide.none,
+          backgroundColor: scheme.surfaceContainerHighest.withValues(alpha: 0.4),
+          selectedBackgroundColor: scheme.primary.withValues(alpha: 0.2),
+          foregroundColor: scheme.onSurfaceVariant,
+          selectedForegroundColor: scheme.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(_sessionUiRadius - 4),
+          ),
+        ),
+        selected: {_panel},
+        onSelectionChanged: (s) {
+          final next = s.first;
+          if (next == _SessionPanel.form) {
+            _showFormPanel();
+          } else {
+            _showTrainPanel();
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildSetTabBar(PlannedExercise current, ColorScheme scheme) {
+    return _SessionSurface(
+      scheme: scheme,
+      padding: EdgeInsets.zero,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(_sessionUiRadius),
+        child: Row(
+          children: [
+            for (var i = 1; i <= current.sets; i++)
+              Expanded(
+                child: _setTabTile(current, i, scheme, showDivider: i < current.sets),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _setTabTile(
     PlannedExercise current,
     int setNumber,
-    SetPaceTarget target,
-    ColorScheme scheme,
-  ) {
+    ColorScheme scheme, {
+    required bool showDivider,
+  }) {
     final key = _setKey(current.exerciseId, setNumber);
     final info = _completedSets[key];
     final done = info != null;
     final isCurrent = !done && setNumber == _setIndex + 1;
     final locked = !done && setNumber > _setIndex + 1;
 
-    return FilterChip(
-      selected: done || isCurrent,
-      showCheckmark: done,
-      label: Text(
-        done
-            ? 'Set $setNumber · ${_formatDuration(info.durationSeconds)}'
-            : isCurrent
-                ? 'Set $setNumber · now'
-                : 'Set $setNumber',
-      ),
-      onSelected: locked || done || _resting
-          ? null
-          : (_) => _completeSet(setNumberOverride: setNumber),
-      selectedColor: done
-          ? _toneColor(SetPaceEvaluator.toneFor(info.verdict), scheme)
-              .withValues(alpha: 0.25)
-          : scheme.primary.withValues(alpha: 0.2),
+    final highlight = done
+        ? _toneColor(SetPaceEvaluator.toneFor(info.verdict), scheme)
+        : scheme.primary;
+
+    final bg = done
+        ? highlight.withValues(alpha: 0.18)
+        : isCurrent
+            ? scheme.primary.withValues(alpha: 0.12)
+            : scheme.surfaceContainerHighest.withValues(alpha: 0.35);
+
+    return Material(
+      color: bg,
+      child: InkWell(
+        onTap: locked || done || _resting || !isCurrent
+            ? null
+            : _promptCompleteSet,
+        child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+            decoration: showDivider
+                ? BoxDecoration(
+                    border: Border(
+                      right: BorderSide(
+                        color: scheme.outlineVariant.withValues(alpha: 0.45),
+                      ),
+                    ),
+                  )
+                : null,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  done ? Icons.check_rounded : Icons.fitness_center,
+                  size: 18,
+                  color: done || isCurrent
+                      ? highlight
+                      : scheme.onSurfaceVariant.withValues(alpha: 0.7),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Set $setNumber',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w500,
+                        color: isCurrent ? scheme.primary : null,
+                      ),
+                ),
+                if (done)
+                  Text(
+                    _formatDuration(info.durationSeconds),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                  )
+                else if (isCurrent)
+                  Text(
+                    'active',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: scheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+              ],
+            ),
+          ),
+        ),
     );
   }
 
   Widget _compactLogFields() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: TextField(
@@ -1140,6 +1339,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
             decoration: const InputDecoration(
               labelText: 'kg',
               isDense: true,
+              border: OutlineInputBorder(),
             ),
           ),
         ),
@@ -1152,6 +1352,7 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
             decoration: const InputDecoration(
               labelText: 'Reps',
               isDense: true,
+              border: OutlineInputBorder(),
             ),
           ),
         ),
@@ -1161,11 +1362,13 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
             decoration: const InputDecoration(
               labelText: 'RPE',
               isDense: true,
+              border: OutlineInputBorder(),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<int>(
                 value: _rpe.round(),
                 isDense: true,
+                isExpanded: true,
                 items: [
                   for (var i = 1; i <= 10; i++)
                     DropdownMenuItem(value: i, child: Text('$i')),
@@ -1178,6 +1381,68 @@ class _SessionScreenState extends ConsumerState<SessionScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _SessionSurface extends StatelessWidget {
+  const _SessionSurface({
+    required this.scheme,
+    required this.child,
+    this.padding,
+  });
+
+  final ColorScheme scheme;
+  final Widget child;
+  final EdgeInsetsGeometry? padding;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(_sessionUiRadius),
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.45),
+        ),
+      ),
+      child: Padding(
+        padding: padding ?? AppSpacing.card,
+        child: child,
+      ),
+    );
+  }
+}
+
+class _ConfirmMetricRow extends StatelessWidget {
+  const _ConfirmMetricRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: scheme.onSurfaceVariant,
+                  ),
+            ),
+          ),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+        ],
+      ),
     );
   }
 }
