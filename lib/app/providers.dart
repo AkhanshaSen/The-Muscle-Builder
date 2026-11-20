@@ -42,6 +42,17 @@ final seedRepositoryProvider = Provider<SeedRepository>((ref) {
   return SeedRepository(ref.watch(supabaseClientProvider));
 });
 
+/// Bumped when Supabase reference catalogs should refetch (resume, pull-to-refresh).
+final referenceCatalogTickProvider = StateProvider<int>((ref) => 0);
+
+void refreshReferenceCatalog(WidgetRef ref) {
+  if (!AppConstants.hasSupabaseKey) return;
+  ref.read(seedRepositoryProvider).clearCache();
+  ref.invalidate(exercisesProvider);
+  ref.invalidate(exercisesForProfileProvider);
+  ref.read(referenceCatalogTickProvider.notifier).update((n) => n + 1);
+}
+
 final guidesRepositoryProvider = Provider<GuidesRepository>((ref) {
   return GuidesRepository(ref.watch(supabaseClientProvider));
 });
@@ -116,6 +127,7 @@ final customRoutinesProvider = StreamProvider<List<CustomRoutine>>((ref) {
 });
 
 final exercisesProvider = FutureProvider<List<Exercise>>((ref) {
+  ref.watch(referenceCatalogTickProvider);
   return ref.watch(seedRepositoryProvider).loadExercises();
 });
 

@@ -433,12 +433,26 @@ class _MealList extends ConsumerWidget {
   final String query;
   final VoidCallback onClearSearch;
 
+  Future<void> _reloadCatalog(WidgetRef ref) async {
+    refreshReferenceCatalog(ref);
+    await ref.read(nutritionRepositoryProvider).suggestionsFor(
+          timing: timing,
+          dietType: profile.dietType,
+          allergies: profile.allergies,
+          region: region,
+          preferredIngredients: profile.preferredIngredients,
+          query: query,
+        );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searching = query.trim().isNotEmpty;
+    final catalogTick = ref.watch(referenceCatalogTickProvider);
     return FutureBuilder<List<MealSuggestion>>(
       key: ValueKey(
-        '${timing.name}_${region.name}_${profile.preferredIngredients.join(',')}_$query',
+        '${timing.name}_${region.name}_'
+        '${profile.preferredIngredients.join(',')}_${query}_$catalogTick',
       ),
       future: ref.read(nutritionRepositoryProvider).suggestionsFor(
             timing: timing,
@@ -454,35 +468,45 @@ class _MealList extends ConsumerWidget {
         }
         final meals = snapshot.data!;
         if (meals.isEmpty) {
-          if (searching) {
-            return EmptyState(
-              icon: Icons.search_off,
-              title: 'No meals match "${query.trim()}"',
-              message: 'Try another name or ingredient, or clear search.',
-              action: TextButton(
-                onPressed: onClearSearch,
-                child: const Text('Clear search'),
-              ),
-            );
-          }
-          return EmptyState(
-            icon: Icons.no_meals_outlined,
-            title: 'No matches',
-            message: profile.preferredIngredients.isEmpty
-                ? 'Try changing region filters or allergies in Profile settings.'
-                : 'Widen chips or clear preferences to see more meals.',
+          final empty = searching
+              ? EmptyState(
+                  icon: Icons.search_off,
+                  title: 'No meals match "${query.trim()}"',
+                  message: 'Try another name or ingredient, or clear search.',
+                  action: TextButton(
+                    onPressed: onClearSearch,
+                    child: const Text('Clear search'),
+                  ),
+                )
+              : EmptyState(
+                  icon: Icons.no_meals_outlined,
+                  title: 'No matches',
+                  message: profile.preferredIngredients.isEmpty
+                      ? 'Try changing region filters or allergies in Profile settings.'
+                      : 'Widen chips or clear preferences to see more meals.',
+                );
+          return RefreshIndicator(
+            onRefresh: () => _reloadCatalog(ref),
+            child: ListView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(AppSpacing.md),
+              children: [empty],
+            ),
           );
         }
-        return ListView.separated(
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.md,
-            AppSpacing.xs,
-            AppSpacing.md,
-            AppSpacing.lg,
-          ),
-          itemCount: searching ? meals.length + 1 : meals.length,
-          separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
-          itemBuilder: (context, index) {
+        return RefreshIndicator(
+          onRefresh: () => _reloadCatalog(ref),
+          child: ListView.separated(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.md,
+              AppSpacing.xs,
+              AppSpacing.md,
+              AppSpacing.lg,
+            ),
+            itemCount: searching ? meals.length + 1 : meals.length,
+            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
+            itemBuilder: (context, index) {
             if (searching && index == 0) {
               return Text(
                 '${meals.length} result${meals.length == 1 ? '' : 's'} for "${query.trim()}"',
@@ -594,6 +618,7 @@ class _MealList extends ConsumerWidget {
               ),
             );
           },
+          ),
         );
       },
     );

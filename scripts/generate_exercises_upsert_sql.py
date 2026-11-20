@@ -127,8 +127,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 """
 
 

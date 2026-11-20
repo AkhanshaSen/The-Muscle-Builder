@@ -22,7 +22,10 @@ class SeedRepository {
     _meals = null;
   }
 
-  Future<List<Exercise>> loadExercises() async {
+  Future<List<Exercise>> loadExercises({bool forceReload = false}) async {
+    if (forceReload) {
+      _exercises = null;
+    }
     if (_exercises != null) return _exercises!;
 
     if (AppConstants.hasSupabaseKey) {

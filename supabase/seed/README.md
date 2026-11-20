@@ -12,6 +12,7 @@
 3. **`exercises_upsert_full.sql`** — full exercise catalog.
 
 Each statement is `INSERT … ON CONFLICT (id) DO UPDATE` (safe to re-run).
+`ON CONFLICT` updates catalog fields but **does not** change `is_deleted` (admin soft-delete is preserved).
 
 ## Verify
 

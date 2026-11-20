@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'app/app.dart';
+import 'app/reference_catalog_lifecycle.dart';
 import 'core/constants/app_constants.dart';
 import 'core/logging/app_log_bootstrap.dart';
 import 'core/logging/app_provider_observer.dart';
@@ -29,7 +30,9 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       observers: [AppProviderObserver()],
-      child: const MuscleBuilderApp(),
+      child: const ReferenceCatalogLifecycle(
+        child: MuscleBuilderApp(),
+      ),
     ),
   );
 }

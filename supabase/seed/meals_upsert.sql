@@ -44,8 +44,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -90,8 +90,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -136,8 +136,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -182,8 +182,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -228,8 +228,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -274,8 +274,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -320,8 +320,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -366,8 +366,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -412,8 +412,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -458,8 +458,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -504,8 +504,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -550,8 +550,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -596,8 +596,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -642,8 +642,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -688,8 +688,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -734,8 +734,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -780,8 +780,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -826,8 +826,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -872,8 +872,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -918,8 +918,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -964,8 +964,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1010,8 +1010,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1056,8 +1056,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1102,8 +1102,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1148,8 +1148,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1194,8 +1194,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1240,8 +1240,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1286,8 +1286,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1332,8 +1332,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1378,8 +1378,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1424,8 +1424,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1470,8 +1470,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1516,8 +1516,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1562,8 +1562,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1608,8 +1608,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1654,8 +1654,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1700,8 +1700,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1746,8 +1746,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1792,8 +1792,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1838,8 +1838,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1884,8 +1884,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1930,8 +1930,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -1976,8 +1976,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2022,8 +2022,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2068,8 +2068,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2114,8 +2114,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2160,8 +2160,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2206,8 +2206,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2252,8 +2252,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2298,8 +2298,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2344,8 +2344,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2390,8 +2390,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2436,8 +2436,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2482,8 +2482,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2528,8 +2528,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2574,8 +2574,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2620,8 +2620,8 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO meals (
   id, name, description, timing, diet_types, regions, allergens, timing_guidance,
@@ -2666,7 +2666,7 @@ ON CONFLICT (id) DO UPDATE SET
   recipe_available = EXCLUDED.recipe_available,
   ingredient_tags = EXCLUDED.ingredient_tags,
   nutrition_notes = EXCLUDED.nutrition_notes,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 -- Total rows: 58

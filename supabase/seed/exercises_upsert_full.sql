@@ -1,4 +1,4 @@
--- Full exercise catalog (88 rows)
+-- exercises.json (all, 88 rows)
 -- Prerequisite: run supabase/seed/000_run_once_prerequisite_columns.sql once.
 
 INSERT INTO exercises (
@@ -47,8 +47,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -96,8 +96,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -145,8 +145,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -194,8 +194,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -243,8 +243,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -292,8 +292,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -341,8 +341,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -390,8 +390,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -439,8 +439,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -488,8 +488,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -537,8 +537,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -586,8 +586,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -635,8 +635,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -684,8 +684,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -733,8 +733,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -782,8 +782,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -831,8 +831,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -880,8 +880,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -929,8 +929,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -978,8 +978,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1027,8 +1027,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1076,8 +1076,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1125,8 +1125,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1174,8 +1174,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1223,8 +1223,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1272,8 +1272,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1321,8 +1321,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1370,8 +1370,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1419,8 +1419,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1468,8 +1468,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1517,8 +1517,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1566,8 +1566,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1615,8 +1615,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1664,8 +1664,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1713,8 +1713,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1762,8 +1762,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1811,8 +1811,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1860,8 +1860,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1909,8 +1909,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -1958,8 +1958,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2007,8 +2007,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2056,8 +2056,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2105,8 +2105,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2154,8 +2154,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2203,8 +2203,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2252,8 +2252,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2301,8 +2301,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2350,8 +2350,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2399,8 +2399,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2448,8 +2448,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2497,8 +2497,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2546,8 +2546,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2595,8 +2595,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2644,8 +2644,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2693,8 +2693,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2742,8 +2742,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2791,8 +2791,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2840,8 +2840,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2889,8 +2889,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2938,8 +2938,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -2987,8 +2987,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3036,8 +3036,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3085,8 +3085,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3134,8 +3134,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3183,8 +3183,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3232,8 +3232,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3281,8 +3281,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3330,8 +3330,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3379,8 +3379,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3428,8 +3428,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3477,8 +3477,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3526,8 +3526,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3575,8 +3575,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3624,8 +3624,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3673,8 +3673,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3722,8 +3722,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3771,8 +3771,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3820,8 +3820,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3869,8 +3869,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3918,8 +3918,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -3967,8 +3967,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -4016,8 +4016,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -4065,8 +4065,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -4114,8 +4114,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -4163,8 +4163,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -4212,8 +4212,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -4261,8 +4261,8 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 INSERT INTO exercises (
   id, name, muscle_groups, equipment, difficulty, estimated_calories,
@@ -4310,7 +4310,7 @@ ON CONFLICT (id) DO UPDATE SET
   catalog_tags = EXCLUDED.catalog_tags,
   demo_frames = EXCLUDED.demo_frames,
   demo_video_url = EXCLUDED.demo_video_url,
-  is_deleted = false,
   updated_at = NOW();
+  -- is_deleted omitted on conflict: preserves admin soft-delete
 
 -- Total rows: 88

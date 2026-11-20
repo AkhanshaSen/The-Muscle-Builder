@@ -83,7 +83,6 @@ def exercise_row(ex: dict) -> dict:
         "catalog_tags": ex.get("catalogTags", []),
         "demo_frames": ex.get("demoFrames", []),
         "demo_video_url": ex.get("demoVideoUrl"),
-        "is_deleted": False,
     }
 
 
@@ -106,7 +105,6 @@ def meal_row(m: dict) -> dict:
         "recipe_available": m.get("recipeAvailable", False),
         "ingredient_tags": m.get("ingredientTags", []),
         "nutrition_notes": m.get("nutritionNotes", []),
-        "is_deleted": False,
     }
 
 
@@ -279,16 +277,12 @@ def main() -> None:
         dart = GUIDES_DART.read_text(encoding="utf-8")
         if "food_pharmer_pointers" in want:
             rows = _parse_dart_records(dart, "FoodPharmerPointer")
-            for r in rows:
-                r["is_deleted"] = False
             print(f"Upserting food_pharmer_pointers ({len(rows)})…")
             total += upsert_chunks(
                 base_url, api_key, "food_pharmer_pointers", rows, dry_run=args.dry_run
             )
         if "pro_nutrition_guides" in want:
             rows = _parse_dart_records(dart, "ProNutritionGuide")
-            for r in rows:
-                r["is_deleted"] = False
             print(f"Upserting pro_nutrition_guides ({len(rows)})…")
             total += upsert_chunks(
                 base_url, api_key, "pro_nutrition_guides", rows, dry_run=args.dry_run

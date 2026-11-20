@@ -73,6 +73,28 @@ JSON files remain in the repo as **seed generation source** (`scripts/generate_*
 4. Or: `python3 scripts/upsert_reference_data.py --tables meals,exercises`
 5. Regenerate SQL: `generate_meals_upsert_sql.py`, `generate_exercises_upsert_sql.py`
 
+### Authentication vs reference data (FAQ)
+
+- **User sign-in is not required** for meals, exercises, or guides. The app uses the **publishable anon key** (`SUPABASE_ANON_KEY`) to `SELECT` reference rows under RLS.
+- **With the key set** and tables seeded: meals and exercises come **only from Supabase** (not bundled JSON). Personal data (profile, logs, workouts) stays in **Drift** on device.
+- **Without the key** (`flutter test`, CI): meals and exercises use **`assets/data/*.json`** only.
+- **Guides** (`food_pharmer_pointers`, `pro_nutrition_guides`): Supabase first; **Dart const fallbacks** in [`lib/data/seed/pro_nutrition_guides.dart`](../lib/data/seed/pro_nutrition_guides.dart) if Supabase is empty or errors.
+- Future per-user cloud sync would need auth; that is **not** implemented today.
+
+### Soft-delete catalog rows
+
+Applies to `meals`, `exercises`, `food_pharmer_pointers`, `pro_nutrition_guides` (migration [`002_is_deleted_and_security.sql`](../supabase/migrations/002_is_deleted_and_security.sql)).
+
+| Action | How |
+| --- | --- |
+| Hide from app | Supabase SQL Editor: `UPDATE meals SET is_deleted = true, updated_at = now() WHERE id = '…';` |
+| Restore | `SET is_deleted = false, updated_at = now()` |
+| Client | [`SeedRepository`](../lib/data/repositories/seed_repository.dart) filters `.eq('is_deleted', false)`; RLS also enforces non-deleted rows |
+| Re-seed from JSON | Upsert SQL / `upsert_reference_data.py` **preserves** existing `is_deleted` on conflict |
+| Refresh UI | [`ReferenceCatalogLifecycle`](../lib/app/reference_catalog_lifecycle.dart) on app resume; pull-to-refresh on Nutrition meal lists |
+
+**Offline JSON** (`meals.json` / `exercises.json`) has no soft-delete — hiding rows is a **Supabase-only** admin operation.
+
 ---
 
 ## Environment and workflows

@@ -25,8 +25,13 @@ rows are hidden by RLS (`SELECT … USING (is_deleted = false)`). Mark a row
 deleted via service role (SQL editor / Management API), not from the app:
 
 ```sql
-UPDATE meals SET is_deleted = true WHERE id = 'some_id';
+UPDATE meals SET is_deleted = true, updated_at = now() WHERE id = 'some_id';
+-- Restore: SET is_deleted = false, updated_at = now()
 ```
+
+Re-running generated upserts updates catalog fields but **does not** reset
+`is_deleted` on existing rows (`ON CONFLICT` omits that column). The app
+refetches on resume / Nutrition pull-to-refresh when the anon key is set.
 
 ## Migrations
 
