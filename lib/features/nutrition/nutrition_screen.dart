@@ -10,6 +10,7 @@ import '../../data/seed/pro_nutrition_guides.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 import 'meal_icon_tile.dart';
+import 'meal_log_screen.dart';
 
 class NutritionScreen extends ConsumerStatefulWidget {
   const NutritionScreen({super.key, this.initialTiming});
@@ -55,7 +56,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
     super.initState();
     final initialIndex =
         widget.initialTiming == MealTiming.postWorkout ? 1 : 0;
-    _tabs = TabController(length: 3, vsync: this, initialIndex: initialIndex);
+    _tabs = TabController(length: 4, vsync: this, initialIndex: initialIndex);
     _tabs.addListener(() {
       if (!_tabs.indexIsChanging) setState(() {});
     });
@@ -73,7 +74,8 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
   Widget build(BuildContext context) {
     final profileAsync = ref.watch(profileProvider);
     final onPharmerTab = _tabs.index == 2;
-    final showSearchAction = !onPharmerTab;
+    final onYourMealsTab = _tabs.index == 3;
+    final showSearchAction = !onPharmerTab && !onYourMealsTab;
 
     return Scaffold(
       appBar: AppBar(
@@ -108,6 +110,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
             Tab(height: 40, text: 'Pre-workout'),
             Tab(height: 40, text: 'Post-workout'),
             Tab(height: 40, text: 'Food Pharmer'),
+            Tab(height: 40, text: 'Your meals'),
           ],
         ),
       ),
@@ -169,6 +172,7 @@ class _NutritionScreenState extends ConsumerState<NutritionScreen>
                 ),
               ),
               _FoodPharmerTab(onOpenPharmer: _openPharmer),
+              const MealLogScreen(),
             ],
           );
         },

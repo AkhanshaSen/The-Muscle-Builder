@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
+import '../repositories/custom_routine_repository.dart';
 import '../repositories/metrics_repository.dart';
 import '../repositories/profile_repository.dart';
 import '../repositories/routine_repository.dart';
@@ -20,17 +21,20 @@ class BackupService {
     required WorkoutRepository workouts,
     required RoutineRepository routines,
     required MetricsRepository metrics,
+    required CustomRoutineRepository customRoutines,
   })  : _profiles = profiles,
         _workouts = workouts,
         _routines = routines,
-        _metrics = metrics;
+        _metrics = metrics,
+        _customRoutines = customRoutines;
 
   final ProfileRepository _profiles;
   final WorkoutRepository _workouts;
   final RoutineRepository _routines;
   final MetricsRepository _metrics;
+  final CustomRoutineRepository _customRoutines;
 
-  static const schemaVersion = 9;
+  static const schemaVersion = 10;
   static const formatVersion = 1;
 
   Future<Map<String, dynamic>> buildExportMap() async {
@@ -44,6 +48,7 @@ class BackupService {
     final hydration = await _metrics.getAllHydration();
     final bodyMetrics = await _metrics.getAllBodyMetrics();
     final photos = await _metrics.getAllPhotos();
+    final customRoutines = await _customRoutines.getAll();
 
     return {
       'formatVersion': formatVersion,
@@ -61,6 +66,7 @@ class BackupService {
       'hydration': hydration.map(_hydrationToJson).toList(),
       'bodyMetrics': bodyMetrics.map(_bodyToJson).toList(),
       'progressPhotos': photos.map(_photoToJson).toList(),
+      'customRoutines': customRoutines.map((r) => r.toJson()).toList(),
     };
   }
 
@@ -144,6 +150,10 @@ class BackupService {
     }
     for (final item in _asList(decoded['progressPhotos'])) {
       await _metrics.upsertPhoto(_photoFromJson(item));
+      count++;
+    }
+    for (final item in _asList(decoded['customRoutines'])) {
+      await _customRoutines.upsert(CustomRoutine.fromJson(item));
       count++;
     }
     return count;

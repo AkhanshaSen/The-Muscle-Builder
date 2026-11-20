@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../theme/app_spacing.dart';
+import '../theme/design_tokens.dart';
 
 class SectionHeader extends StatelessWidget {
   const SectionHeader({
@@ -67,22 +68,18 @@ class SelectableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final craft = context.craft;
     final scheme = Theme.of(context).colorScheme;
     return Material(
-      color: selected
-          ? scheme.primary.withValues(alpha: 0.18)
-          : scheme.surfaceContainerHighest.withValues(alpha: 0.5),
-      borderRadius: BorderRadius.circular(12),
+      color: selected ? craft.accentDim : craft.surface,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
         child: Container(
           padding: padding,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(4),
             border: Border.all(
-              color: selected ? scheme.primary : Colors.transparent,
-              width: 1.5,
+              color: selected ? scheme.primary : craft.border,
             ),
           ),
           child: child,
@@ -258,17 +255,14 @@ class SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final craft = context.craft;
     return Padding(
-      padding: const EdgeInsets.only(left: 2),
+      padding: const EdgeInsets.only(bottom: 4),
       child: Text(
         text.toUpperCase(),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.0,
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurface
-                  .withValues(alpha: 0.55),
+              letterSpacing: 0.8,
+              color: craft.textMuted,
             ),
       ),
     );

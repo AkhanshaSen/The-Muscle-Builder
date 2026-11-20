@@ -1,0 +1,2351 @@
+[
+  {
+    "id": "roti_1",
+    "name": "Whole wheat roti (1)",
+    "servingLabel": "1 roti",
+    "servingGrams": 40,
+    "kcalPerServing": 120,
+    "proteinG": 3.5,
+    "carbsG": 22,
+    "fatG": 2.5,
+    "aliases": [
+      "chapati",
+      "phulka"
+    ]
+  },
+  {
+    "id": "roti_2",
+    "name": "Whole wheat roti (2)",
+    "servingLabel": "2 rotis",
+    "servingGrams": 80,
+    "kcalPerServing": 240,
+    "proteinG": 7,
+    "carbsG": 44,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "rice_cooked_1cup",
+    "name": "Steamed rice (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 158,
+    "kcalPerServing": 205,
+    "proteinG": 4,
+    "carbsG": 45,
+    "fatG": 0.5,
+    "aliases": [
+      "chawal",
+      "white rice"
+    ]
+  },
+  {
+    "id": "rice_half",
+    "name": "Steamed rice (\u00bd cup)",
+    "servingLabel": "\u00bd cup",
+    "servingGrams": 79,
+    "kcalPerServing": 103,
+    "proteinG": 2,
+    "carbsG": 23,
+    "fatG": 0.3,
+    "aliases": []
+  },
+  {
+    "id": "brown_rice_cup",
+    "name": "Brown rice (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 195,
+    "kcalPerServing": 215,
+    "proteinG": 5,
+    "carbsG": 45,
+    "fatG": 1.8,
+    "aliases": []
+  },
+  {
+    "id": "dal_tadka_bowl",
+    "name": "Dal tadka (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 180,
+    "proteinG": 9,
+    "carbsG": 24,
+    "fatG": 5,
+    "aliases": [
+      "yellow dal",
+      "arhar"
+    ]
+  },
+  {
+    "id": "dal_makhani",
+    "name": "Dal makhani (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 260,
+    "proteinG": 11,
+    "carbsG": 28,
+    "fatG": 10,
+    "aliases": []
+  },
+  {
+    "id": "sambar_bowl",
+    "name": "Sambar (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 120,
+    "proteinG": 5,
+    "carbsG": 18,
+    "fatG": 3,
+    "aliases": []
+  },
+  {
+    "id": "rasam_bowl",
+    "name": "Rasam (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 240,
+    "kcalPerServing": 55,
+    "proteinG": 2,
+    "carbsG": 9,
+    "fatG": 1,
+    "aliases": []
+  },
+  {
+    "id": "curd_bowl",
+    "name": "Plain curd (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 98,
+    "proteinG": 11,
+    "carbsG": 8,
+    "fatG": 3,
+    "aliases": [
+      "dahi",
+      "yogurt"
+    ]
+  },
+  {
+    "id": "lassi_sweet",
+    "name": "Sweet lassi (1 glass)",
+    "servingLabel": "1 glass",
+    "servingGrams": 300,
+    "kcalPerServing": 190,
+    "proteinG": 6,
+    "carbsG": 28,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "buttermilk",
+    "name": "Chaas / buttermilk",
+    "servingLabel": "1 glass",
+    "servingGrams": 250,
+    "kcalPerServing": 45,
+    "proteinG": 3,
+    "carbsG": 5,
+    "fatG": 1.5,
+    "aliases": [
+      "chaas"
+    ]
+  },
+  {
+    "id": "idli_2",
+    "name": "Idli (2 pcs)",
+    "servingLabel": "2 idli",
+    "servingGrams": 80,
+    "kcalPerServing": 78,
+    "proteinG": 2.5,
+    "carbsG": 16,
+    "fatG": 0.3,
+    "aliases": []
+  },
+  {
+    "id": "idli_3",
+    "name": "Idli (3 pcs)",
+    "servingLabel": "3 idli",
+    "servingGrams": 120,
+    "kcalPerServing": 117,
+    "proteinG": 3.8,
+    "carbsG": 24,
+    "fatG": 0.5,
+    "aliases": []
+  },
+  {
+    "id": "dosa_plain",
+    "name": "Plain dosa (1)",
+    "servingLabel": "1 dosa",
+    "servingGrams": 120,
+    "kcalPerServing": 133,
+    "proteinG": 3,
+    "carbsG": 24,
+    "fatG": 3,
+    "aliases": []
+  },
+  {
+    "id": "masala_dosa",
+    "name": "Masala dosa (1)",
+    "servingLabel": "1 dosa",
+    "servingGrams": 220,
+    "kcalPerServing": 310,
+    "proteinG": 6,
+    "carbsG": 48,
+    "fatG": 10,
+    "aliases": []
+  },
+  {
+    "id": "uttapam",
+    "name": "Uttapam (1)",
+    "servingLabel": "1 uttapam",
+    "servingGrams": 150,
+    "kcalPerServing": 180,
+    "proteinG": 5,
+    "carbsG": 28,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "poha_bowl",
+    "name": "Poha (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 180,
+    "kcalPerServing": 220,
+    "proteinG": 5,
+    "carbsG": 38,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "upma_bowl",
+    "name": "Rava upma (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 250,
+    "proteinG": 6,
+    "carbsG": 40,
+    "fatG": 7,
+    "aliases": []
+  },
+  {
+    "id": "paratha_aloo",
+    "name": "Aloo paratha (1)",
+    "servingLabel": "1 paratha",
+    "servingGrams": 120,
+    "kcalPerServing": 320,
+    "proteinG": 7,
+    "carbsG": 45,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "paratha_plain",
+    "name": "Plain paratha (1)",
+    "servingLabel": "1 paratha",
+    "servingGrams": 100,
+    "kcalPerServing": 260,
+    "proteinG": 6,
+    "carbsG": 38,
+    "fatG": 10,
+    "aliases": []
+  },
+  {
+    "id": "paneer_100",
+    "name": "Paneer (100 g)",
+    "servingLabel": "100 g",
+    "servingGrams": 100,
+    "kcalPerServing": 265,
+    "proteinG": 18,
+    "carbsG": 4,
+    "fatG": 20,
+    "aliases": [
+      "cottage cheese"
+    ]
+  },
+  {
+    "id": "paneer_50",
+    "name": "Paneer (50 g)",
+    "servingLabel": "50 g",
+    "servingGrams": 50,
+    "kcalPerServing": 133,
+    "proteinG": 9,
+    "carbsG": 2,
+    "fatG": 10,
+    "aliases": []
+  },
+  {
+    "id": "tofu_100",
+    "name": "Tofu (100 g)",
+    "servingLabel": "100 g",
+    "servingGrams": 100,
+    "kcalPerServing": 144,
+    "proteinG": 17,
+    "carbsG": 3,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "egg_boiled",
+    "name": "Boiled egg (1)",
+    "servingLabel": "1 egg",
+    "servingGrams": 50,
+    "kcalPerServing": 78,
+    "proteinG": 6,
+    "carbsG": 0.6,
+    "fatG": 5,
+    "aliases": [
+      "anda"
+    ]
+  },
+  {
+    "id": "egg_whites_3",
+    "name": "Egg whites (3)",
+    "servingLabel": "3 whites",
+    "servingGrams": 100,
+    "kcalPerServing": 51,
+    "proteinG": 11,
+    "carbsG": 1,
+    "fatG": 0.2,
+    "aliases": []
+  },
+  {
+    "id": "egg_omelette",
+    "name": "Masala omelette (2 egg)",
+    "servingLabel": "1 omelette",
+    "servingGrams": 150,
+    "kcalPerServing": 220,
+    "proteinG": 14,
+    "carbsG": 4,
+    "fatG": 16,
+    "aliases": []
+  },
+  {
+    "id": "chicken_grilled_100",
+    "name": "Grilled chicken (100 g)",
+    "servingLabel": "100 g",
+    "servingGrams": 100,
+    "kcalPerServing": 165,
+    "proteinG": 31,
+    "carbsG": 0,
+    "fatG": 3.6,
+    "aliases": []
+  },
+  {
+    "id": "chicken_curry",
+    "name": "Chicken curry (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 280,
+    "proteinG": 28,
+    "carbsG": 8,
+    "fatG": 15,
+    "aliases": []
+  },
+  {
+    "id": "fish_grilled",
+    "name": "Grilled fish (100 g)",
+    "servingLabel": "100 g",
+    "servingGrams": 100,
+    "kcalPerServing": 140,
+    "proteinG": 24,
+    "carbsG": 0,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "prawns_100",
+    "name": "Prawns (100 g)",
+    "servingLabel": "100 g",
+    "servingGrams": 100,
+    "kcalPerServing": 99,
+    "proteinG": 24,
+    "carbsG": 0.2,
+    "fatG": 0.3,
+    "aliases": []
+  },
+  {
+    "id": "mutton_curry",
+    "name": "Mutton curry (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 350,
+    "proteinG": 30,
+    "carbsG": 6,
+    "fatG": 22,
+    "aliases": []
+  },
+  {
+    "id": "rajma_bowl",
+    "name": "Rajma (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 240,
+    "proteinG": 14,
+    "carbsG": 36,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "chole_bowl",
+    "name": "Chole (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 260,
+    "proteinG": 12,
+    "carbsG": 38,
+    "fatG": 6,
+    "aliases": [
+      "chickpeas"
+    ]
+  },
+  {
+    "id": "chana_sundal",
+    "name": "Chana sundal",
+    "servingLabel": "1 bowl",
+    "servingGrams": 180,
+    "kcalPerServing": 190,
+    "proteinG": 9,
+    "carbsG": 28,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "soya_chunks_50",
+    "name": "Soya chunks (50 g dry)",
+    "servingLabel": "50 g dry",
+    "servingGrams": 50,
+    "kcalPerServing": 170,
+    "proteinG": 26,
+    "carbsG": 8,
+    "fatG": 2,
+    "aliases": []
+  },
+  {
+    "id": "sprouts_bowl",
+    "name": "Moong sprouts (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 150,
+    "kcalPerServing": 120,
+    "proteinG": 9,
+    "carbsG": 18,
+    "fatG": 1,
+    "aliases": []
+  },
+  {
+    "id": "peanut_butter_2tbsp",
+    "name": "Peanut butter (2 tbsp)",
+    "servingLabel": "2 tbsp",
+    "servingGrams": 32,
+    "kcalPerServing": 188,
+    "proteinG": 8,
+    "carbsG": 6,
+    "fatG": 16,
+    "aliases": []
+  },
+  {
+    "id": "whey_scoop",
+    "name": "Whey protein (1 scoop)",
+    "servingLabel": "1 scoop",
+    "servingGrams": 30,
+    "kcalPerServing": 120,
+    "proteinG": 24,
+    "carbsG": 3,
+    "fatG": 1.5,
+    "aliases": []
+  },
+  {
+    "id": "protein_shake_milk",
+    "name": "Protein shake with milk",
+    "servingLabel": "1 glass",
+    "servingGrams": 350,
+    "kcalPerServing": 220,
+    "proteinG": 28,
+    "carbsG": 18,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "banana_1",
+    "name": "Banana (1 medium)",
+    "servingLabel": "1 banana",
+    "servingGrams": 120,
+    "kcalPerServing": 105,
+    "proteinG": 1.3,
+    "carbsG": 27,
+    "fatG": 0.4,
+    "aliases": [
+      "kela"
+    ]
+  },
+  {
+    "id": "apple_1",
+    "name": "Apple (1 medium)",
+    "servingLabel": "1 apple",
+    "servingGrams": 180,
+    "kcalPerServing": 95,
+    "proteinG": 0.5,
+    "carbsG": 25,
+    "fatG": 0.3,
+    "aliases": []
+  },
+  {
+    "id": "orange_1",
+    "name": "Orange (1)",
+    "servingLabel": "1 orange",
+    "servingGrams": 130,
+    "kcalPerServing": 62,
+    "proteinG": 1.2,
+    "carbsG": 15,
+    "fatG": 0.2,
+    "aliases": []
+  },
+  {
+    "id": "mango_1",
+    "name": "Mango (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 165,
+    "kcalPerServing": 100,
+    "proteinG": 1.4,
+    "carbsG": 25,
+    "fatG": 0.6,
+    "aliases": []
+  },
+  {
+    "id": "papaya_bowl",
+    "name": "Papaya (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 150,
+    "kcalPerServing": 60,
+    "proteinG": 0.7,
+    "carbsG": 15,
+    "fatG": 0.2,
+    "aliases": []
+  },
+  {
+    "id": "watermelon_2cup",
+    "name": "Watermelon (2 cups)",
+    "servingLabel": "2 cups",
+    "servingGrams": 300,
+    "kcalPerServing": 80,
+    "proteinG": 1.6,
+    "carbsG": 20,
+    "fatG": 0.4,
+    "aliases": []
+  },
+  {
+    "id": "berries_bowl",
+    "name": "Mixed berries (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 150,
+    "kcalPerServing": 85,
+    "proteinG": 1.5,
+    "carbsG": 21,
+    "fatG": 0.5,
+    "aliases": []
+  },
+  {
+    "id": "dates_3",
+    "name": "Dates (3)",
+    "servingLabel": "3 dates",
+    "servingGrams": 45,
+    "kcalPerServing": 200,
+    "proteinG": 1.5,
+    "carbsG": 54,
+    "fatG": 0.2,
+    "aliases": [
+      "khajoor"
+    ]
+  },
+  {
+    "id": "almonds_10",
+    "name": "Almonds (10)",
+    "servingLabel": "10 nuts",
+    "servingGrams": 15,
+    "kcalPerServing": 70,
+    "proteinG": 2.6,
+    "carbsG": 2.4,
+    "fatG": 6,
+    "aliases": [
+      "badam"
+    ]
+  },
+  {
+    "id": "walnuts_6",
+    "name": "Walnuts (6 halves)",
+    "servingLabel": "6 halves",
+    "servingGrams": 14,
+    "kcalPerServing": 96,
+    "proteinG": 2.3,
+    "carbsG": 2,
+    "fatG": 9.5,
+    "aliases": []
+  },
+  {
+    "id": "peanuts_handful",
+    "name": "Roasted peanuts (handful)",
+    "servingLabel": "30 g",
+    "servingGrams": 30,
+    "kcalPerServing": 160,
+    "proteinG": 7,
+    "carbsG": 5,
+    "fatG": 14,
+    "aliases": [
+      "mungfali"
+    ]
+  },
+  {
+    "id": "trail_mix",
+    "name": "Trail mix (\u00bc cup)",
+    "servingLabel": "\u00bc cup",
+    "servingGrams": 35,
+    "kcalPerServing": 175,
+    "proteinG": 5,
+    "carbsG": 15,
+    "fatG": 11,
+    "aliases": []
+  },
+  {
+    "id": "protein_bar",
+    "name": "Protein bar (1)",
+    "servingLabel": "1 bar",
+    "servingGrams": 60,
+    "kcalPerServing": 200,
+    "proteinG": 20,
+    "carbsG": 22,
+    "fatG": 7,
+    "aliases": []
+  },
+  {
+    "id": "granola_bowl",
+    "name": "Granola with milk",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 280,
+    "proteinG": 10,
+    "carbsG": 42,
+    "fatG": 9,
+    "aliases": []
+  },
+  {
+    "id": "oats_bowl",
+    "name": "Oats with milk",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 250,
+    "proteinG": 12,
+    "carbsG": 38,
+    "fatG": 6,
+    "aliases": [
+      "oatmeal"
+    ]
+  },
+  {
+    "id": "cornflakes_bowl",
+    "name": "Cornflakes with milk",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 220,
+    "proteinG": 7,
+    "carbsG": 40,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "poha_milk",
+    "name": "Poha with milk",
+    "servingLabel": "1 bowl",
+    "servingGrams": 220,
+    "kcalPerServing": 240,
+    "proteinG": 8,
+    "carbsG": 42,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "sandwich_veg",
+    "name": "Veg sandwich",
+    "servingLabel": "1 sandwich",
+    "servingGrams": 180,
+    "kcalPerServing": 280,
+    "proteinG": 10,
+    "carbsG": 38,
+    "fatG": 9,
+    "aliases": []
+  },
+  {
+    "id": "sandwich_egg",
+    "name": "Egg sandwich",
+    "servingLabel": "1 sandwich",
+    "servingGrams": 200,
+    "kcalPerServing": 320,
+    "proteinG": 18,
+    "carbsG": 32,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "vada_pav",
+    "name": "Vada pav (1)",
+    "servingLabel": "1 piece",
+    "servingGrams": 150,
+    "kcalPerServing": 290,
+    "proteinG": 6,
+    "carbsG": 38,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "samosa_2",
+    "name": "Samosa (2)",
+    "servingLabel": "2 pcs",
+    "servingGrams": 100,
+    "kcalPerServing": 260,
+    "proteinG": 5,
+    "carbsG": 28,
+    "fatG": 14,
+    "aliases": []
+  },
+  {
+    "id": "pakora_plate",
+    "name": "Mixed pakora (small)",
+    "servingLabel": "1 plate",
+    "servingGrams": 150,
+    "kcalPerServing": 320,
+    "proteinG": 8,
+    "carbsG": 32,
+    "fatG": 18,
+    "aliases": []
+  },
+  {
+    "id": "sabzi_mixed",
+    "name": "Mixed sabzi (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 150,
+    "kcalPerServing": 120,
+    "proteinG": 3,
+    "carbsG": 14,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "palak_paneer",
+    "name": "Palak paneer (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 280,
+    "proteinG": 14,
+    "carbsG": 10,
+    "fatG": 20,
+    "aliases": []
+  },
+  {
+    "id": "baingan_bharta",
+    "name": "Baingan bharta",
+    "servingLabel": "1 bowl",
+    "servingGrams": 180,
+    "kcalPerServing": 150,
+    "proteinG": 4,
+    "carbsG": 12,
+    "fatG": 10,
+    "aliases": []
+  },
+  {
+    "id": "aloo_gobi",
+    "name": "Aloo gobi",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 180,
+    "proteinG": 4,
+    "carbsG": 22,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "bhindi_masala",
+    "name": "Bhindi masala",
+    "servingLabel": "1 bowl",
+    "servingGrams": 180,
+    "kcalPerServing": 140,
+    "proteinG": 3,
+    "carbsG": 12,
+    "fatG": 9,
+    "aliases": []
+  },
+  {
+    "id": "cucumber_salad",
+    "name": "Cucumber salad",
+    "servingLabel": "1 bowl",
+    "servingGrams": 150,
+    "kcalPerServing": 45,
+    "proteinG": 2,
+    "carbsG": 8,
+    "fatG": 0.5,
+    "aliases": []
+  },
+  {
+    "id": "kachumber",
+    "name": "Kachumber salad",
+    "servingLabel": "1 bowl",
+    "servingGrams": 180,
+    "kcalPerServing": 55,
+    "proteinG": 2,
+    "carbsG": 10,
+    "fatG": 1,
+    "aliases": []
+  },
+  {
+    "id": "raita",
+    "name": "Cucumber raita",
+    "servingLabel": "1 bowl",
+    "servingGrams": 150,
+    "kcalPerServing": 80,
+    "proteinG": 4,
+    "carbsG": 8,
+    "fatG": 3.5,
+    "aliases": []
+  },
+  {
+    "id": "papad_2",
+    "name": "Papad (2 roasted)",
+    "servingLabel": "2 papad",
+    "servingGrams": 20,
+    "kcalPerServing": 70,
+    "proteinG": 4,
+    "carbsG": 8,
+    "fatG": 2,
+    "aliases": []
+  },
+  {
+    "id": "pickle_spoon",
+    "name": "Pickle (1 tbsp)",
+    "servingLabel": "1 tbsp",
+    "servingGrams": 15,
+    "kcalPerServing": 15,
+    "proteinG": 0.2,
+    "carbsG": 2,
+    "fatG": 1,
+    "aliases": []
+  },
+  {
+    "id": "coconut_chutney",
+    "name": "Coconut chutney",
+    "servingLabel": "2 tbsp",
+    "servingGrams": 30,
+    "kcalPerServing": 90,
+    "proteinG": 1,
+    "carbsG": 4,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "sambar_idli_set",
+    "name": "Idli + sambar set",
+    "servingLabel": "1 set",
+    "servingGrams": 200,
+    "kcalPerServing": 140,
+    "proteinG": 6,
+    "carbsG": 26,
+    "fatG": 1.5,
+    "aliases": []
+  },
+  {
+    "id": "medu_vada_2",
+    "name": "Medu vada (2)",
+    "servingLabel": "2 vada",
+    "servingGrams": 100,
+    "kcalPerServing": 220,
+    "proteinG": 6,
+    "carbsG": 28,
+    "fatG": 9,
+    "aliases": []
+  },
+  {
+    "id": "filter_coffee",
+    "name": "Filter coffee (milk)",
+    "servingLabel": "1 cup",
+    "servingGrams": 200,
+    "kcalPerServing": 120,
+    "proteinG": 4,
+    "carbsG": 14,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "tea_milk",
+    "name": "Chai with milk",
+    "servingLabel": "1 cup",
+    "servingGrams": 200,
+    "kcalPerServing": 105,
+    "proteinG": 3,
+    "carbsG": 14,
+    "fatG": 4,
+    "aliases": [
+      "chai"
+    ]
+  },
+  {
+    "id": "filter_coffee_black",
+    "name": "Black coffee",
+    "servingLabel": "1 cup",
+    "servingGrams": 240,
+    "kcalPerServing": 5,
+    "proteinG": 0.3,
+    "carbsG": 0,
+    "fatG": 0,
+    "aliases": []
+  },
+  {
+    "id": "chicken_breast_150",
+    "name": "Chicken breast (150 g)",
+    "servingLabel": "150 g",
+    "servingGrams": 150,
+    "kcalPerServing": 248,
+    "proteinG": 47,
+    "carbsG": 0,
+    "fatG": 5.5,
+    "aliases": []
+  },
+  {
+    "id": "tuna_can",
+    "name": "Tuna in water (1 can)",
+    "servingLabel": "1 can",
+    "servingGrams": 165,
+    "kcalPerServing": 120,
+    "proteinG": 26,
+    "carbsG": 0,
+    "fatG": 1,
+    "aliases": []
+  },
+  {
+    "id": "greek_yogurt",
+    "name": "Greek yogurt (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 200,
+    "kcalPerServing": 130,
+    "proteinG": 15,
+    "carbsG": 8,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "cottage_cheese",
+    "name": "Low-fat cottage cheese",
+    "servingLabel": "\u00bd cup",
+    "servingGrams": 113,
+    "kcalPerServing": 110,
+    "proteinG": 14,
+    "carbsG": 5,
+    "fatG": 3,
+    "aliases": []
+  },
+  {
+    "id": "sweet_potato",
+    "name": "Sweet potato (1 medium)",
+    "servingLabel": "1 potato",
+    "servingGrams": 130,
+    "kcalPerServing": 112,
+    "proteinG": 2,
+    "carbsG": 26,
+    "fatG": 0.1,
+    "aliases": []
+  },
+  {
+    "id": "white_potato",
+    "name": "Boiled potato (1)",
+    "servingLabel": "1 potato",
+    "servingGrams": 200,
+    "kcalPerServing": 160,
+    "proteinG": 4,
+    "carbsG": 36,
+    "fatG": 0.2,
+    "aliases": []
+  },
+  {
+    "id": "broccoli_cup",
+    "name": "Steamed broccoli (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 155,
+    "kcalPerServing": 55,
+    "proteinG": 4,
+    "carbsG": 11,
+    "fatG": 0.5,
+    "aliases": []
+  },
+  {
+    "id": "avocado_half",
+    "name": "Avocado (\u00bd)",
+    "servingLabel": "\u00bd fruit",
+    "servingGrams": 100,
+    "kcalPerServing": 120,
+    "proteinG": 1.5,
+    "carbsG": 6,
+    "fatG": 11,
+    "aliases": []
+  },
+  {
+    "id": "olive_oil_tbsp",
+    "name": "Olive oil (1 tbsp)",
+    "servingLabel": "1 tbsp",
+    "servingGrams": 14,
+    "kcalPerServing": 119,
+    "proteinG": 0,
+    "carbsG": 0,
+    "fatG": 14,
+    "aliases": []
+  },
+  {
+    "id": "ghee_tbsp",
+    "name": "Ghee (1 tbsp)",
+    "servingLabel": "1 tbsp",
+    "servingGrams": 14,
+    "kcalPerServing": 112,
+    "proteinG": 0,
+    "carbsG": 0,
+    "fatG": 13,
+    "aliases": []
+  },
+  {
+    "id": "butter_tbsp",
+    "name": "Butter (1 tbsp)",
+    "servingLabel": "1 tbsp",
+    "servingGrams": 14,
+    "kcalPerServing": 102,
+    "proteinG": 0.1,
+    "carbsG": 0,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "rice_biryani",
+    "name": "Chicken biryani (1 plate)",
+    "servingLabel": "1 plate",
+    "servingGrams": 350,
+    "kcalPerServing": 520,
+    "proteinG": 28,
+    "carbsG": 58,
+    "fatG": 18,
+    "aliases": []
+  },
+  {
+    "id": "veg_biryani",
+    "name": "Veg biryani (1 plate)",
+    "servingLabel": "1 plate",
+    "servingGrams": 350,
+    "kcalPerServing": 420,
+    "proteinG": 10,
+    "carbsG": 68,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "pulao_bowl",
+    "name": "Veg pulao (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 280,
+    "proteinG": 6,
+    "carbsG": 48,
+    "fatG": 7,
+    "aliases": []
+  },
+  {
+    "id": "khichdi_bowl",
+    "name": "Khichdi (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 230,
+    "proteinG": 8,
+    "carbsG": 38,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "pasta_red",
+    "name": "Pasta marinara (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 320,
+    "proteinG": 12,
+    "carbsG": 52,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "pasta_cheese",
+    "name": "Pasta cheese (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 280,
+    "kcalPerServing": 420,
+    "proteinG": 16,
+    "carbsG": 55,
+    "fatG": 14,
+    "aliases": []
+  },
+  {
+    "id": "pizza_slice",
+    "name": "Cheese pizza (1 slice)",
+    "servingLabel": "1 slice",
+    "servingGrams": 107,
+    "kcalPerServing": 285,
+    "proteinG": 12,
+    "carbsG": 36,
+    "fatG": 10,
+    "aliases": []
+  },
+  {
+    "id": "burger_veg",
+    "name": "Veg burger",
+    "servingLabel": "1 burger",
+    "servingGrams": 220,
+    "kcalPerServing": 380,
+    "proteinG": 12,
+    "carbsG": 48,
+    "fatG": 15,
+    "aliases": [
+      "veg burger bun meal"
+    ]
+  },
+  {
+    "id": "burger_chicken",
+    "name": "Grilled chicken burger",
+    "servingLabel": "1 burger",
+    "servingGrams": 250,
+    "kcalPerServing": 420,
+    "proteinG": 32,
+    "carbsG": 38,
+    "fatG": 14,
+    "aliases": []
+  },
+  {
+    "id": "sushi_roll_6",
+    "name": "Sushi roll (6 pcs)",
+    "servingLabel": "6 pcs",
+    "servingGrams": 180,
+    "kcalPerServing": 280,
+    "proteinG": 9,
+    "carbsG": 48,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "soup_veg",
+    "name": "Veg soup (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 90,
+    "proteinG": 3,
+    "carbsG": 14,
+    "fatG": 2,
+    "aliases": []
+  },
+  {
+    "id": "miso_soup",
+    "name": "Miso soup",
+    "servingLabel": "1 cup",
+    "servingGrams": 240,
+    "kcalPerServing": 40,
+    "proteinG": 3,
+    "carbsG": 5,
+    "fatG": 1,
+    "aliases": []
+  },
+  {
+    "id": "hummus_2tbsp",
+    "name": "Hummus (2 tbsp)",
+    "servingLabel": "2 tbsp",
+    "servingGrams": 30,
+    "kcalPerServing": 70,
+    "proteinG": 2,
+    "carbsG": 6,
+    "fatG": 4.5,
+    "aliases": []
+  },
+  {
+    "id": "hummus_pita",
+    "name": "Hummus + pita",
+    "servingLabel": "1 plate",
+    "servingGrams": 200,
+    "kcalPerServing": 320,
+    "proteinG": 11,
+    "carbsG": 48,
+    "fatG": 10,
+    "aliases": []
+  },
+  {
+    "id": "quinoa_cup",
+    "name": "Quinoa (1 cup cooked)",
+    "servingLabel": "1 cup",
+    "servingGrams": 185,
+    "kcalPerServing": 222,
+    "proteinG": 8,
+    "carbsG": 39,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "chia_pudding",
+    "name": "Chia pudding",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 180,
+    "proteinG": 6,
+    "carbsG": 22,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "smoothie_fruit",
+    "name": "Fruit smoothie",
+    "servingLabel": "1 glass",
+    "servingGrams": 350,
+    "kcalPerServing": 210,
+    "proteinG": 4,
+    "carbsG": 48,
+    "fatG": 2,
+    "aliases": []
+  },
+  {
+    "id": "smoothie_protein",
+    "name": "Protein fruit smoothie",
+    "servingLabel": "1 glass",
+    "servingGrams": 400,
+    "kcalPerServing": 280,
+    "proteinG": 28,
+    "carbsG": 38,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "creatine_water",
+    "name": "Creatine in water",
+    "servingLabel": "1 serving",
+    "servingGrams": 250,
+    "kcalPerServing": 0,
+    "proteinG": 0,
+    "carbsG": 0,
+    "fatG": 0,
+    "aliases": []
+  },
+  {
+    "id": "electrolyte_drink",
+    "name": "Electrolyte drink",
+    "servingLabel": "1 bottle",
+    "servingGrams": 500,
+    "kcalPerServing": 50,
+    "proteinG": 0,
+    "carbsG": 12,
+    "fatG": 0,
+    "aliases": []
+  },
+  {
+    "id": "coconut_water",
+    "name": "Coconut water",
+    "servingLabel": "1 glass",
+    "servingGrams": 240,
+    "kcalPerServing": 46,
+    "proteinG": 0.5,
+    "carbsG": 9,
+    "fatG": 0.5,
+    "aliases": []
+  },
+  {
+    "id": "energy_drink",
+    "name": "Energy drink (sugar-free)",
+    "servingLabel": "1 can",
+    "servingGrams": 250,
+    "kcalPerServing": 10,
+    "proteinG": 0,
+    "carbsG": 2,
+    "fatG": 0,
+    "aliases": []
+  },
+  {
+    "id": "milk_glass",
+    "name": "Milk (1 glass)",
+    "servingLabel": "1 glass",
+    "servingGrams": 250,
+    "kcalPerServing": 150,
+    "proteinG": 8,
+    "carbsG": 12,
+    "fatG": 8,
+    "aliases": [
+      "doodh"
+    ]
+  },
+  {
+    "id": "soy_milk",
+    "name": "Soy milk (1 glass)",
+    "servingLabel": "1 glass",
+    "servingGrams": 240,
+    "kcalPerServing": 105,
+    "proteinG": 7,
+    "carbsG": 10,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "almond_milk",
+    "name": "Almond milk (unsweet)",
+    "servingLabel": "1 glass",
+    "servingGrams": 240,
+    "kcalPerServing": 40,
+    "proteinG": 1,
+    "carbsG": 2,
+    "fatG": 3,
+    "aliases": []
+  },
+  {
+    "id": "cheese_slice",
+    "name": "Cheese slice (2)",
+    "servingLabel": "2 slices",
+    "servingGrams": 40,
+    "kcalPerServing": 140,
+    "proteinG": 8,
+    "carbsG": 2,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "mushroom_100",
+    "name": "Mushrooms (100 g)",
+    "servingLabel": "100 g",
+    "servingGrams": 100,
+    "kcalPerServing": 22,
+    "proteinG": 3,
+    "carbsG": 3,
+    "fatG": 0.3,
+    "aliases": []
+  },
+  {
+    "id": "beans_green",
+    "name": "Green beans (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 125,
+    "kcalPerServing": 44,
+    "proteinG": 2,
+    "carbsG": 10,
+    "fatG": 0.2,
+    "aliases": []
+  },
+  {
+    "id": "lentil_soup",
+    "name": "Lentil soup",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 180,
+    "proteinG": 12,
+    "carbsG": 28,
+    "fatG": 3,
+    "aliases": []
+  },
+  {
+    "id": "caesar_salad",
+    "name": "Chicken Caesar salad",
+    "servingLabel": "1 bowl",
+    "servingGrams": 300,
+    "kcalPerServing": 340,
+    "proteinG": 28,
+    "carbsG": 12,
+    "fatG": 20,
+    "aliases": []
+  },
+  {
+    "id": "greek_salad",
+    "name": "Greek salad",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 180,
+    "proteinG": 6,
+    "carbsG": 12,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "cauliflower_rice",
+    "name": "Cauliflower rice (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 120,
+    "kcalPerServing": 25,
+    "proteinG": 2,
+    "carbsG": 5,
+    "fatG": 0.3,
+    "aliases": []
+  },
+  {
+    "id": "bagel",
+    "name": "Bagel plain",
+    "servingLabel": "1 bagel",
+    "servingGrams": 105,
+    "kcalPerServing": 280,
+    "proteinG": 11,
+    "carbsG": 56,
+    "fatG": 1.5,
+    "aliases": [
+      "bagel bread"
+    ]
+  },
+  {
+    "id": "bagel_cream_cheese",
+    "name": "Bagel + cream cheese",
+    "servingLabel": "1 bagel",
+    "servingGrams": 150,
+    "kcalPerServing": 380,
+    "proteinG": 13,
+    "carbsG": 58,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "toast_butter",
+    "name": "Toast with butter (2)",
+    "servingLabel": "2 slices",
+    "servingGrams": 80,
+    "kcalPerServing": 200,
+    "proteinG": 5,
+    "carbsG": 28,
+    "fatG": 8,
+    "aliases": [
+      "bread toast",
+      "toast bread"
+    ]
+  },
+  {
+    "id": "toast_pb",
+    "name": "Toast + peanut butter",
+    "servingLabel": "2 slices",
+    "servingGrams": 100,
+    "kcalPerServing": 280,
+    "proteinG": 10,
+    "carbsG": 32,
+    "fatG": 12,
+    "aliases": [
+      "bread peanut butter",
+      "peanut butter bread"
+    ]
+  },
+  {
+    "id": "cereal_bar",
+    "name": "Cereal bar",
+    "servingLabel": "1 bar",
+    "servingGrams": 35,
+    "kcalPerServing": 140,
+    "proteinG": 3,
+    "carbsG": 24,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "dark_chocolate",
+    "name": "Dark chocolate (2 squares)",
+    "servingLabel": "2 squares",
+    "servingGrams": 20,
+    "kcalPerServing": 110,
+    "proteinG": 2,
+    "carbsG": 12,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "ice_cream_scoop",
+    "name": "Ice cream (1 scoop)",
+    "servingLabel": "1 scoop",
+    "servingGrams": 66,
+    "kcalPerServing": 140,
+    "proteinG": 2,
+    "carbsG": 17,
+    "fatG": 7,
+    "aliases": []
+  },
+  {
+    "id": "kulfi",
+    "name": "Kulfi (1)",
+    "servingLabel": "1 kulfi",
+    "servingGrams": 80,
+    "kcalPerServing": 180,
+    "proteinG": 4,
+    "carbsG": 22,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "jalebi_4",
+    "name": "Jalebi (4 pcs)",
+    "servingLabel": "4 pcs",
+    "servingGrams": 80,
+    "kcalPerServing": 320,
+    "proteinG": 3,
+    "carbsG": 58,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "gulab_jamun_2",
+    "name": "Gulab jamun (2)",
+    "servingLabel": "2 pcs",
+    "servingGrams": 80,
+    "kcalPerServing": 280,
+    "proteinG": 4,
+    "carbsG": 48,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "ladoo_2",
+    "name": "Besan ladoo (2)",
+    "servingLabel": "2 pcs",
+    "servingGrams": 60,
+    "kcalPerServing": 320,
+    "proteinG": 8,
+    "carbsG": 42,
+    "fatG": 14,
+    "aliases": []
+  },
+  {
+    "id": "kheer_bowl",
+    "name": "Kheer (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 220,
+    "proteinG": 6,
+    "carbsG": 38,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "halwa_carrot",
+    "name": "Gajar halwa (small)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 150,
+    "kcalPerServing": 280,
+    "proteinG": 5,
+    "carbsG": 38,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "butter_chicken",
+    "name": "Butter chicken (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 380,
+    "proteinG": 28,
+    "carbsG": 12,
+    "fatG": 24,
+    "aliases": []
+  },
+  {
+    "id": "paneer_tikka",
+    "name": "Paneer tikka (6 pcs)",
+    "servingLabel": "6 pcs",
+    "servingGrams": 150,
+    "kcalPerServing": 280,
+    "proteinG": 18,
+    "carbsG": 8,
+    "fatG": 20,
+    "aliases": []
+  },
+  {
+    "id": "tandoori_roti",
+    "name": "Tandoori roti (1)",
+    "servingLabel": "1 roti",
+    "servingGrams": 45,
+    "kcalPerServing": 100,
+    "proteinG": 3,
+    "carbsG": 20,
+    "fatG": 1.5,
+    "aliases": []
+  },
+  {
+    "id": "naan_plain",
+    "name": "Plain naan (1)",
+    "servingLabel": "1 naan",
+    "servingGrams": 90,
+    "kcalPerServing": 260,
+    "proteinG": 8,
+    "carbsG": 46,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "butter_naan",
+    "name": "Butter naan (1)",
+    "servingLabel": "1 naan",
+    "servingGrams": 100,
+    "kcalPerServing": 320,
+    "proteinG": 9,
+    "carbsG": 48,
+    "fatG": 10,
+    "aliases": []
+  },
+  {
+    "id": "kulcha",
+    "name": "Aloo kulcha (1)",
+    "servingLabel": "1 kulcha",
+    "servingGrams": 120,
+    "kcalPerServing": 300,
+    "proteinG": 8,
+    "carbsG": 48,
+    "fatG": 9,
+    "aliases": []
+  },
+  {
+    "id": "chole_bhature",
+    "name": "Chole bhature",
+    "servingLabel": "1 plate",
+    "servingGrams": 350,
+    "kcalPerServing": 520,
+    "proteinG": 14,
+    "carbsG": 72,
+    "fatG": 20,
+    "aliases": []
+  },
+  {
+    "id": "pav_bhaji",
+    "name": "Pav bhaji (2 pav)",
+    "servingLabel": "1 plate",
+    "servingGrams": 300,
+    "kcalPerServing": 420,
+    "proteinG": 10,
+    "carbsG": 58,
+    "fatG": 16,
+    "aliases": []
+  },
+  {
+    "id": "dahi_puri_6",
+    "name": "Dahi puri (6)",
+    "servingLabel": "6 pcs",
+    "servingGrams": 180,
+    "kcalPerServing": 320,
+    "proteinG": 8,
+    "carbsG": 52,
+    "fatG": 9,
+    "aliases": []
+  },
+  {
+    "id": "bhel_puri",
+    "name": "Bhel puri (1 plate)",
+    "servingLabel": "1 plate",
+    "servingGrams": 200,
+    "kcalPerServing": 280,
+    "proteinG": 6,
+    "carbsG": 48,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "sev_puri",
+    "name": "Sev puri (6)",
+    "servingLabel": "6 pcs",
+    "servingGrams": 150,
+    "kcalPerServing": 300,
+    "proteinG": 6,
+    "carbsG": 42,
+    "fatG": 12,
+    "aliases": []
+  },
+  {
+    "id": "dhokla_4",
+    "name": "Dhokla (4 pcs)",
+    "servingLabel": "4 pcs",
+    "servingGrams": 120,
+    "kcalPerServing": 160,
+    "proteinG": 6,
+    "carbsG": 28,
+    "fatG": 3,
+    "aliases": []
+  },
+  {
+    "id": "khandvi_plate",
+    "name": "Khandvi (plate)",
+    "servingLabel": "1 plate",
+    "servingGrams": 150,
+    "kcalPerServing": 180,
+    "proteinG": 8,
+    "carbsG": 22,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "thepla_2",
+    "name": "Thepla (2)",
+    "servingLabel": "2 thepla",
+    "servingGrams": 100,
+    "kcalPerServing": 220,
+    "proteinG": 6,
+    "carbsG": 32,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "missi_roti_2",
+    "name": "Missi roti (2)",
+    "servingLabel": "2 roti",
+    "servingGrams": 100,
+    "kcalPerServing": 240,
+    "proteinG": 10,
+    "carbsG": 36,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "sabudana_khichdi",
+    "name": "Sabudana khichdi",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 320,
+    "proteinG": 4,
+    "carbsG": 58,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "pongal_bowl",
+    "name": "Ven pongal",
+    "servingLabel": "1 bowl",
+    "servingGrams": 220,
+    "kcalPerServing": 240,
+    "proteinG": 7,
+    "carbsG": 38,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "appam_2",
+    "name": "Appam with stew",
+    "servingLabel": "2 appam",
+    "servingGrams": 200,
+    "kcalPerServing": 280,
+    "proteinG": 8,
+    "carbsG": 48,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "puttu_kadala",
+    "name": "Puttu + kadala",
+    "servingLabel": "1 plate",
+    "servingGrams": 280,
+    "kcalPerServing": 320,
+    "proteinG": 12,
+    "carbsG": 58,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "fish_fry",
+    "name": "Fish fry (2 pcs)",
+    "servingLabel": "2 pcs",
+    "servingGrams": 150,
+    "kcalPerServing": 280,
+    "proteinG": 24,
+    "carbsG": 8,
+    "fatG": 16,
+    "aliases": []
+  },
+  {
+    "id": "egg_bhurji",
+    "name": "Egg bhurji (2 eggs)",
+    "servingLabel": "1 plate",
+    "servingGrams": 180,
+    "kcalPerServing": 240,
+    "proteinG": 16,
+    "carbsG": 6,
+    "fatG": 18,
+    "aliases": []
+  },
+  {
+    "id": "besan_chilla",
+    "name": "Besan chilla",
+    "servingLabel": "1 chilla",
+    "servingGrams": 150,
+    "kcalPerServing": 220,
+    "proteinG": 10,
+    "carbsG": 24,
+    "fatG": 9,
+    "aliases": []
+  },
+  {
+    "id": "moong_chilla",
+    "name": "Moong dal chilla",
+    "servingLabel": "1 chilla",
+    "servingGrams": 150,
+    "kcalPerServing": 180,
+    "proteinG": 12,
+    "carbsG": 22,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "water",
+    "name": "Water",
+    "servingLabel": "1 glass",
+    "servingGrams": 250,
+    "kcalPerServing": 0,
+    "proteinG": 0,
+    "carbsG": 0,
+    "fatG": 0,
+    "aliases": []
+  },
+  {
+    "id": "lemon_water",
+    "name": "Nimbu pani (no sugar)",
+    "servingLabel": "1 glass",
+    "servingGrams": 250,
+    "kcalPerServing": 10,
+    "proteinG": 0.2,
+    "carbsG": 2,
+    "fatG": 0,
+    "aliases": []
+  },
+  {
+    "id": "sugarcane_juice",
+    "name": "Sugarcane juice",
+    "servingLabel": "1 glass",
+    "servingGrams": 300,
+    "kcalPerServing": 180,
+    "proteinG": 0,
+    "carbsG": 46,
+    "fatG": 0,
+    "aliases": []
+  },
+  {
+    "id": "mango_lassi",
+    "name": "Mango lassi",
+    "servingLabel": "1 glass",
+    "servingGrams": 300,
+    "kcalPerServing": 220,
+    "proteinG": 5,
+    "carbsG": 40,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "protein_lassi",
+    "name": "High-protein lassi",
+    "servingLabel": "1 glass",
+    "servingGrams": 300,
+    "kcalPerServing": 180,
+    "proteinG": 18,
+    "carbsG": 14,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "vegetable_juice",
+    "name": "Mixed veg juice",
+    "servingLabel": "1 glass",
+    "servingGrams": 250,
+    "kcalPerServing": 60,
+    "proteinG": 2,
+    "carbsG": 12,
+    "fatG": 0.5,
+    "aliases": []
+  },
+  {
+    "id": "tomato_soup_bowl",
+    "name": "Tomato soup",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 85,
+    "proteinG": 2,
+    "carbsG": 16,
+    "fatG": 2,
+    "aliases": []
+  },
+  {
+    "id": "minestrone",
+    "name": "Minestrone soup",
+    "servingLabel": "1 bowl",
+    "servingGrams": 280,
+    "kcalPerServing": 120,
+    "proteinG": 6,
+    "carbsG": 18,
+    "fatG": 3,
+    "aliases": []
+  },
+  {
+    "id": "instant_noodles",
+    "name": "Instant noodles (1 pack)",
+    "servingLabel": "1 pack",
+    "servingGrams": 85,
+    "kcalPerServing": 380,
+    "proteinG": 9,
+    "carbsG": 54,
+    "fatG": 14,
+    "aliases": []
+  },
+  {
+    "id": "maggi_half",
+    "name": "Maggi (half pack)",
+    "servingLabel": "\u00bd pack",
+    "servingGrams": 43,
+    "kcalPerServing": 190,
+    "proteinG": 4.5,
+    "carbsG": 27,
+    "fatG": 7,
+    "aliases": []
+  },
+  {
+    "id": "poha_nuts",
+    "name": "Poha with peanuts",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 260,
+    "proteinG": 8,
+    "carbsG": 40,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "fruit_bowl",
+    "name": "Mixed fruit bowl",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 120,
+    "proteinG": 2,
+    "carbsG": 30,
+    "fatG": 0.5,
+    "aliases": []
+  },
+  {
+    "id": "melon_seeds",
+    "name": "Melon seeds (1 tbsp)",
+    "servingLabel": "1 tbsp",
+    "servingGrams": 10,
+    "kcalPerServing": 50,
+    "proteinG": 2,
+    "carbsG": 2,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "sunflower_seeds",
+    "name": "Sunflower seeds (2 tbsp)",
+    "servingLabel": "2 tbsp",
+    "servingGrams": 20,
+    "kcalPerServing": 100,
+    "proteinG": 3,
+    "carbsG": 4,
+    "fatG": 9,
+    "aliases": []
+  },
+  {
+    "id": "flax_seeds",
+    "name": "Flax seeds (1 tbsp)",
+    "servingLabel": "1 tbsp",
+    "servingGrams": 10,
+    "kcalPerServing": 55,
+    "proteinG": 2,
+    "carbsG": 3,
+    "fatG": 4.5,
+    "aliases": []
+  },
+  {
+    "id": "pumpkin_seeds",
+    "name": "Pumpkin seeds (2 tbsp)",
+    "servingLabel": "2 tbsp",
+    "servingGrams": 20,
+    "kcalPerServing": 90,
+    "proteinG": 5,
+    "carbsG": 3,
+    "fatG": 7,
+    "aliases": []
+  },
+  {
+    "id": "chia_tbsp",
+    "name": "Chia seeds (1 tbsp)",
+    "servingLabel": "1 tbsp",
+    "servingGrams": 12,
+    "kcalPerServing": 58,
+    "proteinG": 2,
+    "carbsG": 5,
+    "fatG": 3.5,
+    "aliases": []
+  },
+  {
+    "id": "honey_tbsp",
+    "name": "Honey (1 tbsp)",
+    "servingLabel": "1 tbsp",
+    "servingGrams": 21,
+    "kcalPerServing": 64,
+    "proteinG": 0.1,
+    "carbsG": 17,
+    "fatG": 0,
+    "aliases": []
+  },
+  {
+    "id": "jam_toast",
+    "name": "Jam toast (2)",
+    "servingLabel": "2 slices",
+    "servingGrams": 80,
+    "kcalPerServing": 220,
+    "proteinG": 4,
+    "carbsG": 42,
+    "fatG": 4,
+    "aliases": [
+      "jam bread",
+      "bread jam"
+    ]
+  },
+  {
+    "id": "corn_cob",
+    "name": "Boiled corn (1 cob)",
+    "servingLabel": "1 cob",
+    "servingGrams": 100,
+    "kcalPerServing": 90,
+    "proteinG": 3,
+    "carbsG": 19,
+    "fatG": 1.5,
+    "aliases": []
+  },
+  {
+    "id": "peas_cup",
+    "name": "Green peas (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 160,
+    "kcalPerServing": 134,
+    "proteinG": 9,
+    "carbsG": 25,
+    "fatG": 0.6,
+    "aliases": []
+  },
+  {
+    "id": "spinach_cup",
+    "name": "Spinach cooked (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 180,
+    "kcalPerServing": 65,
+    "proteinG": 5,
+    "carbsG": 10,
+    "fatG": 1,
+    "aliases": []
+  },
+  {
+    "id": "beetroot",
+    "name": "Beetroot (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 170,
+    "kcalPerServing": 75,
+    "proteinG": 3,
+    "carbsG": 17,
+    "fatG": 0.2,
+    "aliases": []
+  },
+  {
+    "id": "carrot_raw",
+    "name": "Carrot sticks (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 128,
+    "kcalPerServing": 52,
+    "proteinG": 1,
+    "carbsG": 12,
+    "fatG": 0.3,
+    "aliases": []
+  },
+  {
+    "id": "cabbage_sabzi",
+    "name": "Cabbage sabzi",
+    "servingLabel": "1 bowl",
+    "servingGrams": 150,
+    "kcalPerServing": 90,
+    "proteinG": 3,
+    "carbsG": 12,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "matar_paneer",
+    "name": "Matar paneer",
+    "servingLabel": "1 bowl",
+    "servingGrams": 200,
+    "kcalPerServing": 300,
+    "proteinG": 16,
+    "carbsG": 14,
+    "fatG": 20,
+    "aliases": []
+  },
+  {
+    "id": "methi_paratha",
+    "name": "Methi paratha (1)",
+    "servingLabel": "1 paratha",
+    "servingGrams": 100,
+    "kcalPerServing": 270,
+    "proteinG": 6,
+    "carbsG": 36,
+    "fatG": 11,
+    "aliases": []
+  },
+  {
+    "id": "stuffed_paratha",
+    "name": "Stuffed paratha (1)",
+    "servingLabel": "1 paratha",
+    "servingGrams": 120,
+    "kcalPerServing": 340,
+    "proteinG": 8,
+    "carbsG": 42,
+    "fatG": 14,
+    "aliases": []
+  },
+  {
+    "id": "jeera_rice",
+    "name": "Jeera rice (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 180,
+    "kcalPerServing": 220,
+    "proteinG": 4,
+    "carbsG": 42,
+    "fatG": 4,
+    "aliases": []
+  },
+  {
+    "id": "lemon_rice",
+    "name": "Lemon rice (1 cup)",
+    "servingLabel": "1 cup",
+    "servingGrams": 180,
+    "kcalPerServing": 240,
+    "proteinG": 4,
+    "carbsG": 44,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "curd_rice_bowl",
+    "name": "Curd rice (1 bowl)",
+    "servingLabel": "1 bowl",
+    "servingGrams": 250,
+    "kcalPerServing": 210,
+    "proteinG": 8,
+    "carbsG": 32,
+    "fatG": 5,
+    "aliases": []
+  },
+  {
+    "id": "bisibele_bath",
+    "name": "Bisi bele bath",
+    "servingLabel": "1 bowl",
+    "servingGrams": 280,
+    "kcalPerServing": 320,
+    "proteinG": 10,
+    "carbsG": 52,
+    "fatG": 8,
+    "aliases": []
+  },
+  {
+    "id": "lemon_rice_tamarind",
+    "name": "Tamarind rice",
+    "servingLabel": "1 cup",
+    "servingGrams": 200,
+    "kcalPerServing": 260,
+    "proteinG": 4,
+    "carbsG": 48,
+    "fatG": 6,
+    "aliases": []
+  },
+  {
+    "id": "white_bread_2",
+    "name": "White bread (2 slices)",
+    "servingLabel": "2 slices",
+    "servingGrams": 60,
+    "kcalPerServing": 160,
+    "proteinG": 5,
+    "carbsG": 30,
+    "fatG": 2,
+    "aliases": [
+      "bread",
+      "white bread",
+      "sandwich bread",
+      "milk bread",
+      "plain bread"
+    ]
+  },
+  {
+    "id": "whole_wheat_bread_2",
+    "name": "Whole wheat bread (2 slices)",
+    "servingLabel": "2 slices",
+    "servingGrams": 60,
+    "kcalPerServing": 140,
+    "proteinG": 6,
+    "carbsG": 26,
+    "fatG": 2,
+    "aliases": [
+      "whole wheat bread",
+      "wheat bread",
+      "atta bread",
+      "brown bread",
+      "bread"
+    ]
+  },
+  {
+    "id": "brown_bread_2",
+    "name": "Brown bread (2 slices)",
+    "servingLabel": "2 slices",
+    "servingGrams": 60,
+    "kcalPerServing": 145,
+    "proteinG": 6,
+    "carbsG": 27,
+    "fatG": 2.5,
+    "aliases": [
+      "brown bread",
+      "bread"
+    ]
+  },
+  {
+    "id": "multigrain_bread_2",
+    "name": "Multigrain bread (2 slices)",
+    "servingLabel": "2 slices",
+    "servingGrams": 65,
+    "kcalPerServing": 150,
+    "proteinG": 7,
+    "carbsG": 25,
+    "fatG": 3,
+    "aliases": [
+      "multigrain bread",
+      "multigrain",
+      "bread"
+    ]
+  },
+  {
+    "id": "bread_slice_1",
+    "name": "Bread (1 slice)",
+    "servingLabel": "1 slice",
+    "servingGrams": 30,
+    "kcalPerServing": 80,
+    "proteinG": 2.5,
+    "carbsG": 15,
+    "fatG": 1,
+    "aliases": [
+      "bread",
+      "one slice bread",
+      "slice bread"
+    ]
+  },
+  {
+    "id": "pav_2",
+    "name": "Pav / bread rolls (2)",
+    "servingLabel": "2 pav",
+    "servingGrams": 80,
+    "kcalPerServing": 190,
+    "proteinG": 5,
+    "carbsG": 36,
+    "fatG": 2,
+    "aliases": [
+      "pav",
+      "bread roll",
+      "ladi pav",
+      "pao"
+    ]
+  },
+  {
+    "id": "bun_burger",
+    "name": "Burger bun (1)",
+    "servingLabel": "1 bun",
+    "servingGrams": 55,
+    "kcalPerServing": 140,
+    "proteinG": 4,
+    "carbsG": 26,
+    "fatG": 2.5,
+    "aliases": [
+      "bun",
+      "burger bun",
+      "sesame bun"
+    ]
+  },
+  {
+    "id": "french_toast_2",
+    "name": "French toast (2 slices)",
+    "servingLabel": "2 slices",
+    "servingGrams": 120,
+    "kcalPerServing": 280,
+    "proteinG": 10,
+    "carbsG": 36,
+    "fatG": 10,
+    "aliases": [
+      "egg bread",
+      "french toast",
+      "bread egg"
+    ]
+  },
+  {
+    "id": "rusk_4",
+    "name": "Rusks (4 pcs)",
+    "servingLabel": "4 pcs",
+    "servingGrams": 40,
+    "kcalPerServing": 160,
+    "proteinG": 3,
+    "carbsG": 28,
+    "fatG": 4,
+    "aliases": [
+      "rusk",
+      "toast rusk",
+      "bread rusk"
+    ]
+  },
+  {
+    "id": "khari_biscuit_4",
+    "name": "Khari / salted biscuits (4)",
+    "servingLabel": "4 pcs",
+    "servingGrams": 32,
+    "kcalPerServing": 180,
+    "proteinG": 3,
+    "carbsG": 22,
+    "fatG": 9,
+    "aliases": [
+      "khari",
+      "khari biscuit",
+      "salt biscuit",
+      "tea biscuit"
+    ]
+  },
+  {
+    "id": "croissant_1",
+    "name": "Croissant (1)",
+    "servingLabel": "1 croissant",
+    "servingGrams": 70,
+    "kcalPerServing": 270,
+    "proteinG": 5,
+    "carbsG": 31,
+    "fatG": 14,
+    "aliases": [
+      "croissant"
+    ]
+  },
+  {
+    "id": "sourdough_bread_2",
+    "name": "Sourdough bread (2 slices)",
+    "servingLabel": "2 slices",
+    "servingGrams": 64,
+    "kcalPerServing": 155,
+    "proteinG": 6,
+    "carbsG": 29,
+    "fatG": 1.5,
+    "aliases": [
+      "sourdough",
+      "sourdough bread",
+      "bread"
+    ]
+  },
+  {
+    "id": "honey_bread_toast",
+    "name": "Honey on toast (2 slices)",
+    "servingLabel": "2 slices",
+    "servingGrams": 90,
+    "kcalPerServing": 220,
+    "proteinG": 5,
+    "carbsG": 42,
+    "fatG": 4,
+    "aliases": [
+      "honey bread",
+      "honey toast",
+      "bread honey"
+    ]
+  },
+  {
+    "id": "plain_butter_1tbsp",
+    "name": "Butter (1 tbsp)",
+    "servingLabel": "1 tbsp",
+    "servingGrams": 14,
+    "kcalPerServing": 102,
+    "proteinG": 0.1,
+    "carbsG": 0,
+    "fatG": 12,
+    "aliases": [
+      "butter",
+      "salted butter"
+    ]
+  }
+]

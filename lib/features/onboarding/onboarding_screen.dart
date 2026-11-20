@@ -35,6 +35,51 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final Set<Allergy> _allergies = {};
   bool _saving = false;
 
+  static const _signupGenders = [
+    Gender.male,
+    Gender.female,
+    Gender.other,
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadExistingProfile();
+  }
+
+  Future<void> _loadExistingProfile() async {
+    final existing = await ref.read(profileRepositoryProvider).getProfile();
+    if (!mounted) return;
+    if (existing != null) {
+      if (existing.name.isNotEmpty) _nameCtrl.text = existing.name;
+      if (existing.journeyName.isNotEmpty) {
+        _journeyCtrl.text = existing.journeyName;
+      }
+      _weight = existing.weightKg;
+      _height = existing.heightCm;
+      _age = existing.age;
+      if (existing.gender != Gender.preferNotToSay) {
+        _gender = existing.gender;
+      }
+      _activity = existing.activityLevel;
+      _goal = existing.primaryGoal;
+      _experience = existing.experience;
+      _equipment
+        ..clear()
+        ..addAll(existing.equipment);
+      _diet = existing.dietType;
+      _allergies
+        ..clear()
+        ..addAll(existing.allergies);
+    }
+    if (mounted) setState(() {});
+  }
+
+  bool get _genderChosenForSignup =>
+      _gender == Gender.male ||
+      _gender == Gender.female ||
+      _gender == Gender.other;
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -47,6 +92,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     if (_step == 0 && _nameCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter your name')),
+      );
+      return;
+    }
+    if (_step == 0 && !_genderChosenForSignup) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Select your gender to tailor exercises')),
       );
       return;
     }
@@ -216,6 +267,26 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             hintText: 'e.g. Iron Monsoon',
           ),
         ),
+        const SizedBox(height: AppSpacing.lg),
+        Text('Gender', style: Theme.of(context).textTheme.titleSmall),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          'Workouts and exercise picks match this choice.',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Wrap(
+          spacing: AppSpacing.sm,
+          children: _signupGenders.map((g) {
+            return ChoiceChip(
+              label: Text(g.label),
+              selected: _gender == g,
+              onSelected: (_) => setState(() => _gender = g),
+            );
+          }).toList(),
+        ),
       ],
     );
   }
@@ -252,19 +323,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           divisions: 66,
           value: _age.toDouble(),
           onChanged: (v) => setState(() => _age = v.round()),
-        ),
-        const SizedBox(height: AppSpacing.md),
-        Text('Gender', style: Theme.of(context).textTheme.titleSmall),
-        const SizedBox(height: AppSpacing.sm),
-        Wrap(
-          spacing: AppSpacing.sm,
-          children: Gender.values.map((g) {
-            return ChoiceChip(
-              label: Text(g.label),
-              selected: _gender == g,
-              onSelected: (_) => setState(() => _gender = g),
-            );
-          }).toList(),
         ),
       ],
     );

@@ -133,6 +133,11 @@ class SeedRepository {
       'variants': row['variants'] ?? const {},
       'demoImages': row['demo_images'] ?? const [],
       'demoSource': row['demo_source'],
+      'audiences': row['audiences'] ?? const ['all'],
+      'quickSteps': row['quick_steps'] ?? const [],
+      'catalogTags': row['catalog_tags'] ?? const [],
+      'demoFrames': row['demo_frames'] ?? const [],
+      'demoVideoUrl': row['demo_video_url'],
     };
   }
 }

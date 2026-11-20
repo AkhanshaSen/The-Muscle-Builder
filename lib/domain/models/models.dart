@@ -34,6 +34,11 @@ class Exercise {
     this.demoUrl,
     this.demoImages = const [],
     this.isCompound = false,
+    this.audiences = const [ExerciseAudience.all],
+    this.quickSteps = const [],
+    this.catalogTags = const [],
+    this.demoFrames = const [],
+    this.demoVideoUrl,
   });
 
   final String id;
@@ -48,6 +53,11 @@ class Exercise {
   final String? demoUrl;
   final List<String> demoImages;
   final bool isCompound;
+  final List<ExerciseAudience> audiences;
+  final List<String> quickSteps;
+  final List<String> catalogTags;
+  final List<String> demoFrames;
+  final String? demoVideoUrl;
 
   factory Exercise.fromJson(Map<String, dynamic> json) {
     final variantsJson = json['variants'] as Map<String, dynamic>;
@@ -73,6 +83,14 @@ class Exercise {
       demoUrl: json['demoUrl'] as String? ?? (images.isNotEmpty ? images.first : null),
       demoImages: images,
       isCompound: json['isCompound'] as bool? ?? false,
+      audiences: (json['audiences'] as List?)
+              ?.map((e) => ExerciseAudience.values.byName(e as String))
+              .toList() ??
+          const [ExerciseAudience.all],
+      quickSteps: (json['quickSteps'] as List?)?.cast<String>() ?? const [],
+      catalogTags: (json['catalogTags'] as List?)?.cast<String>() ?? const [],
+      demoFrames: (json['demoFrames'] as List?)?.cast<String>() ?? const [],
+      demoVideoUrl: json['demoVideoUrl'] as String?,
     );
   }
 }
@@ -607,6 +625,50 @@ class WorkoutSession {
   }
 }
 
+/// Saved template: ordered exercise ids the user picked in the builder.
+class CustomRoutine {
+  const CustomRoutine({
+    required this.id,
+    required this.name,
+    required this.exerciseIds,
+    required this.updatedAt,
+  });
+
+  final String id;
+  final String name;
+  final List<String> exerciseIds;
+  final DateTime updatedAt;
+
+  CustomRoutine copyWith({
+    String? name,
+    List<String>? exerciseIds,
+    DateTime? updatedAt,
+  }) {
+    return CustomRoutine(
+      id: id,
+      name: name ?? this.name,
+      exerciseIds: exerciseIds ?? this.exerciseIds,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'exerciseIds': exerciseIds,
+        'updatedAt': updatedAt.toIso8601String(),
+      };
+
+  factory CustomRoutine.fromJson(Map<String, dynamic> json) {
+    return CustomRoutine(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      exerciseIds: (json['exerciseIds'] as List).cast<String>(),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+    );
+  }
+}
+
 /// User-defined Mon–Sun template (DateTime.monday = 1 … sunday = 7).
 class WeeklyRoutine {
   const WeeklyRoutine({
@@ -804,4 +866,178 @@ class OverloadSuggestion {
   final int suggestedReps;
   final String message;
   final bool bumpWeight;
+}
+
+enum MealFoodSource {
+  userInputted,
+  systemImported;
+
+  String get stored => switch (this) {
+        MealFoodSource.userInputted => 'user_inputted',
+        MealFoodSource.systemImported => 'system_imported',
+      };
+
+  String get label => switch (this) {
+        MealFoodSource.userInputted => 'Your food',
+        MealFoodSource.systemImported => 'Catalog',
+      };
+
+  static MealFoodSource fromStored(String? raw, {String? foodId}) {
+    if (raw == 'user_inputted') return MealFoodSource.userInputted;
+    if (raw == 'system_imported') return MealFoodSource.systemImported;
+    return foodId != null && foodId.isNotEmpty
+        ? MealFoodSource.systemImported
+        : MealFoodSource.userInputted;
+  }
+}
+
+class CustomFoodItem {
+  const CustomFoodItem({
+    required this.id,
+    required this.label,
+    required this.source,
+    this.systemFoodId,
+    this.servingLabel = 'serving',
+    this.kcal = 0,
+    this.proteinG = 0,
+    this.carbsG = 0,
+    this.fatG = 0,
+    required this.createdAt,
+  });
+
+  final String id;
+  final String label;
+  final MealFoodSource source;
+  final String? systemFoodId;
+  final String servingLabel;
+  final double kcal;
+  final double proteinG;
+  final double carbsG;
+  final double fatG;
+  final DateTime createdAt;
+
+  MealLogLineItem toLineItem({double quantity = 1}) {
+    final q = quantity <= 0 ? 1.0 : quantity;
+    return MealLogLineItem(
+      foodId: systemFoodId,
+      label: label,
+      quantity: q,
+      unit: servingLabel,
+      kcal: kcal * q,
+      proteinG: proteinG * q,
+      carbsG: carbsG * q,
+      fatG: fatG * q,
+      source: source,
+    );
+  }
+}
+
+enum MealLogTiming {
+  preWorkout,
+  postWorkout,
+  general;
+
+  String get label => switch (this) {
+        MealLogTiming.preWorkout => 'Pre-workout',
+        MealLogTiming.postWorkout => 'Post-workout',
+        MealLogTiming.general => 'Any time',
+      };
+
+  static MealLogTiming fromStored(String raw) {
+    return MealLogTiming.values.firstWhere(
+      (e) => e.name == raw,
+      orElse: () => MealLogTiming.general,
+    );
+  }
+}
+
+class MealLogLineItem {
+  const MealLogLineItem({
+    this.foodId,
+    required this.label,
+    required this.quantity,
+    required this.unit,
+    required this.kcal,
+    required this.proteinG,
+    required this.carbsG,
+    required this.fatG,
+    this.source,
+  });
+
+  final String? foodId;
+  final String label;
+  final double quantity;
+  final String unit;
+  final double kcal;
+  final double proteinG;
+  final double carbsG;
+  final double fatG;
+  final MealFoodSource? source;
+
+  MealFoodSource get resolvedSource => source ??
+      MealFoodSource.fromStored(null, foodId: foodId);
+
+  Map<String, dynamic> toJson() => {
+        if (foodId != null) 'foodId': foodId,
+        'label': label,
+        'quantity': quantity,
+        'unit': unit,
+        'kcal': kcal,
+        'proteinG': proteinG,
+        'carbsG': carbsG,
+        'fatG': fatG,
+        'source': resolvedSource.stored,
+      };
+
+  factory MealLogLineItem.fromJson(Map<String, dynamic> json) {
+    final foodId = json['foodId'] as String?;
+    return MealLogLineItem(
+      foodId: foodId,
+      label: json['label'] as String,
+      quantity: (json['quantity'] as num).toDouble(),
+      unit: json['unit'] as String? ?? 'serving',
+      kcal: (json['kcal'] as num).toDouble(),
+      proteinG: (json['proteinG'] as num).toDouble(),
+      carbsG: (json['carbsG'] as num).toDouble(),
+      fatG: (json['fatG'] as num).toDouble(),
+      source: MealFoodSource.fromStored(json['source'] as String?, foodId: foodId),
+    );
+  }
+}
+
+class MealLogEntry {
+  const MealLogEntry({
+    required this.id,
+    required this.eatenAt,
+    required this.timing,
+    required this.items,
+    this.notes = '',
+  });
+
+  final String id;
+  final DateTime eatenAt;
+  final MealLogTiming timing;
+  final List<MealLogLineItem> items;
+  final String notes;
+
+  double get totalKcal => items.fold(0, (s, i) => s + i.kcal);
+  double get totalProtein => items.fold(0, (s, i) => s + i.proteinG);
+  double get totalCarbs => items.fold(0, (s, i) => s + i.carbsG);
+  double get totalFat => items.fold(0, (s, i) => s + i.fatG);
+}
+
+enum MealVerdictScore { good, okay, reconsider }
+
+class MealLogVerdict {
+  const MealLogVerdict({
+    required this.score,
+    required this.summary,
+    required this.bullets,
+    required this.suggestions,
+  });
+
+  final MealVerdictScore score;
+  final String summary;
+  final List<String> bullets;
+  final List<String> suggestions;
 }

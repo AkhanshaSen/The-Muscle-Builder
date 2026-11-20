@@ -88,6 +88,13 @@ class ProfileRepository {
     return saveProfile(profile);
   }
 
+  /// Keeps local workouts/routines; user re-runs onboarding to change profile.
+  Future<void> signOutLocal() async {
+    final profile = await getProfile();
+    if (profile == null) return;
+    await saveProfile(profile.copyWith(onboardingComplete: false));
+  }
+
   UserProfile _mapProfile(UserProfileRow row) {
     return UserProfile(
       id: row.id,

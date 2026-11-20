@@ -11,6 +11,7 @@ import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/engines/muscle_recovery.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
+import '../../domain/models/workout_category.dart';
 import '../nutrition/meal_icon_tile.dart';
 import 'body_map_selector.dart';
 
@@ -47,6 +48,36 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   List<MealSuggestion> _preMealOptions = const [];
   bool _preMealsLoading = false;
   bool _generating = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _applyCategoryDraft());
+  }
+
+  void _applyCategoryDraft() {
+    final draft = ref.read(workoutCategoryDraftProvider);
+    if (draft == null) return;
+    final cat = WorkoutCategory.byId(draft.categoryId);
+    ref.read(workoutCategoryDraftProvider.notifier).state = null;
+    if (cat == null) return;
+    setState(() {
+      _muscles
+        ..clear()
+        ..addAll(cat.prefillMuscles);
+      if (_muscles.isEmpty) {
+        _muscles.addAll([MuscleGroup.chest, MuscleGroup.back, MuscleGroup.legs]);
+      }
+      if (cat.prefillEquipment.isNotEmpty) {
+        _equipmentToday = cat.prefillEquipment.toSet();
+      }
+    });
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${cat.title} loaded — adjust muscles if needed.')),
+      );
+    }
+  }
 
   int get _effectiveExerciseCount =>
       (_exerciseCount ?? GymSessionSizing.exerciseCountFor(_gymMinutes))
@@ -120,7 +151,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
     try {
       final profile = await ref.read(profileRepositoryProvider).getProfile();
       if (profile == null) return;
-      final bank = await ref.read(seedRepositoryProvider).loadExercises();
+      final bank = await ref.read(exercisesForProfileProvider.future);
       final engine = ref.read(routineEngineProvider);
       final routine = await ref.read(routineRepositoryProvider).getOrCreateWeeklyRoutine();
       final equipment = _equipmentToday?.toList() ?? profile.equipment;

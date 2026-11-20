@@ -34,8 +34,28 @@ UPDATE meals SET is_deleted = true WHERE id = 'some_id';
 supabase/migrations/001_reference_tables.sql
 # Soft delete + read-only client policies:
 supabase/migrations/002_is_deleted_and_security.sql
+# Exercise catalog columns (audiences, quick_steps, demo_frames, etc.):
+supabase/migrations/003_exercise_extensions.sql
 ```
 
-Client (publishable key) is **SELECT-only**. Writes use the dashboard / CLI.
+## Refreshing exercises after JSON changes
+
+The in-app catalog reads Supabase when `SUPABASE_ANON_KEY` is set. Bundled `assets/data/exercises.json` is the source of truth for generation.
+
+1. Run `003_exercise_extensions.sql` in the SQL editor if not applied yet.
+2. Generate upsert SQL:
+   ```bash
+   python3 scripts/generate_exercises_upsert_sql.py > supabase/seed/exercises_upsert.sql
+   ```
+3. Paste and run `exercises_upsert.sql` in the dashboard (service role / SQL editor), **or** from the project root:
+   ```bash
+   # .env.local: SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY (see .env.example)
+   python3 scripts/upsert_reference_data.py
+   # exercises only:
+   python3 scripts/upsert_reference_data.py --tables exercises
+   ```
+4. Restart the app with `--dart-define=SUPABASE_ANON_KEY=...`.
+
+Client (publishable key) is **SELECT-only**. Writes use the dashboard / CLI or `scripts/upsert_reference_data.py` with the **service_role** key in `.env.local`.
 
 See also [docs/SECURITY.md](../docs/SECURITY.md).

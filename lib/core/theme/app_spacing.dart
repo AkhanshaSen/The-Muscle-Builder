@@ -9,6 +9,15 @@ abstract final class AppSpacing {
   static const xl = 20.0;
 
   static const page = EdgeInsets.fromLTRB(12, 8, 12, 16);
+  static const pageCraft = EdgeInsets.fromLTRB(16, 12, 16, 20);
   static const card = EdgeInsets.all(12);
   static const cardTight = EdgeInsets.fromLTRB(12, 10, 12, 10);
+  static const rail = 6.0;
+  static const s1 = 4.0;
+  static const s2 = 6.0;
+  static const s3 = 10.0;
+  static const s4 = 16.0;
+  static const s5 = 24.0;
+  static const s6 = 40.0;
+  static const s7 = 64.0;
 }

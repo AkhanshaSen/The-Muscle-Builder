@@ -14,10 +14,14 @@ import '../features/progress/day_detail_screen.dart';
 import '../features/progress/progress_screen.dart';
 import '../features/progress/guides_screen.dart';
 import '../features/splash/splash_screen.dart';
+import '../features/workout/custom_routine_builder_screen.dart';
+import '../features/workout/workout_categories_screen.dart';
+import '../features/workout/workout_category_detail_screen.dart';
 import '../features/workout/session_screen.dart';
 import '../features/workout/workout_plan_screen.dart';
 import '../features/fox_chat/fox_chat_screen.dart';
 import '../features/workout/workout_tab_screen.dart';
+import '../core/theme/design_tokens.dart';
 import '../core/widgets/idle_mascot_host.dart';
 import '../core/logging/app_log.dart';
 import '../core/logging/app_nav_observer.dart';
@@ -115,6 +119,38 @@ List<RouteBase> get _appRoutes => [
         parentNavigatorKey: appNavigatorKey,
         path: '/checkin',
         builder: (context, state) => const CheckInScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: appNavigatorKey,
+        path: '/workout/categories',
+        builder: (context, state) => const WorkoutCategoriesScreen(),
+      ),
+      GoRoute(
+        parentNavigatorKey: appNavigatorKey,
+        path: '/workout/categories/:id',
+        builder: (context, state) => WorkoutCategoryDetailScreen(
+          categoryId: state.pathParameters['id']!,
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: appNavigatorKey,
+        path: '/custom-routine/new',
+        builder: (context, state) {
+          final muscles = state.uri.queryParameters['muscles'];
+          final search = state.uri.queryParameters['search'];
+          return CustomRoutineBuilderScreen(
+            initialMuscleNames: muscles,
+            initialSearch: search,
+          );
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: appNavigatorKey,
+        path: '/custom-routine/:id/edit',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return CustomRoutineBuilderScreen(routineId: id);
+        },
       ),
       GoRoute(
         parentNavigatorKey: appNavigatorKey,
@@ -227,9 +263,19 @@ class AppShell extends StatelessWidget {
       child: Scaffold(
       body: navigationShell,
       bottomNavigationBar: Material(
-        color: scheme.surfaceContainer,
-        elevation: 3,
-        child: SafeArea(
+        color: Theme.of(context).extension<AppCraftColors>()?.surface ??
+            scheme.surface,
+        elevation: 0,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Theme.of(context).extension<AppCraftColors>()?.border ??
+                    scheme.outline,
+              ),
+            ),
+          ),
+          child: SafeArea(
           top: false,
           maintainBottomViewPadding: true,
           child: NavigationBar(
@@ -277,6 +323,7 @@ class AppShell extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
       ),

@@ -14,8 +14,9 @@ import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 import '../nutrition/meal_icon_tile.dart';
 import 'exercise_image_cache.dart';
-import 'exercise_posture_gallery.dart';
 import 'reset_today.dart';
+import 'exercise_posture_gallery.dart';
+import 'session_exercise_panel.dart';
 
 /// Soft tinted surface so session accordions read as distinct blocks.
 Color _accordionSurface(ColorScheme scheme, Color accent) {
@@ -61,7 +62,7 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
     final urls = <String>[
       for (final e in GymSessionSizing.activeExercises(resolved))
         ...e.demoImages,
-      for (final move in _WarmUpCard._moves) move.imageUrl,
+      for (final move in _WarmUpCard.moves) ...move.imageUrls,
     ];
     // Fire-and-forget: UI already painted; cache warms for revisit / session.
     unawaited(precacheExerciseImageUrls(context, urls));
@@ -257,10 +258,9 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
       );
     }
 
-    final demoById = {
-      for (final e in exercisesAsync.asData?.value ?? const <Exercise>[])
-        e.id: e.demoImages,
-    };
+    final exerciseBank = exercisesAsync.asData?.value ?? const <Exercise>[];
+    final demoById = {for (final e in exerciseBank) e.id: e.demoImages};
+    final catalogById = {for (final e in exerciseBank) e.id: e};
     final scheme = Theme.of(context).colorScheme;
     final active = GymSessionSizing.activeExercises(plan);
     final windows = GymSessionSizing.timeWindows(active);
@@ -403,6 +403,33 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                   child: Column(
                     children: [
+                      Consumer(
+                        builder: (context, ref, _) {
+                          final preLog = ref.watch(todayPreMealLogProvider);
+                          return preLog.when(
+                            loading: () => const SizedBox.shrink(),
+                            error: (_, _) => const SizedBox.shrink(),
+                            data: (log) {
+                              if (log == null) return const SizedBox.shrink();
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Chip(
+                                    avatar: const Icon(
+                                      Icons.check_circle_outline,
+                                      size: 18,
+                                    ),
+                                    label: Text(
+                                      'Logged pre meal · ${log.totalKcal.round()} kcal',
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
                       _PlanMealCard(
                         label: 'Pre-workout',
                         meal: plan.preMeal,
@@ -509,142 +536,20 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
                                 active.length,
                                 e,
                               );
-                              return Card(
-                                margin: const EdgeInsets.only(bottom: 10),
-                                child: ExpansionTile(
-                                  leading: CircleAvatar(
-                                    child: Text(
-                                      '$displayIndex',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                  title: Text(e.name),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      if (e.muscleGroups.isNotEmpty) ...[
-                                        const SizedBox(height: 4),
-                                        Wrap(
-                                          spacing: 4,
-                                          runSpacing: 4,
-                                          children: e.muscleGroups.map((g) {
-                                            return Chip(
-                                              visualDensity:
-                                                  VisualDensity.compact,
-                                              padding: EdgeInsets.zero,
-                                              labelPadding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 6,
-                                              ),
-                                              label: Text(
-                                                g.label,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .labelSmall
-                                                    ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                              ),
-                                            );
-                                          }).toList(),
-                                        ),
-                                        const SizedBox(height: 4),
-                                      ],
-                                      Text(
-                                        'Min ${window.start}–${window.end} · $role\n'
-                                        '${e.sets} sets × ${e.reps} reps · rest ${e.restSeconds}s'
-                                        '${e.includeDropSet ? ' · drop set on last' : ''}',
-                                      ),
-                                    ],
-                                  ),
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                        12,
-                                        0,
-                                        12,
-                                        8,
-                                      ),
-                                      child: _SetsStepper(
-                                        sets: e.sets,
-                                        ideal: e.recommendedSets ?? e.sets,
-                                        onChanged: (v) =>
-                                            _updateSets(e.exerciseId, v),
-                                      ),
-                                    ),
-                                    if (active.length > 1)
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: TextButton.icon(
-                                          onPressed: () => _removeExercise(i),
-                                          icon: const Icon(
-                                            Icons.remove_circle_outline,
-                                          ),
-                                          label: const Text('Skip this today'),
-                                        ),
-                                      ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                        12,
-                                        0,
-                                        12,
-                                        8,
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          why,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall
-                                              ?.copyWith(
-                                                color: scheme.onSurfaceVariant,
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                    if (images.isNotEmpty)
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                          12,
-                                          0,
-                                          12,
-                                          12,
-                                        ),
-                                        child: ExercisePostureGallery(
-                                          imageUrls: images,
-                                          height: 110,
-                                        ),
-                                      ),
-                                    if (e.formCues.isNotEmpty)
-                                      ListTile(
-                                        title: const Text('Form cues'),
-                                        subtitle: Text(
-                                          e.formCues
-                                              .asMap()
-                                              .entries
-                                              .map(
-                                                (c) =>
-                                                    '${c.key + 1}. ${c.value}',
-                                              )
-                                              .join('\n'),
-                                        ),
-                                      ),
-                                    if (e.commonMistakes.isNotEmpty)
-                                      ListTile(
-                                        title: const Text('Common mistakes'),
-                                        subtitle: Text(
-                                          e.commonMistakes
-                                              .map((c) => '• $c')
-                                              .join('\n'),
-                                        ),
-                                      ),
-                                  ],
-                                ),
+                              return SessionExercisePanel(
+                                index: displayIndex,
+                                exercise: e,
+                                timeWindow: '${window.start}–${window.end}',
+                                roleLabel: role,
+                                why: why,
+                                imageUrls: images,
+                                catalogExercise: catalogById[e.exerciseId],
+                                onSetsChanged: (v) =>
+                                    _updateSets(e.exerciseId, v),
+                                canSkip: active.length > 1,
+                                onSkip: active.length > 1
+                                    ? () => _removeExercise(i)
+                                    : null,
                               );
                             }),
                             const SizedBox(height: AppSpacing.sm),
@@ -669,75 +574,146 @@ class _WarmUpMove {
     required this.name,
     required this.cue,
     required this.duration,
-    required this.imageUrl,
+    required this.exerciseSlug,
   });
+
+  static const _cdn =
+      'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises';
 
   final String name;
   final String cue;
   final String duration;
-  final String imageUrl;
+  final String exerciseSlug;
+
+  List<String> get imageUrls => List.generate(
+        5,
+        (i) => '$_cdn/$exerciseSlug/$i.jpg',
+      );
+
+  String get imageUrl => imageUrls.first;
+
+  static void showGallery(BuildContext context, _WarmUpMove move) {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (context) {
+        return DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.55,
+          minChildSize: 0.35,
+          maxChildSize: 0.85,
+          builder: (context, scrollController) {
+            return ListView(
+              controller: scrollController,
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.sm,
+                AppSpacing.lg,
+                AppSpacing.lg,
+              ),
+              children: [
+                Text(
+                  move.name,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${move.duration} · ${move.cue}',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+                SizedBox(
+                  height: 120,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: move.imageUrls.length,
+                    separatorBuilder: (_, _) => const SizedBox(width: 8),
+                    itemBuilder: (context, i) {
+                      final url = move.imageUrls[i];
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: CachedNetworkImage(
+                            imageUrl: url,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                ExercisePostureGallery(
+                  imageUrls: move.imageUrls.take(2).toList(),
+                  height: 140,
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 }
 
 /// Standard ~8 min dynamic warm-up shown before the main session list.
 class _WarmUpCard extends StatelessWidget {
   const _WarmUpCard();
 
-  static const _moves = <_WarmUpMove>[
+  static const moves = <_WarmUpMove>[
     _WarmUpMove(
       name: 'Neck rolls',
       cue: 'Slow circles — both directions. Keep shoulders relaxed.',
       duration: '30 s',
-      imageUrl:
-          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Neck_Stretch/0.jpg',
+      exerciseSlug: 'Side_Neck_Stretch',
     ),
     _WarmUpMove(
       name: 'Shoulder circles',
       cue: 'Big circles forward then reverse. Open the chest.',
       duration: '30 s / arm',
-      imageUrl:
-          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Shoulder_Circles/0.jpg',
+      exerciseSlug: 'Shoulder_Circles',
     ),
     _WarmUpMove(
       name: 'Arm circles',
       cue: 'Start small, grow larger. Control the swing — no pain.',
       duration: '30 s',
-      imageUrl:
-          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Arm_Circles/0.jpg',
+      exerciseSlug: 'Arm_Circles',
     ),
     _WarmUpMove(
       name: 'Hip circles',
       cue: 'Hands on hips, draw wide circles. Loosen the hips.',
       duration: '30 s',
-      imageUrl:
-          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Hip_Circles/0.jpg',
+      exerciseSlug: 'Standing_Hip_Circles',
     ),
     _WarmUpMove(
       name: 'Leg swings (front–back)',
       cue: 'Hold a wall if needed. Soft knee, controlled swing.',
       duration: '10 / leg',
-      imageUrl:
-          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hip_Circles_prone/0.jpg',
+      exerciseSlug: 'Hip_Circles_prone',
     ),
     _WarmUpMove(
       name: 'Bodyweight squat',
       cue: 'Sit back, knees track toes, stand tall. Wake up the legs.',
       duration: '10 reps',
-      imageUrl:
-          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Bodyweight_Squat/0.jpg',
+      exerciseSlug: 'Bodyweight_Squat',
     ),
     _WarmUpMove(
       name: 'Inchworm',
       cue: 'Walk hands out to plank, walk feet in. Stretch + core.',
       duration: '5 reps',
-      imageUrl:
-          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Inchworm/0.jpg',
+      exerciseSlug: 'Inchworm',
     ),
     _WarmUpMove(
       name: 'High knees',
       cue: 'Light bounce, drive knees up. Raise heart rate gently.',
       duration: '30 s',
-      imageUrl:
-          'https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Step-up_with_Knee_Raise/0.jpg',
+      exerciseSlug: 'Step-up_with_Knee_Raise',
     ),
   ];
 
@@ -746,7 +722,7 @@ class _WarmUpCard extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Card(
       clipBehavior: Clip.antiAlias,
-      color: _accordionSurface(scheme, const Color(0xFF81C784)),
+      color: _accordionSurface(scheme, const Color(0xFF6B9E7A)),
       child: ExpansionTile(
         initiallyExpanded: true,
         leading: const Icon(
@@ -770,9 +746,9 @@ class _WarmUpCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
             child: Column(
               children: [
-                for (var i = 0; i < _moves.length; i++) ...[
+                for (var i = 0; i < moves.length; i++) ...[
                   if (i > 0) const SizedBox(height: AppSpacing.sm),
-                  _WarmUpMoveTile(index: i + 1, move: _moves[i]),
+                  _WarmUpMoveTile(index: i + 1, move: moves[i]),
                 ],
               ],
             ),
@@ -800,30 +776,53 @@ class _WarmUpMoveTile extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: SizedBox(
-                width: 72,
-                height: 72,
-                child: CachedNetworkImage(
-                  imageUrl: move.imageUrl,
-                  fit: BoxFit.cover,
-                  fadeInDuration: const Duration(milliseconds: 180),
-                  placeholder: (_, _) => ColoredBox(
-                    color: scheme.surfaceContainerHighest,
-                    child: const Center(
-                      child: SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ),
-                  ),
-                  errorWidget: (_, _, _) => ColoredBox(
-                    color: scheme.primaryContainer,
-                    child: Icon(
-                      Icons.accessibility_new,
-                      color: scheme.onPrimaryContainer,
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => _WarmUpMove.showGallery(context, move),
+                borderRadius: BorderRadius.circular(8),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                    width: 72,
+                    height: 72,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl: move.imageUrl,
+                          fit: BoxFit.cover,
+                          fadeInDuration: const Duration(milliseconds: 180),
+                          placeholder: (_, _) => ColoredBox(
+                            color: scheme.surfaceContainerHighest,
+                            child: const Center(
+                              child: SizedBox(
+                                width: 18,
+                                height: 18,
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
+                              ),
+                            ),
+                          ),
+                          errorWidget: (_, _, _) => ColoredBox(
+                            color: scheme.primaryContainer,
+                            child: Icon(
+                              Icons.accessibility_new,
+                              color: scheme.onPrimaryContainer,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          right: 4,
+                          bottom: 4,
+                          child: Icon(
+                            Icons.zoom_in,
+                            size: 16,
+                            color: scheme.onPrimary.withValues(alpha: 0.9),
+                            shadows: const [Shadow(blurRadius: 4)],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -1006,65 +1005,6 @@ class _GymTimePicker extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _SetsStepper extends StatelessWidget {
-  const _SetsStepper({
-    required this.sets,
-    required this.ideal,
-    required this.onChanged,
-  });
-
-  final int sets;
-  final int ideal;
-  final ValueChanged<int> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final differs = sets != ideal;
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Sets',
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-              Text(
-                differs
-                    ? 'Ideal for you today: $ideal sets'
-                    : 'Ideal for your intensity: $ideal sets',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: differs ? scheme.primary : scheme.onSurfaceVariant,
-                    ),
-              ),
-            ],
-          ),
-        ),
-        IconButton(
-          tooltip: 'Fewer sets',
-          onPressed: sets > 1 ? () => onChanged(sets - 1) : null,
-          icon: const Icon(Icons.remove_circle_outline),
-        ),
-        Text(
-          '$sets',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-        ),
-        IconButton(
-          tooltip: 'More sets',
-          onPressed: sets < 6 ? () => onChanged(sets + 1) : null,
-          icon: const Icon(Icons.add_circle_outline),
-        ),
-      ],
     );
   }
 }

@@ -155,6 +155,47 @@ class BodyMetricLogs extends Table {
   Set<Column> get primaryKey => {id};
 }
 
+@DataClassName('MealLogEntryRow')
+class MealLogEntries extends Table {
+  TextColumn get id => text()();
+  DateTimeColumn get eatenAt => dateTime()();
+  TextColumn get mealTiming => text()();
+  TextColumn get itemsJson => text()();
+  TextColumn get notes => text().withDefault(const Constant(''))();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DataClassName('CustomFoodItemRow')
+class CustomFoodItems extends Table {
+  TextColumn get id => text()();
+  TextColumn get label => text()();
+  TextColumn get normalizedLabel => text()();
+  TextColumn get source => text()();
+  TextColumn get systemFoodId => text().nullable()();
+  TextColumn get servingLabel => text().withDefault(const Constant('serving'))();
+  RealColumn get kcal => real().withDefault(const Constant(0))();
+  RealColumn get proteinG => real().withDefault(const Constant(0))();
+  RealColumn get carbsG => real().withDefault(const Constant(0))();
+  RealColumn get fatG => real().withDefault(const Constant(0))();
+  DateTimeColumn get createdAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DataClassName('CustomRoutineRow')
+class CustomRoutines extends Table {
+  TextColumn get id => text()();
+  TextColumn get name => text()();
+  TextColumn get exerciseIdsJson => text()();
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
 @DataClassName('ProgressPhotoRow')
 class ProgressPhotos extends Table {
   TextColumn get id => text()();
@@ -178,6 +219,9 @@ class ProgressPhotos extends Table {
     HydrationLogs,
     BodyMetricLogs,
     ProgressPhotos,
+    CustomRoutines,
+    MealLogEntries,
+    CustomFoodItems,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -185,7 +229,7 @@ class AppDatabase extends _$AppDatabase {
       : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 14;
+  int get schemaVersion => 17;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -196,6 +240,10 @@ class AppDatabase extends _$AppDatabase {
           );
           await m.database.customStatement(
             'CREATE UNIQUE INDEX IF NOT EXISTS hydration_logs_date_unique ON hydration_logs(date)',
+          );
+          await m.database.customStatement(
+            'CREATE UNIQUE INDEX IF NOT EXISTS custom_food_items_normalized_label_unique '
+            'ON custom_food_items(normalized_label) WHERE source = \'user_inputted\'',
           );
         },
         onUpgrade: (m, from, to) async {
@@ -284,6 +332,19 @@ DELETE FROM hydration_logs WHERE id NOT IN (
           if (from < 14) {
             // Self-heal installs that skipped v13 (hot restart / partial migrate).
             await _ensureBirthdayColumn(m.database);
+          }
+          if (from < 15) {
+            await m.createTable(customRoutines);
+          }
+          if (from < 16) {
+            await m.createTable(mealLogEntries);
+          }
+          if (from < 17) {
+            await m.createTable(customFoodItems);
+            await m.database.customStatement(
+              'CREATE UNIQUE INDEX IF NOT EXISTS custom_food_items_normalized_label_unique '
+              'ON custom_food_items(normalized_label) WHERE source = \'user_inputted\'',
+            );
           }
         },
         beforeOpen: (details) async {

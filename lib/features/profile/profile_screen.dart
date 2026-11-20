@@ -68,6 +68,38 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
     }
   }
 
+  Future<void> _confirmLogOut(BuildContext context) async {
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Log out?'),
+        content: const Text(
+          'You\'ll set up your profile again. Workouts and routines stay on this device.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Log out'),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+    try {
+      await ref.read(profileRepositoryProvider).signOutLocal();
+      ref.invalidate(profileProvider);
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Couldn\'t log out: ${userSafeError(e)}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final profileAsync = ref.watch(profileProvider);
@@ -125,6 +157,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
                 onSave: _save,
                 onExport: () => _exportBackup(context),
                 onImport: () => _importBackup(context),
+                onLogOut: () => _confirmLogOut(context),
               ),
             ],
           );
@@ -1020,6 +1053,7 @@ class _SettingsTab extends StatelessWidget {
     required this.onSave,
     required this.onExport,
     required this.onImport,
+    required this.onLogOut,
   });
 
   final UserProfile profile;
@@ -1028,6 +1062,7 @@ class _SettingsTab extends StatelessWidget {
   final Future<void> Function(UserProfile) onSave;
   final VoidCallback onExport;
   final VoidCallback onImport;
+  final VoidCallback onLogOut;
 
   @override
   Widget build(BuildContext context) {
@@ -1371,6 +1406,31 @@ class _SettingsTab extends StatelessWidget {
                 onPressed: onImport,
                 icon: const Icon(Icons.download, size: 18),
                 label: const Text('Import'),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+        CollapsibleSection(
+          icon: Icons.logout,
+          title: 'Account',
+          subtitle: 'Switch profile on this device',
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Log out returns you to setup. Your saved workouts are not deleted.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 12),
+              OutlinedButton.icon(
+                onPressed: onLogOut,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: scheme.error,
+                  side: BorderSide(color: scheme.error.withValues(alpha: 0.6)),
+                ),
+                icon: const Icon(Icons.logout, size: 18),
+                label: const Text('Log out'),
               ),
             ],
           ),

@@ -162,6 +162,11 @@ class SupabaseSeeder {
       'variants': json['variants'] ?? const {},
       'demo_images': json['demoImages'] ?? const [],
       'demo_source': json['demoSource'],
+      'audiences': json['audiences'] ?? const ['all'],
+      'quick_steps': json['quickSteps'] ?? const [],
+      'catalog_tags': json['catalogTags'] ?? const [],
+      'demo_frames': json['demoFrames'] ?? const [],
+      'demo_video_url': json['demoVideoUrl'],
     };
   }
 }

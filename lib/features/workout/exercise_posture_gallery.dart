@@ -1,12 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../core/theme/app_spacing.dart';
+import '../../core/theme/design_tokens.dart';
 
 /// Side-by-side start/end posture frames from free-exercise-db (Unlicense).
 class ExercisePostureGallery extends StatelessWidget {
   const ExercisePostureGallery({
     super.key,
     required this.imageUrls,
-    this.height = 168,
+    this.height = 100,
     this.showHeader = true,
   });
 
@@ -16,37 +20,25 @@ class ExercisePostureGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final craft = context.craft;
+
     if (imageUrls.isEmpty) {
       return Container(
         height: height,
         decoration: BoxDecoration(
-          color: const Color(0xFF1A1A1A),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.4),
-          ),
+          color: craft.surfaceRaised,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: craft.border),
         ),
         child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.fitness_center,
-                size: 40,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Form visuals unavailable offline',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
+          child: Text(
+            'Form visuals unavailable offline',
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ),
       );
     }
 
-    final scheme = Theme.of(context).colorScheme;
     final labels = imageUrls.length >= 2
         ? const ['Start', 'Finish']
         : const ['Form'];
@@ -57,35 +49,35 @@ class ExercisePostureGallery extends StatelessWidget {
         if (showHeader) ...[
           Text(
             'How it should look',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+            style: Theme.of(context).textTheme.titleSmall,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: AppSpacing.s3),
         ],
         SizedBox(
           height: height,
           child: Row(
             children: [
               for (var i = 0; i < imageUrls.take(2).length; i++) ...[
-                if (i > 0) const SizedBox(width: 12),
+                if (i > 0) const SizedBox(width: AppSpacing.s3),
                 Expanded(
                   child: _PostureTile(
                     url: imageUrls[i],
                     label: labels[i.clamp(0, labels.length - 1)],
-                    borderColor: scheme.primary.withValues(alpha: 0.4),
+                    borderColor: craft.border,
                   ),
                 ),
               ],
             ],
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSpacing.s2),
         Text(
           'Public-domain form photos · free-exercise-db',
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: scheme.onSurface.withValues(alpha: 0.4),
-              ),
+          style: GoogleFonts.ibmPlexMono(
+            fontSize: 10,
+            color: craft.textFaint,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );
@@ -107,19 +99,12 @@ class _PostureTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: const Color(0xFF141414),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: borderColor, width: 1.5),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.35),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        color: context.craft.surfaceRaised,
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: borderColor),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(3),
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -130,19 +115,17 @@ class _PostureTile extends StatelessWidget {
               fadeInDuration: const Duration(milliseconds: 180),
               placeholder: (_, _) => const Center(
                 child: SizedBox(
-                  width: 22,
-                  height: 22,
+                  width: 18,
+                  height: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 ),
               ),
               errorWidget: (context, _, _) => ColoredBox(
-                color: const Color(0xFF222222),
-                child: Center(
-                  child: Icon(
-                    Icons.fitness_center,
-                    color: Theme.of(context).colorScheme.primary,
-                    size: 36,
-                  ),
+                color: context.craft.surface,
+                child: Icon(
+                  Icons.fitness_center,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 28,
                 ),
               ),
             ),
@@ -152,23 +135,16 @@ class _PostureTile extends StatelessWidget {
               bottom: 0,
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withValues(alpha: 0.85),
-                    ],
-                  ),
+                  color: Colors.black.withValues(alpha: 0.55),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 22, 10, 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                   child: Text(
                     label,
-                    style: const TextStyle(
+                    style: GoogleFonts.barlowSemiCondensed(
                       color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
                     ),
                   ),
                 ),

@@ -57,6 +57,19 @@ enum TrainingFocus {
       };
 }
 
+/// Who an exercise is especially suited for in the catalog (filter/sort only).
+enum ExerciseAudience {
+  all,
+  male,
+  female;
+
+  String get label => switch (this) {
+        ExerciseAudience.all => 'Everyone',
+        ExerciseAudience.male => 'Men',
+        ExerciseAudience.female => 'Women',
+      };
+}
+
 enum MuscleGroup {
   chest,
   back,

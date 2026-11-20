@@ -9,6 +9,8 @@ import '../../core/widgets/error_display.dart';
 import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/models/models.dart';
 import '../routine/routine_widgets.dart';
+import '../../core/theme/design_tokens.dart';
+import 'custom_routines_section.dart';
 import 'exercise_posture_gallery.dart';
 
 class WorkoutTabScreen extends ConsumerWidget {
@@ -29,6 +31,8 @@ class WorkoutTabScreen extends ConsumerWidget {
             return ListView(
               padding: const EdgeInsets.all(AppSpacing.md),
               children: [
+                const CustomRoutinesSection(),
+                const SizedBox(height: AppSpacing.md),
                 RestDayCard(
                   kind: status.loggedKind!,
                   hasPlan: status.plan != null,
@@ -39,15 +43,22 @@ class WorkoutTabScreen extends ConsumerWidget {
 
           final plan = status.plan;
           if (plan == null) {
-            return EmptyState(
-              icon: Icons.fitness_center,
-              title: 'No plan yet',
-              message:
-                  'Complete a daily check-in to generate a mood-aware routine.',
-              action: FilledButton(
-                onPressed: () => context.push('/checkin'),
-                child: const Text('Daily check-in'),
-              ),
+            return ListView(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              children: [
+                const CustomRoutinesSection(),
+                const SizedBox(height: AppSpacing.lg),
+                EmptyState(
+                  icon: Icons.fitness_center,
+                  title: 'No plan yet',
+                  message:
+                      'Complete a daily check-in to generate a mood-aware routine.',
+                  action: FilledButton(
+                    onPressed: () => context.push('/checkin'),
+                    child: const Text('Daily check-in'),
+                  ),
+                ),
+              ],
             );
           }
 
@@ -61,6 +72,12 @@ class WorkoutTabScreen extends ConsumerWidget {
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(14, 8, 14, 12),
                   children: [
+                    _BrowseCategoriesBanner(
+                      onTap: () => context.push('/workout/categories'),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    const CustomRoutinesSection(),
+                    const SizedBox(height: AppSpacing.md),
                     Text(
                       plan.encouragement,
                       maxLines: 2,
@@ -325,6 +342,50 @@ class _CompactExerciseRow extends StatelessWidget {
               color: scheme.onSurfaceVariant,
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BrowseCategoriesBanner extends StatelessWidget {
+  const _BrowseCategoriesBanner({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final craft = context.craft;
+    return InkWell(
+      onTap: onTap,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: craft.surface,
+          border: Border.all(color: craft.border),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Browse workout categories',
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Text(
+                      'Men · women · strength · home · cardio & more',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.grid_view_rounded, color: craft.textMuted, size: 22),
+            ],
+          ),
         ),
       ),
     );

@@ -7,13 +7,17 @@ import '../../core/constants/app_constants.dart';
 import '../../data/db/app_database.dart';
 import '../../data/repositories/cloud_sync_port.dart';
 import '../../data/repositories/guides_repository.dart';
+import '../../data/repositories/custom_food_repository.dart';
+import '../../data/repositories/meal_log_repository.dart';
 import '../../data/repositories/metrics_repository.dart';
 import '../../data/repositories/nutrition_repository.dart';
+import '../../data/repositories/custom_routine_repository.dart';
 import '../../data/repositories/profile_repository.dart';
 import '../../data/repositories/routine_repository.dart';
 import '../../data/repositories/seed_repository.dart';
 import '../../data/repositories/workout_repository.dart';
 import '../../data/services/backup_service.dart';
+import '../../domain/engines/exercise_catalog.dart';
 import '../../domain/engines/muscle_recovery.dart';
 import '../../domain/engines/routine_engine.dart';
 import '../../domain/models/enums.dart';
@@ -67,8 +71,58 @@ final routineEngineProvider = Provider<RoutineEngine>((ref) {
   return RoutineEngine();
 });
 
+final customRoutineRepositoryProvider = Provider<CustomRoutineRepository>((ref) {
+  return CustomRoutineRepository(ref.watch(databaseProvider));
+});
+
+final mealLogRepositoryProvider = Provider<MealLogRepository>((ref) {
+  return MealLogRepository(ref.watch(databaseProvider));
+});
+
+final customFoodRepositoryProvider = Provider<CustomFoodRepository>((ref) {
+  return CustomFoodRepository(ref.watch(databaseProvider));
+});
+
+final userCustomFoodsProvider = StreamProvider.autoDispose<List<CustomFoodItem>>(
+  (ref) => ref.watch(customFoodRepositoryProvider).watchUserFoods(),
+);
+
+final recentMealLogsProvider = StreamProvider.autoDispose<List<MealLogEntry>>(
+  (ref) => ref.watch(mealLogRepositoryProvider).watchRecent(limit: 8),
+);
+
+final todayPreMealLogProvider = FutureProvider.autoDispose<MealLogEntry?>(
+  (ref) => ref
+      .watch(mealLogRepositoryProvider)
+      .todayForTiming(MealLogTiming.preWorkout),
+);
+
+class WorkoutCategoryDraft {
+  const WorkoutCategoryDraft({required this.categoryId});
+
+  final String categoryId;
+}
+
+final workoutCategoryDraftProvider =
+    StateProvider<WorkoutCategoryDraft?>((ref) => null);
+
+/// Bumped when saved custom routines change.
+final customRoutinesTickProvider = StateProvider<int>((ref) => 0);
+
+final customRoutinesProvider = StreamProvider<List<CustomRoutine>>((ref) {
+  ref.watch(customRoutinesTickProvider);
+  return ref.watch(customRoutineRepositoryProvider).watchAll();
+});
+
 final exercisesProvider = FutureProvider<List<Exercise>>((ref) {
   return ref.watch(seedRepositoryProvider).loadExercises();
+});
+
+/// Exercise bank filtered by profile gender (plans and picker use this).
+final exercisesForProfileProvider = FutureProvider<List<Exercise>>((ref) async {
+  final bank = await ref.watch(exercisesProvider.future);
+  final profile = ref.watch(profileProvider).asData?.value;
+  return ExerciseCatalog.filterExercises(bank, gender: profile?.gender);
 });
 
 final profileProvider = StreamProvider<UserProfile?>((ref) {
@@ -140,6 +194,7 @@ final backupServiceProvider = Provider<BackupService>((ref) {
     workouts: ref.watch(workoutRepositoryProvider),
     routines: ref.watch(routineRepositoryProvider),
     metrics: ref.watch(metricsRepositoryProvider),
+    customRoutines: ref.watch(customRoutineRepositoryProvider),
   );
 });
 
