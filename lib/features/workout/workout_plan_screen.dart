@@ -473,32 +473,45 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
           const SizedBox(height: AppSpacing.md),
           Card(
             clipBehavior: Clip.antiAlias,
-            color: _accordionSurface(scheme, const Color(0xFFBA68C8)),
+            elevation: 0,
+            color: _accordionSurface(scheme, scheme.primary),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+              side: BorderSide(
+                color: scheme.primary.withValues(alpha: 0.22),
+              ),
+            ),
             child: ExpansionTile(
               initiallyExpanded: true,
-              leading: const Icon(
-                Icons.fitness_center,
-                color: Color(0xFFBA68C8),
+              tilePadding: const EdgeInsets.fromLTRB(16, 4, 8, 0),
+              childrenPadding: EdgeInsets.zero,
+              shape: const RoundedRectangleBorder(),
+              collapsedShape: const RoundedRectangleBorder(),
+              leading: CircleAvatar(
+                radius: 18,
+                backgroundColor: scheme.primary.withValues(alpha: 0.15),
+                child: Icon(Icons.fitness_center, color: scheme.primary, size: 20),
               ),
               title: Text(
-                'Exercises for your gym time · ${active.length} moves',
+                'Exercises for your gym time',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
               ),
               subtitle: Text(
-                '~$sessionMins min · Gym time sets a baseline — customize below.',
+                '${active.length} moves · ~$sessionMins min · adjust gym time below',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: scheme.onSurfaceVariant,
                     ),
               ),
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  padding: const EdgeInsets.fromLTRB(8, 0, 8, 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       GymTimePicker(
+                        embedded: true,
                         gymMinutes: plan.gymMinutes,
                         exerciseCount: active.length,
                         baselineCount:
@@ -510,15 +523,24 @@ class _WorkoutPlanScreenState extends ConsumerState<WorkoutPlanScreen> {
                         onExerciseCountChanged: _setExerciseCount,
                       ),
                       if (muscles.isNotEmpty) ...[
-                        const SizedBox(height: 10),
+                        const SizedBox(height: AppSpacing.sm),
                         Wrap(
-                          spacing: 6,
-                          runSpacing: 6,
+                          spacing: 8,
+                          runSpacing: 8,
                           children: muscles
                               .map(
                                 (m) => Chip(
                                   visualDensity: VisualDensity.compact,
-                                  label: Text(m),
+                                  backgroundColor:
+                                      scheme.primary.withValues(alpha: 0.12),
+                                  side: BorderSide.none,
+                                  label: Text(
+                                    m,
+                                    style: TextStyle(
+                                      color: scheme.onSurface,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ),
                               )
                               .toList(),

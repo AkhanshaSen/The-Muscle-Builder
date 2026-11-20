@@ -7,12 +7,14 @@ import '../../app/providers.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/widgets/common_widgets.dart';
+import '../../domain/engines/custom_routine_launcher.dart';
 import '../../domain/engines/gym_session_sizing.dart';
 import '../../domain/engines/muscle_recovery.dart';
 import '../../domain/models/enums.dart';
 import '../../domain/models/models.dart';
 import '../../domain/models/workout_category.dart';
 import '../nutrition/meal_icon_tile.dart';
+import '../workout/custom_routine_picker_sheet.dart';
 import '../workout/gym_time_picker.dart';
 import 'body_map_selector.dart';
 
@@ -45,6 +47,7 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
   int _gymMinutes = 45;
   /// null = follow the gym-time baseline.
   int? _exerciseCount;
+  CustomRoutine? _checkInCustomRoutine;
   MealSuggestion? _preMeal;
   List<MealSuggestion> _preMealOptions = const [];
   bool _preMealsLoading = false;
@@ -157,19 +160,39 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
       final routine = await ref.read(routineRepositoryProvider).getOrCreateWeeklyRoutine();
       final equipment = _equipmentToday?.toList() ?? profile.equipment;
 
-      final catalog = engine.generate(
-        mood: _mood!,
-        intensity: _intensity,
-        muscles: _muscles.toList(),
-        availableEquipment: equipment,
-        experience: profile.experience,
-        bank: bank,
-        focus: _focus,
-        exerciseCount: GymSessionSizing.maxCatalogCount(),
-        soreness: _soreness,
-        avoidMuscles: _avoidMuscles.where(_muscles.contains).toList(),
-        deloadActive: routine.isDeloadActive,
-      );
+      final custom = _checkInCustomRoutine;
+      final List<PlannedExercise> catalog;
+      if (custom != null) {
+        catalog = CustomRoutineLauncher.plannedExercises(
+          exerciseIds: custom.exerciseIds,
+          bank: bank,
+          experience: profile.experience,
+          intensity: _intensity,
+        );
+        if (catalog.isEmpty) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Custom routine has no valid exercises in catalog'),
+            ),
+          );
+          return;
+        }
+      } else {
+        catalog = engine.generate(
+          mood: _mood!,
+          intensity: _intensity,
+          muscles: _muscles.toList(),
+          availableEquipment: equipment,
+          experience: profile.experience,
+          bank: bank,
+          focus: _focus,
+          exerciseCount: GymSessionSizing.maxCatalogCount(),
+          soreness: _soreness,
+          avoidMuscles: _avoidMuscles.where(_muscles.contains).toList(),
+          deloadActive: routine.isDeloadActive,
+        );
+      }
 
       final checkIn = DailyCheckIn(
         id: const Uuid().v4(),
@@ -185,11 +208,17 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
       );
       await ref.read(workoutRepositoryProvider).saveCheckIn(checkIn);
 
-      final encouragement = EncouragementCopy.forMood(
-        mood: _mood!.name,
-        tone: profile.coachTone.name,
-        name: profile.name,
-      );
+      final encouragement = custom != null
+          ? '${EncouragementCopy.forMood(
+              mood: _mood!.name,
+              tone: profile.coachTone.name,
+              name: profile.name,
+            )} · ${custom.name}'
+          : EncouragementCopy.forMood(
+              mood: _mood!.name,
+              tone: profile.coachTone.name,
+              name: profile.name,
+            );
 
       final nutrition = ref.read(nutritionRepositoryProvider);
       var pre = _preMeal;
@@ -220,7 +249,8 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
         preMeal: pre,
         postMeal: postMeals.isEmpty ? null : postMeals.first,
         gymMinutes: _gymMinutes,
-        exerciseCountOverride: _exerciseCount,
+        exerciseCountOverride:
+            custom != null ? custom.exerciseIds.length : _exerciseCount,
       );
       await ref.read(workoutRepositoryProvider).savePlan(plan);
 
@@ -325,6 +355,38 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
     );
   }
 
+  Future<void> _applyCustomRoutineForCheckIn(CustomRoutine routine) async {
+    final bank = await ref.read(seedRepositoryProvider).loadExercises();
+    if (!mounted) return;
+    final muscles = CustomRoutineLauncher.musclesFromIds(
+      routine.exerciseIds,
+      bank,
+    );
+    setState(() {
+      _checkInCustomRoutine = routine;
+      _exerciseCount = routine.exerciseIds.length.clamp(
+        GymSessionSizing.minExerciseCount,
+        GymSessionSizing.maxExerciseCount,
+      );
+      if (muscles.isNotEmpty) {
+        _muscles
+          ..clear()
+          ..addAll(muscles);
+      }
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Using “${routine.name}” — finish check-in for meals & your plan',
+        ),
+      ),
+    );
+  }
+
+  void _clearCheckInCustomRoutine() {
+    setState(() => _checkInCustomRoutine = null);
+  }
+
   Widget _moodStep() {
     return ListView(
       padding: const EdgeInsets.all(14),
@@ -398,6 +460,8 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
 
   Widget _sessionSizeStep() {
     final count = _effectiveExerciseCount;
+    final scheme = Theme.of(context).colorScheme;
+    final custom = _checkInCustomRoutine;
     return ListView(
       padding: const EdgeInsets.all(14),
       children: [
@@ -411,12 +475,123 @@ class _CheckInScreenState extends ConsumerState<CheckInScreen> {
           gymMinutes: _gymMinutes,
           exerciseCount: count,
           baselineCount: GymSessionSizing.exerciseCountFor(_gymMinutes),
-          catalogLength: GymSessionSizing.maxExerciseCount,
+          catalogLength: custom != null
+              ? custom.exerciseIds.length
+              : GymSessionSizing.maxExerciseCount,
           overrideCount: _exerciseCount,
           estimatedMinutes: _gymMinutes,
           onGymMinutesChanged: (m) => setState(() => _gymMinutes = m),
-          onExerciseCountChanged: (v) => setState(() => _exerciseCount = v),
+          onExerciseCountChanged: custom == null
+              ? (v) => setState(() => _exerciseCount = v)
+              : (_) {},
         ),
+        const SizedBox(height: AppSpacing.md),
+        if (custom != null) ...[
+          Card(
+            elevation: 0,
+            color: scheme.primaryContainer.withValues(alpha: 0.35),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(color: scheme.primary.withValues(alpha: 0.25)),
+            ),
+            child: Padding(
+              padding: AppSpacing.card,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Custom routine selected',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: scheme.primary,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${custom.name} · ${custom.exerciseIds.length} moves',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(
+                    'Next steps: focus, muscles, recovery, meals — then your usual plan view.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: scheme.onSurfaceVariant,
+                        ),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () => showCustomRoutinePickerSheet(
+                          context,
+                          ref,
+                          onPickForCheckIn: _applyCustomRoutineForCheckIn,
+                        ),
+                        child: const Text('Change'),
+                      ),
+                      TextButton(
+                        onPressed: _clearCheckInCustomRoutine,
+                        child: const Text('Use generated plan'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ] else
+          Card(
+            elevation: 0,
+            color: scheme.surfaceContainerLow,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.4)),
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(14),
+              onTap: () => showCustomRoutinePickerSheet(
+                context,
+                ref,
+                onPickForCheckIn: _applyCustomRoutineForCheckIn,
+              ),
+              child: Padding(
+                padding: AppSpacing.card,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 22,
+                      backgroundColor: scheme.primary.withValues(alpha: 0.12),
+                      child: Icon(Icons.tune_outlined, color: scheme.primary),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Use custom exercise routine',
+                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Pick a saved template or build a new one',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: scheme.onSurfaceVariant,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(Icons.chevron_right, color: scheme.onSurfaceVariant),
+                  ],
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }
